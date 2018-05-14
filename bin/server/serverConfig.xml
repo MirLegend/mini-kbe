@@ -1,0 +1,7 @@
+<root>
+	<serverpaths>
+		<root_path> E:\ServerEngine\trunk </root_path>
+		<res_path> ./;E:\ServerEngine\trunk\kbeSmall\res\;E:\ServerEngine\ServerSvn/assets/;E:\ServerEngine\ServerSvn/assets/scripts/;E:\ServerEngine\ServerSvn/assets/res/ </res_path>
+		<bin_path> E:\ServerEngine\trunk\kbeSmall\bin\server </bin_path>
+	</serverpaths>
+</root>

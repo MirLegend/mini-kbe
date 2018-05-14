@@ -1,0 +1,210 @@
+<root>
+	<!-- 游戏逻辑处理频率 
+		(Update frequency process)
+	-->
+	<gameUpdateHertz> 10 </gameUpdateHertz>
+	
+	<channelCommon> 
+		<!-- 最后一次通信时间超过此时间则被认定为超时通道， 服务器将踢出该通道 
+			(If long (configurable value) no communication, channel will be kicked out of the server.)
+		-->
+		<timeout> 
+			<internal> 60.0 </internal>
+			<external> 60.0 </external>
+		</timeout>
+		
+		<!-- socket读写缓冲大小 
+			(socket send/recv buffer size)
+		-->
+		<readBufferSize> 
+			<internal>	16777216	</internal> 			<!-- 16M -->
+			<external>	0			</external>				<!-- 系统默认(system default) -->
+		</readBufferSize>
+		<writeBufferSize> 
+			<internal>	16777216	</internal>				<!-- 16M -->
+			<external>	0			</external>				<!-- 系统默认(system default) -->
+		</writeBufferSize>
+		
+		<!-- 一个tick内发送与接收窗口溢出值，0无限制
+			(A tick, the value of the send/receive window overflow, 0 is unlimited)
+		-->
+		<windowOverflow>
+			<send>
+				<messages>
+					<critical>	1024		</critical>
+					<internal>	65535		</internal>
+					<external>	512			</external>
+				</messages>
+				<bytes>
+					<internal>	0			</internal>
+					<external>	0			</external>
+				</bytes>
+			</send>
+			
+			<receive>
+				<messages>
+					<critical>	24			</critical>
+					<internal>	65535		</internal>
+					<external>	32			</external>
+				</messages>
+				<bytes>
+					<internal>	0			</internal>
+					<external>	2048		</external>
+				</bytes>
+			</receive>
+		</windowOverflow>
+		
+	</channelCommon> 
+
+	<thread_pool>
+		<!-- 默认超时时间(秒) 
+			(default timeout(seconds))
+		-->
+		<timeout> 300.0 </timeout>
+		
+		<init_create> 1 </init_create>
+		<pre_create> 2 </pre_create>
+		<max_create> 8 </max_create>
+	</thread_pool>
+		
+	<dbmgr>
+		<ip> 127.0.0.1 </ip>
+		<port> 20002 </port>
+		<port_max> 20002 </port_max>
+		<!-- debug模式下可输出读写操作信息
+		    (Debug mode can output the read and write informations)
+		 -->
+		<debug> false </debug>
+
+		<!-- 数据库类型 （mysql、redis）
+			（Database type(mysql, redis))
+		-->
+		<type> mysql </type>											<!-- Type: String -->
+		
+		<!-- 数据库地址 
+			（Database address)
+		-->
+		<host> localhost </host>										<!-- Type: String -->
+		<dbport> 0 </dbport>												<!-- Type: Integer -->
+		
+		<!-- 数据库账号验证 
+			（Database auth)
+		-->
+		<auth>  
+			<username> root </username>									<!-- Type: String -->
+			<password> 123456 </password>									<!-- Type: String -->
+			
+		</auth>
+		
+		<!-- 数据库名称 
+			(Database name)
+		-->
+		<databaseName> ziyu </databaseName> 								<!-- Type: String -->
+		
+		<!-- 数据库允许的连接数 
+			(Number of connections allowed by the database)
+		-->
+		<numConnections> 5 </numConnections>							<!-- Type: Integer -->
+		
+		<!-- 字符编码类型 
+			(Character encoding type)
+		-->
+		<unicodeString>
+			<characterSet> utf8 </characterSet> 						<!-- Type: String -->
+			<collation> utf8_bin </collation> 							<!-- Type: String -->
+		</unicodeString>
+	</dbmgr>
+	
+	<cellapp>
+		
+		<!-- entityID分配器，进入溢出范围则请求获取新的ID资源 
+			(The entityID allocator, enter the overflow area will get the new ID's)
+		-->
+		<ids>
+			<criticallyLowSize> 500 </criticallyLowSize>				<!-- Type: Integer -->
+		</ids>
+		
+		<!-- 负载平衡滤波器指标值
+			（Load balancing Smoothing Bias value） 
+		-->
+		<loadSmoothingBias> 0.01 </loadSmoothingBias>
+	</cellapp>
+	
+	<baseapp>
+		<ip> 127.0.0.1 </ip>
+		<port> 20028 </port>
+		<port_max> 20037 </port_max>
+		<!-- 负载平衡滤波器指标值
+			（Load balancing Smoothing Bias value） 
+		-->
+		<loadSmoothingBias> 0.01 </loadSmoothingBias>
+
+		<!-- entityID分配器，进入溢出范围则请求获取新的ID资源 
+			(The entityID allocator, enter the overflow area will get the new ID's)
+		-->
+		<ids>
+			<criticallyLowSize> 500 </criticallyLowSize>				<!-- Type: Integer -->
+		</ids>
+
+		<!-- listen监听队列最大值
+		    (listen: Maximum listen queue)
+		 -->
+		<SOMAXCONN> 128 </SOMAXCONN>
+
+		<respool>
+			<!-- 缓冲区大小也等于资源大小， 在这个KB大小范围以内的资源才可以进入资源池 
+				(Buffer size is equal to the size of resources, 
+				Less than the buffer resources before they can enter the resource pool)
+			-->
+			<buffer_size> 1024 </buffer_size>
+			
+			<!-- 资源池中的资源超过这个时间未被访问则销毁(秒) 
+			(Resources have not been accessed overtime will be destroyed (s))
+			-->
+			<timeout> 600 </timeout>
+			
+			<!-- 资源池检查tick(秒) 
+				(Resource pool check tick (secs))
+			-->
+			<checktick>60</checktick>
+		</respool>
+	</baseapp>
+	
+	<cellappmgr>
+		<ip> 127.0.0.1 </ip>
+		<port> 20004 </port>
+		<port_max> 20004 </port_max>
+	</cellappmgr>
+	
+	<baseappmgr>
+		<ip> 127.0.0.1 </ip>
+		<port> 20003 </port>
+		<port_max> 20003 </port_max>
+	</baseappmgr>
+	
+	<loginapp>
+		<ip> 127.0.0.1 </ip>
+		<port> 20018 </port>
+		<port_max> 20027 </port_max>
+		<!-- listen监听队列最大值
+		    (listen: Maximum listen queue)
+		 -->
+		<SOMAXCONN> 128 </SOMAXCONN>
+		
+	</loginapp>		
+	
+	<logger>
+		<ip> 127.0.0.1 </ip>
+		<port> 20008 </port>
+		<port_max> 20008 </port_max>
+		<!-- 单个app(baseapp, cellapp, 等等..)进程上, 一个tick最多缓存的log数量
+			（The number of single-process(baseapp, cellapp, etc..), The number of log a tick buffer.） 
+		-->
+		<tick_max_buffered_logs> 0 </tick_max_buffered_logs>
+
+		<!-- 单个app(baseapp, cellapp, 等等..)进程上, 一个tick同步给logger的log数量
+			（The number of single-process(baseapp, cellapp, etc..), A tick synchronization to the number of logger） 
+		-->
+		<tick_sync_logs> 0 </tick_sync_logs>
+	</logger>
+</root>

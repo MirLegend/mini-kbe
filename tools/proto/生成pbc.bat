@@ -1,0 +1,1 @@
+protoc.exe --descriptor_set_out=./cl.pb ./cl.proto

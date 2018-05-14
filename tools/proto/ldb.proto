@@ -1,0 +1,9 @@
+package login_dbmgr;
+
+//login -> dbmgr 2 - 1 //login向dbmgr查询用户合法性
+message AccountLogin {
+	optional string accountName = 1;
+	optional string password = 2;
+	optional string extraData = 3;
+}
+

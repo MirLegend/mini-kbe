@@ -1,0 +1,31 @@
+package client_loginserver;
+
+//c-s 客户端 -> 服务器 90 - 1 //连接握手
+message Hello {
+	optional uint32 version = 1;
+	optional string extraData = 2;
+}
+
+//s-c 服务器 -> 客户端 90 - 2 //连接握手返回
+message HelloCB {
+	optional uint32 result = 1;
+	optional uint32 version = 2;
+	optional string extraData = 3;
+}
+
+//c-s 客户端 -> 服务器 90 - 5 //登陆
+message Login {
+	optional uint32 ctype = 1; //客户端类型
+	optional string account = 2; //账号
+	optional string password = 3; //密码
+	optional string extraData = 4; //额外数据
+}
+
+//s-c 服务器 -> 客户端 90 - 6 //登陆失败
+message LoginFailed {
+	optional uint32 failedcode = 1; //失败原因
+	optional string extraData = 2; //额外数据
+}
+
+//message Ping{
+//}

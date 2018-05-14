@@ -1,0 +1,28 @@
+package servercommon;
+
+//s-s 服务器组件间注册 1 - 1
+message RegisterSelf {
+  optional int32 componentType = 1;
+  optional int32 uid = 2;
+  optional string username = 3;
+  optional int64 componentID = 4;
+  optional int32 extaddr = 5;  //外部地址
+  optional int32 extport = 6; //外部对端口
+}
+
+//s-s 服务器组件间注册 1 - 2 //注册返回
+message CBRegisterSelf {
+  required int32 result = 1;
+  optional int32 componentType = 2;
+  optional int32 uid = 3;
+  optional string username = 4;
+  optional int64 componentID = 5;
+  optional int32 intaddr = 6;  //监听地址
+  optional int32 intport = 7; //监听端口
+}
+
+//s-s 服务器组件间心跳检测 1 - 3 
+message ActiveTick {
+  optional int32 componentType = 1;
+  optional int64 componentID = 2;
+}
