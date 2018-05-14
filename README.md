@@ -25,3 +25,11 @@ The essence of KBEngine \kbengine中提取的核心精简版本
 ##### 去掉了kbengine中rpc机制， 
       改为传统的protobuf来传输网络数据。
       服务器使用原生protobuf， 客户端使用云风的lua_pbc。
+
+## kbe 引擎最核心类结构：
+
+      最核心的eventdispatch 主要复杂三大类功能： 定时器、任务task、网络， 服务器游戏逻辑主要在 定时器里面实现。
+![kbe core class](https://github.com/MirLegend/mini-kbe/blob/master/doc/class.png)
+
+## kbe 引擎组件结构：
+![kbe compents](https://github.com/MirLegend/mini-kbe/blob/master/doc/compents.png)
