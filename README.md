@@ -1,6 +1,6 @@
 mini_kbe
 =============
-The essence of KBEngine \kbengine中提取的核心精简版本
+The essence of KBEngine \ 轻量级的kbengine服务器实现
 -------------
 
 ##### 保留了kbengine中最核心的 network、server库， 
@@ -20,11 +20,11 @@ The essence of KBEngine \kbengine中提取的核心精简版本
       后续会添加mysql 和 redis的 搭配。 mysql做永久存储、redis做缓存的多级数据库方案。
 
 ##### 暂时去掉了性能统计模块。
-      出于保留最核心的模块的想法，暂时去掉性能统计这块。kbe性能监视模块比较好，后续会添加。
+      轻量原则，暂时去掉性能统计这块。kbe性能监视模块比较强大，后续会添加。
 
 ##### 去掉了kbengine中rpc机制， 
-      改为传统的protobuf来传输网络数据。
-      服务器使用原生protobuf， 客户端使用云风的lua_pbc。
+      网络通信数据传输方式 将2进制方式 改为传统的protobuf来传输。
+      服务器使用原生protobuf c++， 客户端使用云风的lua_pbc。
 
 ## kbe 引擎最核心类结构：
 
