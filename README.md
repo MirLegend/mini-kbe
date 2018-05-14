@@ -25,6 +25,9 @@ The essence of KBEngine \ 轻量级的kbengine服务器实现
 ##### 去掉了kbengine中rpc机制， 
       网络通信数据传输方式 将2进制方式 改为传统的protobuf来传输。
       服务器使用原生protobuf c++， 客户端使用云风的lua_pbc。
+      
+##### 简化并优化了网络协议宏， 
+      保留简化了网络消息解析 handle 宏， 保持原有的简杰、封装的特性，详见各个服务器组件消息定义文件 ***_interface.h 
 
 ## kbe 引擎最核心类结构：
 
