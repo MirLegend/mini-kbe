@@ -1,0 +1,11 @@
+package mycity;
+
+message Person {
+	optional string name = 1;
+	optional int32 year = 2;
+	optional int32 weight = 3;
+}
+message City {
+  repeat Person persons = 1;
+  optional string name = 2;
+}
