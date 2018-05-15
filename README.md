@@ -15,7 +15,8 @@ The essence of KBEngine \ 轻量级的kbengine服务器实现
       直接读取本地配置，找到依赖组件的ip 和端口。
 
 ##### 暂时去掉了python脚本功能支持
-
+      kbe另外一大核心就是 模块def文件，def实体定义文件 分为 解析 和 绑定到脚本 两大部分，这是kbe里面的重点也是难点。mini-kbe去掉了这部分
+ 
 ##### 暂时去掉了数据库功能
       后续会添加mysql 和 redis的 搭配。 mysql做永久存储、redis做缓存的多级数据库方案。
 
