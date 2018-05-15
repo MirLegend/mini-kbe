@@ -137,12 +137,6 @@
     <None Include="telnet_handler.inl" />
     <None Include="telnet_server.inl" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\dependencies\jwsmtp\jwsmtp.vcxproj">
-      <Project>{45a08c1b-d249-42c4-932c-615ed3924cbb}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

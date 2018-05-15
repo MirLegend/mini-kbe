@@ -1,3 +1,11 @@
 libs/
 src/.vs/
+src/_objs/
 src/Debug/
+src/minikbe_vs140.sdf
+bin/server/*.exp
+bin/server/*.idb
+bin/server/*.ilk
+bin/server/*.pdb
+bin/server/*.exe
+bin/server/*.lib
