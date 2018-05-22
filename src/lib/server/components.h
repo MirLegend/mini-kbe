@@ -215,6 +215,7 @@ private:
 	uint8									state_;
 	int16									findIdx_;
 	int8									findComponentTypes_[8];
+	int8									needCompnentNum;
 };
 
 }

@@ -82,6 +82,7 @@ void Components::initialize(Network::NetworkInterface * pNetworkInterface, COMPO
 
 	for(uint8 i=0; i<8; ++i)
 		findComponentTypes_[i] = UNKNOWN_COMPONENT_TYPE;
+	needCompnentNum = 0;
 
 	switch(componentType_)
 	{
@@ -90,36 +91,45 @@ void Components::initialize(Network::NetworkInterface * pNetworkInterface, COMPO
 		findComponentTypes_[1] = DBMGR_TYPE;
 		findComponentTypes_[2] = CELLAPPMGR_TYPE;
 		findComponentTypes_[3] = BASEAPPMGR_TYPE;
+		needCompnentNum = 4;
 		break;
 	case BASEAPP_TYPE:
 		findComponentTypes_[0] = LOGGER_TYPE;
 		findComponentTypes_[1] = DBMGR_TYPE;
 		findComponentTypes_[2] = BASEAPPMGR_TYPE;
 		findComponentTypes_[3] = CELLAPPMGR_TYPE;
+		needCompnentNum = 4;
 		break;
 	case BASEAPPMGR_TYPE:
 		findComponentTypes_[0] = LOGGER_TYPE;
 		findComponentTypes_[1] = DBMGR_TYPE;
 		findComponentTypes_[2] = CELLAPPMGR_TYPE;
+		needCompnentNum = 3;
 		break;
 	case CELLAPPMGR_TYPE:
 		findComponentTypes_[0] = LOGGER_TYPE;
 		findComponentTypes_[1] = DBMGR_TYPE;
-		findComponentTypes_[2] = BASEAPPMGR_TYPE;
+		//findComponentTypes_[2] = BASEAPPMGR_TYPE;
+		needCompnentNum = 2;
 		break;
 	case LOGINAPP_TYPE:
 		findComponentTypes_[0] = LOGGER_TYPE;
 		findComponentTypes_[1] = DBMGR_TYPE;
 		findComponentTypes_[2] = BASEAPPMGR_TYPE;
+		needCompnentNum = 3;
 		break;
 	case DBMGR_TYPE:
 		findComponentTypes_[0] = LOGGER_TYPE;
+		needCompnentNum = 1;
 		break;
 	default:
-		if(componentType_ != LOGGER_TYPE && 
-			componentType_ != MACHINE_TYPE && 
+		if (componentType_ != LOGGER_TYPE &&
+			componentType_ != MACHINE_TYPE &&
 			componentType_ != INTERFACES_TYPE)
+		{
 			findComponentTypes_[0] = LOGGER_TYPE;
+			needCompnentNum = 1;
+		}
 		break;
 	};
 }
@@ -139,9 +149,12 @@ bool Components::checkComponents(int32 uid, COMPONENT_ID componentID, COMPONENT_
 	COMPONENTS& components = getComponents(componentType);
 	if (!COMPONENT_DUPS[componentType] && components.size()>0)
 	{
+		ERROR_MSG(fmt::format("checkComponents: size:{} error 1111.\n",
+			components.size()));
 		return false;
-	}	int idx = 0;
+	}
 
+	int idx = 0;
 	while(true)
 	{
 		COMPONENT_TYPE ct = ALL_COMPONENT_TYPES[idx++];
@@ -151,6 +164,8 @@ bool Components::checkComponents(int32 uid, COMPONENT_ID componentID, COMPONENT_
 		ComponentInfos* cinfos = findComponent(ct, uid, componentID);
 		if(cinfos != NULL)
 		{
+			ERROR_MSG(fmt::format("checkComponents: componentID:{} error 2222.\n",
+				componentID));
 			return false;
 		}
 	}
@@ -620,7 +635,7 @@ int Components::connectComponent(COMPONENT_TYPE rcomponentType, int32 ruid, COMP
 			Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
 			{
 				printf("[NetProtoStreamHandlerHandler]: register, compentType:{%d}, name:%s, \
-				compentId:%llu \n", this->componentType(), COMPONENT_NAME_EX(this->componentType()), this->componentID());
+				compentId:%llu \n", rcomponentType, COMPONENT_NAME_EX(rcomponentType), rcomponentID);
 
 				COMMON_NETWORK_MESSAGE(rcomponentType, (*pBundle), OnRegisterServer);
 
@@ -680,9 +695,9 @@ void Components::OnRegisterServer(Network::Channel* pChannel, MemoryStream& s)
 
 	if (!this->checkComponents(uid, componentID, componentType))
 	{
-		ERROR_MSG(fmt::format("checkComponents: The current process and {}(componentID={} conflict, the process will exit!\n"
+		ERROR_MSG(fmt::format("checkComponents: The current process and {}(componentID={} uid={} conflict, the process will exit!\n"
 			"Can modify the components-CID and UID to avoid conflict 22.\n",
-			COMPONENT_NAME_EX((COMPONENT_TYPE)componentType), componentID));
+			COMPONENT_NAME_EX((COMPONENT_TYPE)componentType), componentID, uid));
 		cbregCmd.set_result(2);
 	}
 	else
@@ -744,6 +759,7 @@ void Components::CBRegisterServer(Network::Channel* pChannel, MemoryStream& s)
 			Components::getSingleton().addComponent(uid, cbregCmd.username().c_str(),
 				(KBEngine::COMPONENT_TYPE)componentType, componentID, pChannel->addr().ip, pChannel->addr().port,
 				0, 0, pChannel);
+			needCompnentNum -= 1;
 		}
 	}
 }
@@ -775,6 +791,13 @@ bool Components::process()
 		}
 		else
 			return true;
+	}
+	else if (2 == state_)
+	{
+		if (needCompnentNum > 0)
+		{
+			return true;
+		}
 	}
 
 	onFoundAllComponents();

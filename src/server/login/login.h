@@ -59,34 +59,6 @@ public:
 
 	virtual bool canShutdown();
 
-	uint32 bufferedLogsSize(){
-		return 0;// buffered_logs_.size();
-	}
-
-	/** 网络接口
-		写日志
-	*/
-	void writeLog(Network::Channel* pChannel, /*KBEngine::*/MemoryStream& s);
-
-	/** 网络接口
-		注册log监听者
-	*/
-	void registerLogWatcher(Network::Channel* pChannel, /*KBEngine::*/MemoryStream& s);
-
-	/** 网络接口
-		注销log监听者
-	*/
-	void deregisterLogWatcher(Network::Channel* pChannel, /*KBEngine::*/MemoryStream& s);
-
-	/** 网络接口
-		log监听者更新自己的设置
-	*/
-	void updateLogWatcherSetting(Network::Channel* pChannel, /*KBEngine::*/MemoryStream& s);
-
-	//LOG_WATCHERS& logWatchers(){ return logWatchers_; }
-
-	//void sendInitLogs(LogWatcher& logWatcher);
-
 	void onClientHello(Network::Channel* pChannel, MemoryStream& s); //客户端握手
 
 	void Login(Network::Channel* pChannel, MemoryStream& s); //客户端登陆
@@ -97,6 +69,9 @@ public:
 															 NETWORK_ERR_NAME_PASSWORD:用户名或者密码不正确
 															 */
 	void _loginFailed(Network::Channel* pChannel, std::string& loginName, SERVER_ERROR_CODE failedcode, std::string& datas, bool force = false);
+
+	void onLoginAccountQueryResultFromDbmgr(Network::Channel* pChannel, MemoryStream& s);
+	void onLoginAccountQueryBaseappAddrFromBaseappmgr(Network::Channel* pChannel, MemoryStream& s);
 protected:
 	TimerHandle	timer_;
 	// 记录登录到服务器但还未处理完毕的账号

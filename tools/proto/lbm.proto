@@ -1,0 +1,34 @@
+package login_basemgr;
+
+//login -> basemgr 3 - 1 //login向basemgr登陆用户
+message RegisterPendingAccount {
+	optional string loginName = 1;
+	optional string accountName = 2;
+	optional string password = 3;
+	optional uint64 dbid = 4;
+	optional uint32 flags = 5;
+	optional string extraData = 6;
+}
+
+//login -> basemgr 3 - 2 //login向basemgr重复登陆用户
+message RegisterPendingAccountEx {
+	optional uint64 componentID = 1;
+	optional string loginName = 2;
+	optional string accountName = 3;
+	optional string password = 4;
+	optional int32 entityID = 5;
+	optional uint64 dbid = 6;
+	optional uint32 flags = 7;
+	optional string extraData = 8;
+}
+
+//basemgr -> login 3 - 3 //basemgr向login返回用户登陆base信息
+message LoginAccountQueryBaseappAddrFromBaseappmgr {
+	optional string loginName = 1;
+	optional string accountName = 2;
+	optional string ip = 3;
+	optional uint32 port = 4;
+}
+
+
+

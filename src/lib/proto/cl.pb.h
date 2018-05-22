@@ -37,6 +37,7 @@ class Hello;
 class HelloCB;
 class Login;
 class LoginFailed;
+class LoginSuccessfully;
 
 // ===================================================================
 
@@ -453,6 +454,130 @@ class LoginFailed : public ::google::protobuf::Message {
 
   void InitAsDefaultInstance();
   static LoginFailed* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class LoginSuccessfully : public ::google::protobuf::Message {
+ public:
+  LoginSuccessfully();
+  virtual ~LoginSuccessfully();
+
+  LoginSuccessfully(const LoginSuccessfully& from);
+
+  inline LoginSuccessfully& operator=(const LoginSuccessfully& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const LoginSuccessfully& default_instance();
+
+  void Swap(LoginSuccessfully* other);
+
+  // implements Message ----------------------------------------------
+
+  LoginSuccessfully* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const LoginSuccessfully& from);
+  void MergeFrom(const LoginSuccessfully& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string accountName = 1;
+  inline bool has_accountname() const;
+  inline void clear_accountname();
+  static const int kAccountNameFieldNumber = 1;
+  inline const ::std::string& accountname() const;
+  inline void set_accountname(const ::std::string& value);
+  inline void set_accountname(const char* value);
+  inline void set_accountname(const char* value, size_t size);
+  inline ::std::string* mutable_accountname();
+  inline ::std::string* release_accountname();
+  inline void set_allocated_accountname(::std::string* accountname);
+
+  // optional string baseIp = 2;
+  inline bool has_baseip() const;
+  inline void clear_baseip();
+  static const int kBaseIpFieldNumber = 2;
+  inline const ::std::string& baseip() const;
+  inline void set_baseip(const ::std::string& value);
+  inline void set_baseip(const char* value);
+  inline void set_baseip(const char* value, size_t size);
+  inline ::std::string* mutable_baseip();
+  inline ::std::string* release_baseip();
+  inline void set_allocated_baseip(::std::string* baseip);
+
+  // optional uint32 basePort = 3;
+  inline bool has_baseport() const;
+  inline void clear_baseport();
+  static const int kBasePortFieldNumber = 3;
+  inline ::google::protobuf::uint32 baseport() const;
+  inline void set_baseport(::google::protobuf::uint32 value);
+
+  // optional string extraData = 4;
+  inline bool has_extradata() const;
+  inline void clear_extradata();
+  static const int kExtraDataFieldNumber = 4;
+  inline const ::std::string& extradata() const;
+  inline void set_extradata(const ::std::string& value);
+  inline void set_extradata(const char* value);
+  inline void set_extradata(const char* value, size_t size);
+  inline ::std::string* mutable_extradata();
+  inline ::std::string* release_extradata();
+  inline void set_allocated_extradata(::std::string* extradata);
+
+  // @@protoc_insertion_point(class_scope:client_loginserver.LoginSuccessfully)
+ private:
+  inline void set_has_accountname();
+  inline void clear_has_accountname();
+  inline void set_has_baseip();
+  inline void clear_has_baseip();
+  inline void set_has_baseport();
+  inline void clear_has_baseport();
+  inline void set_has_extradata();
+  inline void clear_has_extradata();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::std::string* accountname_;
+  ::std::string* baseip_;
+  ::std::string* extradata_;
+  ::google::protobuf::uint32 baseport_;
+  friend void  protobuf_AddDesc_cl_2eproto();
+  friend void protobuf_AssignDesc_cl_2eproto();
+  friend void protobuf_ShutdownFile_cl_2eproto();
+
+  void InitAsDefaultInstance();
+  static LoginSuccessfully* default_instance_;
 };
 // ===================================================================
 
@@ -1047,6 +1172,262 @@ inline void LoginFailed::set_allocated_extradata(::std::string* extradata) {
     extradata_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   }
   // @@protoc_insertion_point(field_set_allocated:client_loginserver.LoginFailed.extraData)
+}
+
+// -------------------------------------------------------------------
+
+// LoginSuccessfully
+
+// optional string accountName = 1;
+inline bool LoginSuccessfully::has_accountname() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void LoginSuccessfully::set_has_accountname() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void LoginSuccessfully::clear_has_accountname() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void LoginSuccessfully::clear_accountname() {
+  if (accountname_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    accountname_->clear();
+  }
+  clear_has_accountname();
+}
+inline const ::std::string& LoginSuccessfully::accountname() const {
+  // @@protoc_insertion_point(field_get:client_loginserver.LoginSuccessfully.accountName)
+  return *accountname_;
+}
+inline void LoginSuccessfully::set_accountname(const ::std::string& value) {
+  set_has_accountname();
+  if (accountname_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    accountname_ = new ::std::string;
+  }
+  accountname_->assign(value);
+  // @@protoc_insertion_point(field_set:client_loginserver.LoginSuccessfully.accountName)
+}
+inline void LoginSuccessfully::set_accountname(const char* value) {
+  set_has_accountname();
+  if (accountname_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    accountname_ = new ::std::string;
+  }
+  accountname_->assign(value);
+  // @@protoc_insertion_point(field_set_char:client_loginserver.LoginSuccessfully.accountName)
+}
+inline void LoginSuccessfully::set_accountname(const char* value, size_t size) {
+  set_has_accountname();
+  if (accountname_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    accountname_ = new ::std::string;
+  }
+  accountname_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:client_loginserver.LoginSuccessfully.accountName)
+}
+inline ::std::string* LoginSuccessfully::mutable_accountname() {
+  set_has_accountname();
+  if (accountname_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    accountname_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:client_loginserver.LoginSuccessfully.accountName)
+  return accountname_;
+}
+inline ::std::string* LoginSuccessfully::release_accountname() {
+  clear_has_accountname();
+  if (accountname_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = accountname_;
+    accountname_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void LoginSuccessfully::set_allocated_accountname(::std::string* accountname) {
+  if (accountname_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete accountname_;
+  }
+  if (accountname) {
+    set_has_accountname();
+    accountname_ = accountname;
+  } else {
+    clear_has_accountname();
+    accountname_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:client_loginserver.LoginSuccessfully.accountName)
+}
+
+// optional string baseIp = 2;
+inline bool LoginSuccessfully::has_baseip() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void LoginSuccessfully::set_has_baseip() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void LoginSuccessfully::clear_has_baseip() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void LoginSuccessfully::clear_baseip() {
+  if (baseip_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    baseip_->clear();
+  }
+  clear_has_baseip();
+}
+inline const ::std::string& LoginSuccessfully::baseip() const {
+  // @@protoc_insertion_point(field_get:client_loginserver.LoginSuccessfully.baseIp)
+  return *baseip_;
+}
+inline void LoginSuccessfully::set_baseip(const ::std::string& value) {
+  set_has_baseip();
+  if (baseip_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    baseip_ = new ::std::string;
+  }
+  baseip_->assign(value);
+  // @@protoc_insertion_point(field_set:client_loginserver.LoginSuccessfully.baseIp)
+}
+inline void LoginSuccessfully::set_baseip(const char* value) {
+  set_has_baseip();
+  if (baseip_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    baseip_ = new ::std::string;
+  }
+  baseip_->assign(value);
+  // @@protoc_insertion_point(field_set_char:client_loginserver.LoginSuccessfully.baseIp)
+}
+inline void LoginSuccessfully::set_baseip(const char* value, size_t size) {
+  set_has_baseip();
+  if (baseip_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    baseip_ = new ::std::string;
+  }
+  baseip_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:client_loginserver.LoginSuccessfully.baseIp)
+}
+inline ::std::string* LoginSuccessfully::mutable_baseip() {
+  set_has_baseip();
+  if (baseip_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    baseip_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:client_loginserver.LoginSuccessfully.baseIp)
+  return baseip_;
+}
+inline ::std::string* LoginSuccessfully::release_baseip() {
+  clear_has_baseip();
+  if (baseip_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = baseip_;
+    baseip_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void LoginSuccessfully::set_allocated_baseip(::std::string* baseip) {
+  if (baseip_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete baseip_;
+  }
+  if (baseip) {
+    set_has_baseip();
+    baseip_ = baseip;
+  } else {
+    clear_has_baseip();
+    baseip_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:client_loginserver.LoginSuccessfully.baseIp)
+}
+
+// optional uint32 basePort = 3;
+inline bool LoginSuccessfully::has_baseport() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void LoginSuccessfully::set_has_baseport() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void LoginSuccessfully::clear_has_baseport() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void LoginSuccessfully::clear_baseport() {
+  baseport_ = 0u;
+  clear_has_baseport();
+}
+inline ::google::protobuf::uint32 LoginSuccessfully::baseport() const {
+  // @@protoc_insertion_point(field_get:client_loginserver.LoginSuccessfully.basePort)
+  return baseport_;
+}
+inline void LoginSuccessfully::set_baseport(::google::protobuf::uint32 value) {
+  set_has_baseport();
+  baseport_ = value;
+  // @@protoc_insertion_point(field_set:client_loginserver.LoginSuccessfully.basePort)
+}
+
+// optional string extraData = 4;
+inline bool LoginSuccessfully::has_extradata() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void LoginSuccessfully::set_has_extradata() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void LoginSuccessfully::clear_has_extradata() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void LoginSuccessfully::clear_extradata() {
+  if (extradata_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    extradata_->clear();
+  }
+  clear_has_extradata();
+}
+inline const ::std::string& LoginSuccessfully::extradata() const {
+  // @@protoc_insertion_point(field_get:client_loginserver.LoginSuccessfully.extraData)
+  return *extradata_;
+}
+inline void LoginSuccessfully::set_extradata(const ::std::string& value) {
+  set_has_extradata();
+  if (extradata_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    extradata_ = new ::std::string;
+  }
+  extradata_->assign(value);
+  // @@protoc_insertion_point(field_set:client_loginserver.LoginSuccessfully.extraData)
+}
+inline void LoginSuccessfully::set_extradata(const char* value) {
+  set_has_extradata();
+  if (extradata_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    extradata_ = new ::std::string;
+  }
+  extradata_->assign(value);
+  // @@protoc_insertion_point(field_set_char:client_loginserver.LoginSuccessfully.extraData)
+}
+inline void LoginSuccessfully::set_extradata(const char* value, size_t size) {
+  set_has_extradata();
+  if (extradata_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    extradata_ = new ::std::string;
+  }
+  extradata_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:client_loginserver.LoginSuccessfully.extraData)
+}
+inline ::std::string* LoginSuccessfully::mutable_extradata() {
+  set_has_extradata();
+  if (extradata_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    extradata_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:client_loginserver.LoginSuccessfully.extraData)
+  return extradata_;
+}
+inline ::std::string* LoginSuccessfully::release_extradata() {
+  clear_has_extradata();
+  if (extradata_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = extradata_;
+    extradata_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void LoginSuccessfully::set_allocated_extradata(::std::string* extradata) {
+  if (extradata_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete extradata_;
+  }
+  if (extradata) {
+    set_has_extradata();
+    extradata_ = extradata;
+  } else {
+    clear_has_extradata();
+    extradata_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:client_loginserver.LoginSuccessfully.extraData)
 }
 
 

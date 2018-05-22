@@ -7,6 +7,7 @@
 #include "server/serverapp.h"
 #include "server/idallocate.h"
 #include "server/serverconfig.h"
+#include "server/forward_messagebuffer.h"
 #include "common/timer.h"
 #include "network/endpoint.h"
 #include "network/udp_packet_receiver.h"
@@ -56,8 +57,18 @@ public:
 
 	virtual bool canShutdown();
 
+	void sendAllocatedBaseappAddr(Network::Channel* pChannel,
+		std::string& loginName, std::string& accountName, const std::string& addr, uint16 port);
+	//=============================================
+	void onRegisterPendingAccount(Network::Channel* pChannel, MemoryStream& s);
+	void onRegisterPendingAccountEx(Network::Channel* pChannel, MemoryStream& s);
+	void onPendingAccountGetBaseappAddr(Network::Channel* pChannel, MemoryStream& s);
+
 protected:
-	TimerHandle	timer_;
+	TimerHandle													gameTimer_;
+	ForwardAnywhere_MessageBuffer								forward_baseapp_messagebuffer_;
+	COMPONENT_ID												bestBaseappID_;
+	KBEUnordered_map< std::string, COMPONENT_ID >				pending_logins_;
 };
 
 }

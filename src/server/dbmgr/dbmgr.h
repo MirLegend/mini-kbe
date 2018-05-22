@@ -11,6 +11,8 @@
 #include "network/common.h"
 #include "network/address.h"
 
+#include "db_interface/db_threadpool.h"
+
 //#define NDEBUG
 #include <map>	
 // windows include	
@@ -21,7 +23,7 @@
 	
 namespace KBEngine{
 
-
+class InterfacesHandler;
 class DBMgrApp:	public ServerApp, 
 	public Singleton<DBMgrApp>
 {
@@ -60,6 +62,8 @@ public:
 protected:
 	TimerHandle											loopCheckTimerHandle_;
 	TimerHandle											mainProcessTimer_;
+
+	InterfacesHandler*									pInterfacesAccountHandler_;
 };
 
 }

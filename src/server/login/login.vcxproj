@@ -112,6 +112,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\lib\proto\cl.pb.cc" />
     <ClCompile Include="..\..\lib\proto\coms.pb.cc" />
+    <ClCompile Include="..\..\lib\proto\lbm.pb.cc" />
     <ClCompile Include="..\..\lib\proto\ldb.pb.cc" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="login.cpp" />

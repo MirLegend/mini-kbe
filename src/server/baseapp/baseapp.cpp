@@ -10,6 +10,9 @@
 #include "server/components.h"
 #include <sstream>
 
+#include "proto/bmb.pb.h"
+#include "../../server/basemgr/basemgr_interface.h"
+
 namespace KBEngine{
 	
 ServerConfig g_serverConfig;
@@ -21,7 +24,8 @@ BaseApp::BaseApp(Network::EventDispatcher& dispatcher,
 				 COMPONENT_TYPE componentType,
 				 COMPONENT_ID componentID):
 	ServerApp(dispatcher, ninterface, componentType, componentID),
-timer_()
+	loopCheckTimerHandle_(),
+	pendingLoginMgr_()
 {
 }
 
@@ -81,7 +85,7 @@ bool BaseApp::inInitialize()
 //-------------------------------------------------------------------------------------
 bool BaseApp::initializeEnd()
 {
-	timer_ = this->dispatcher().addTimer(1000000 / 50, this,
+	loopCheckTimerHandle_ = this->dispatcher().addTimer(1000000 / 50, this,
 							reinterpret_cast<void *>(TIMEOUT_TICK));
 	return true;
 }
@@ -90,7 +94,7 @@ bool BaseApp::initializeEnd()
 void BaseApp::finalise()
 {
 
-	timer_.cancel();
+	loopCheckTimerHandle_.cancel();
 	ServerApp::finalise();
 }
 
@@ -108,7 +112,59 @@ bool BaseApp::canShutdown()
 	return true;
 }
 
+////-------------------------------------------------------------------------------------
+//void BaseApp::handleCheckStatusTick()
+//{
+//	pendingLoginMgr_.process();
+//}
 
+void BaseApp::registerPendingLogin(Network::Channel* pChannel, MemoryStream& s)
+{
+	if (pChannel->isExternal())
+	{
+		s.done();
+		return;
+	}
+
+	std::string									loginName;
+	std::string									accountName;
+	std::string									password;
+	std::string									datas;
+	ENTITY_ID									entityID;
+	DBID										entityDBID;
+	uint32										flags;
+
+	basemgr_base::registerPendingLogin rplCmd;
+	PARSEBUNDLE(s, rplCmd)
+	loginName = rplCmd.loginname();
+	accountName = rplCmd.accountname();
+	password = rplCmd.password();
+	datas = rplCmd.extradata();
+	entityID = rplCmd.eid();
+	entityDBID = rplCmd.dbid();
+	flags = rplCmd.flags();
+
+	Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
+	(*pBundle).newMessage(BaseappmgrInterface::onPendingAccountGetBaseappAddr);
+
+	basemgr_base::PendingAccountGetBaseappAddr pagbaCmd;
+	pagbaCmd.set_loginname(loginName);
+	pagbaCmd.set_accountname(accountName);
+	pagbaCmd.set_ip(inet_ntoa((struct in_addr&)networkInterface().extaddr().ip));
+	pagbaCmd.set_port(this->networkInterface().extaddr().port);
+
+	ADDTOBUNDLE((*pBundle), pagbaCmd)
+	pChannel->send(pBundle);
+
+	PendingLoginMgr::PLInfos* ptinfos = new PendingLoginMgr::PLInfos;
+	ptinfos->accountName = accountName;
+	ptinfos->password = password;
+	ptinfos->entityID = entityID;
+	ptinfos->entityDBID = entityDBID;
+	ptinfos->flags = flags;
+	ptinfos->datas = datas;
+	pendingLoginMgr_.add(ptinfos);
+}
 
 //-------------------------------------------------------------------------------------
 

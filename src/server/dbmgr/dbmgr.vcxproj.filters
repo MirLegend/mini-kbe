@@ -36,6 +36,12 @@
     <ClCompile Include="..\..\lib\proto\ldb.pb.cc">
       <Filter>pb</Filter>
     </ClCompile>
+    <ClCompile Include="interfaces_handler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbtasks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

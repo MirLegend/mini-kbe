@@ -7,3 +7,16 @@ message AccountLogin {
 	optional string extraData = 3;
 }
 
+//dbmgr -> login 2 - 2 //dbmgr向login返回查询用户合法性
+message AccountLoginQueryResult {
+	optional uint32 retcode = 1;
+	optional string loginName = 2;
+	optional string accountName = 3;
+	optional string password = 4;
+	optional uint64 componentID = 5; // 如果大于0则表示账号还存活在某个baseapp上
+	optional int32 entityID = 6;
+	optional uint64 dbid = 7;
+	optional uint32 flags = 8;
+	optional string getdatas = 9;
+}
+

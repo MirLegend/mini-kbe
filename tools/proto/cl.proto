@@ -27,5 +27,13 @@ message LoginFailed {
 	optional string extraData = 2; //额外数据
 }
 
+//s-c 服务器 -> 客户端 90 - 7 //登陆成功
+message LoginSuccessfully {
+	optional string accountName = 1;
+	optional string baseIp = 2;
+	optional uint32 basePort = 3;
+	optional string extraData = 4; //额外数据
+}
+
 //message Ping{
 //}

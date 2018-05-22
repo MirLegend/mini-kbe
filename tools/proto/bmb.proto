@@ -1,0 +1,21 @@
+package basemgr_base;
+
+//basemgr -> base 4 - 1 //basemgr向base登陆用户
+message registerPendingLogin {
+	optional string loginName = 1;
+	optional string accountName = 2;
+	optional string password = 3;
+	optional uint64 eid = 4;
+	optional uint64 dbid = 5;
+	optional uint32 flags = 6;
+	optional string extraData = 7;
+}
+
+//base -> basemgr 4 - 2 //base向basemgr返回玩家登陆base地址
+message PendingAccountGetBaseappAddr
+{
+	optional string loginName = 1;
+	optional string accountName = 2;
+	optional string ip = 3;
+	optional uint32 port = 4;
+}

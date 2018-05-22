@@ -16,12 +16,12 @@
     <Filter Include="Inline Files">
       <UniqueIdentifier>{5ed54725-f471-4e34-b542-4df3398d05ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="pb">
+      <UniqueIdentifier>{11a0d888-9830-4074-a0c1-1217885b132e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\lib\proto\coms.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="baseapp.cpp">
@@ -29,6 +29,12 @@
     </ClCompile>
     <ClCompile Include="baseapp_interface.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\proto\coms.pb.cc">
+      <Filter>pb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\proto\bmb.pb.cc">
+      <Filter>pb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

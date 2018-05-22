@@ -7,6 +7,7 @@
 #include "server/serverapp.h"
 #include "server/idallocate.h"
 #include "server/serverconfig.h"
+#include "server/pendingLoginmgr.h"
 #include "common/timer.h"
 #include "network/endpoint.h"
 #include "network/udp_packet_receiver.h"
@@ -56,8 +57,13 @@ public:
 
 	virtual bool canShutdown();
 
+
+	void registerPendingLogin(Network::Channel* pChannel, MemoryStream& s);
+
 protected:
-	TimerHandle	timer_;
+	TimerHandle												loopCheckTimerHandle_;
+	// 记录登录到服务器但还未处理完毕的账号
+	PendingLoginMgr											pendingLoginMgr_;
 };
 
 }
