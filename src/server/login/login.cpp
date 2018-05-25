@@ -229,12 +229,12 @@ void LoginApp::Login(Network::Channel* pChannel, MemoryStream& s)
 		return;
 	}
 
-	/*if (initProgress_ < 1.f)
+	if (initProgress_ < 1.f)
 	{
 		datas = fmt::format("initProgress: {}", initProgress_);
 		_loginFailed(pChannel, accountName, SERVER_ERR_SRV_STARTING, datas);
 		return;
-	}*/
+	}
 
 	INFO_MSG(fmt::format("Loginapp::login: new client[{0}], accountName={1}, datas={2}.\n",
 		COMPONENT_CLIENT_NAME[ctype], accountName, datas));
@@ -456,6 +456,22 @@ void LoginApp::onLoginAccountQueryBaseappAddrFromBaseappmgr(Network::Channel* pC
 	pClientChannel->send(pBundle);
 
 	SAFE_RELEASE(infos);
+}
+
+//-------------------------------------------------------------------------------------
+void LoginApp::onBaseappInitProgress(Network::Channel* pChannel, MemoryStream& s)
+{
+	float progress;
+	login_basemgr::BaseappInitProgress bipCmd;
+	PARSEBUNDLE(s, bipCmd);
+	progress = (float)bipCmd.baseappsinitprogress();
+	if (progress > 1.f)
+	{
+		INFO_MSG(fmt::format("Loginapp::onBaseappInitProgress: progress={}.\n",
+			(progress > 1.f ? 1.f : progress)));
+	}
+
+	initProgress_ = progress;
 }
 
 }

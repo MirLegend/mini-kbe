@@ -72,6 +72,7 @@ public:
 
 	void onLoginAccountQueryResultFromDbmgr(Network::Channel* pChannel, MemoryStream& s);
 	void onLoginAccountQueryBaseappAddrFromBaseappmgr(Network::Channel* pChannel, MemoryStream& s);
+	void onBaseappInitProgress(Network::Channel* pChannel, MemoryStream& s);
 protected:
 	TimerHandle	timer_;
 	// 记录登录到服务器但还未处理完毕的账号

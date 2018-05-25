@@ -30,5 +30,7 @@ message LoginAccountQueryBaseappAddrFromBaseappmgr {
 	optional uint32 port = 4;
 }
 
-
-
+//basemgr -> login 3 - 4 //basemgr向login发送basemgr 加载进度 
+message BaseappInitProgress {
+	optional uint32 baseappsInitProgress = 1;
+}

@@ -39,6 +39,9 @@
     <ClCompile Include="..\..\lib\proto\lbm.pb.cc">
       <Filter>pb</Filter>
     </ClCompile>
+    <ClCompile Include="baseapp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -48,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="basemgr_interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseapp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

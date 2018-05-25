@@ -113,6 +113,7 @@
     <ClCompile Include="..\..\lib\proto\bmb.pb.cc" />
     <ClCompile Include="..\..\lib\proto\coms.pb.cc" />
     <ClCompile Include="..\..\lib\proto\lbm.pb.cc" />
+    <ClCompile Include="baseapp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="basemgr.cpp" />
     <ClCompile Include="basemgr_interface.cpp" />
@@ -161,6 +162,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="baseapp.h" />
     <ClInclude Include="basemgr.h" />
     <ClInclude Include="basemgr_interface.h" />
   </ItemGroup>

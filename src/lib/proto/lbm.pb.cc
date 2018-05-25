@@ -29,6 +29,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* LoginAccountQueryBaseappAddrFromBaseappmgr_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   LoginAccountQueryBaseappAddrFromBaseappmgr_reflection_ = NULL;
+const ::google::protobuf::Descriptor* BaseappInitProgress_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  BaseappInitProgress_reflection_ = NULL;
 
 }  // namespace
 
@@ -99,6 +102,21 @@ void protobuf_AssignDesc_lbm_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LoginAccountQueryBaseappAddrFromBaseappmgr));
+  BaseappInitProgress_descriptor_ = file->message_type(3);
+  static const int BaseappInitProgress_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BaseappInitProgress, baseappsinitprogress_),
+  };
+  BaseappInitProgress_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      BaseappInitProgress_descriptor_,
+      BaseappInitProgress::default_instance_,
+      BaseappInitProgress_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BaseappInitProgress, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BaseappInitProgress, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(BaseappInitProgress));
 }
 
 namespace {
@@ -117,6 +135,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     RegisterPendingAccountEx_descriptor_, &RegisterPendingAccountEx::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     LoginAccountQueryBaseappAddrFromBaseappmgr_descriptor_, &LoginAccountQueryBaseappAddrFromBaseappmgr::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    BaseappInitProgress_descriptor_, &BaseappInitProgress::default_instance());
 }
 
 }  // namespace
@@ -128,6 +148,8 @@ void protobuf_ShutdownFile_lbm_2eproto() {
   delete RegisterPendingAccountEx_reflection_;
   delete LoginAccountQueryBaseappAddrFromBaseappmgr::default_instance_;
   delete LoginAccountQueryBaseappAddrFromBaseappmgr_reflection_;
+  delete BaseappInitProgress::default_instance_;
+  delete BaseappInitProgress_reflection_;
 }
 
 void protobuf_AddDesc_lbm_2eproto() {
@@ -148,15 +170,18 @@ void protobuf_AddDesc_lbm_2eproto() {
     "traData\030\010 \001(\t\"n\n*LoginAccountQueryBaseap"
     "pAddrFromBaseappmgr\022\021\n\tloginName\030\001 \001(\t\022\023"
     "\n\013accountName\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\014\n\004port\030"
-    "\004 \001(\r", 445);
+    "\004 \001(\r\"3\n\023BaseappInitProgress\022\034\n\024baseapps"
+    "InitProgress\030\001 \001(\r", 498);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "lbm.proto", &protobuf_RegisterTypes);
   RegisterPendingAccount::default_instance_ = new RegisterPendingAccount();
   RegisterPendingAccountEx::default_instance_ = new RegisterPendingAccountEx();
   LoginAccountQueryBaseappAddrFromBaseappmgr::default_instance_ = new LoginAccountQueryBaseappAddrFromBaseappmgr();
+  BaseappInitProgress::default_instance_ = new BaseappInitProgress();
   RegisterPendingAccount::default_instance_->InitAsDefaultInstance();
   RegisterPendingAccountEx::default_instance_->InitAsDefaultInstance();
   LoginAccountQueryBaseappAddrFromBaseappmgr::default_instance_->InitAsDefaultInstance();
+  BaseappInitProgress::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_lbm_2eproto);
 }
 
@@ -1655,6 +1680,228 @@ void LoginAccountQueryBaseappAddrFromBaseappmgr::Swap(LoginAccountQueryBaseappAd
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = LoginAccountQueryBaseappAddrFromBaseappmgr_descriptor_;
   metadata.reflection = LoginAccountQueryBaseappAddrFromBaseappmgr_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int BaseappInitProgress::kBaseappsInitProgressFieldNumber;
+#endif  // !_MSC_VER
+
+BaseappInitProgress::BaseappInitProgress()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:login_basemgr.BaseappInitProgress)
+}
+
+void BaseappInitProgress::InitAsDefaultInstance() {
+}
+
+BaseappInitProgress::BaseappInitProgress(const BaseappInitProgress& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:login_basemgr.BaseappInitProgress)
+}
+
+void BaseappInitProgress::SharedCtor() {
+  _cached_size_ = 0;
+  baseappsinitprogress_ = 0u;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+BaseappInitProgress::~BaseappInitProgress() {
+  // @@protoc_insertion_point(destructor:login_basemgr.BaseappInitProgress)
+  SharedDtor();
+}
+
+void BaseappInitProgress::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void BaseappInitProgress::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* BaseappInitProgress::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return BaseappInitProgress_descriptor_;
+}
+
+const BaseappInitProgress& BaseappInitProgress::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_lbm_2eproto();
+  return *default_instance_;
+}
+
+BaseappInitProgress* BaseappInitProgress::default_instance_ = NULL;
+
+BaseappInitProgress* BaseappInitProgress::New() const {
+  return new BaseappInitProgress;
+}
+
+void BaseappInitProgress::Clear() {
+  baseappsinitprogress_ = 0u;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool BaseappInitProgress::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:login_basemgr.BaseappInitProgress)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional uint32 baseappsInitProgress = 1;
+      case 1: {
+        if (tag == 8) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &baseappsinitprogress_)));
+          set_has_baseappsinitprogress();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:login_basemgr.BaseappInitProgress)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:login_basemgr.BaseappInitProgress)
+  return false;
+#undef DO_
+}
+
+void BaseappInitProgress::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:login_basemgr.BaseappInitProgress)
+  // optional uint32 baseappsInitProgress = 1;
+  if (has_baseappsinitprogress()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->baseappsinitprogress(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:login_basemgr.BaseappInitProgress)
+}
+
+::google::protobuf::uint8* BaseappInitProgress::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:login_basemgr.BaseappInitProgress)
+  // optional uint32 baseappsInitProgress = 1;
+  if (has_baseappsinitprogress()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->baseappsinitprogress(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:login_basemgr.BaseappInitProgress)
+  return target;
+}
+
+int BaseappInitProgress::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional uint32 baseappsInitProgress = 1;
+    if (has_baseappsinitprogress()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->baseappsinitprogress());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void BaseappInitProgress::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const BaseappInitProgress* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const BaseappInitProgress*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void BaseappInitProgress::MergeFrom(const BaseappInitProgress& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_baseappsinitprogress()) {
+      set_baseappsinitprogress(from.baseappsinitprogress());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void BaseappInitProgress::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void BaseappInitProgress::CopyFrom(const BaseappInitProgress& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool BaseappInitProgress::IsInitialized() const {
+
+  return true;
+}
+
+void BaseappInitProgress::Swap(BaseappInitProgress* other) {
+  if (other != this) {
+    std::swap(baseappsinitprogress_, other->baseappsinitprogress_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata BaseappInitProgress::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = BaseappInitProgress_descriptor_;
+  metadata.reflection = BaseappInitProgress_reflection_;
   return metadata;
 }
 

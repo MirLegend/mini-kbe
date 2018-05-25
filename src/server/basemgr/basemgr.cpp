@@ -29,13 +29,16 @@ BaseMgrApp::BaseMgrApp(Network::EventDispatcher& dispatcher,
 gameTimer_(),
 forward_baseapp_messagebuffer_(ninterface, BASEAPP_TYPE),
 bestBaseappID_(0),
-pending_logins_()
+baseapps_(),
+pending_logins_(),
+baseappsInitProgress_(0.f)
 {
 }
 
 //-------------------------------------------------------------------------------------
 BaseMgrApp::~BaseMgrApp()
 {
+	baseapps_.clear();
 }
 
 //-------------------------------------------------------------------------------------		
@@ -118,10 +121,154 @@ bool BaseMgrApp::canShutdown()
 }
 
 //-------------------------------------------------------------------------------------
-//void BaseMgrApp::updateBestBaseapp()
-//{
-//	bestBaseappID_ = findFreeBaseapp();
-//}
+void BaseMgrApp::onChannelDeregister(Network::Channel * pChannel)
+{
+	// 如果是app死亡了
+	if (pChannel->isInternal())
+	{
+		Components::ComponentInfos* cinfo = Components::getSingleton().findComponent(pChannel);
+		if (cinfo)
+		{
+			cinfo->state = COMPONENT_STATE_STOP;
+			std::map< COMPONENT_ID, Baseapp >::iterator iter = baseapps_.find(cinfo->cid);
+			if (iter != baseapps_.end())
+			{
+				WARNING_MSG(fmt::format("Baseappmgr::onChannelDeregister: erase baseapp[{}], currsize={}\n",
+					cinfo->cid, (baseapps_.size() - 1)));
+
+				baseapps_.erase(iter);
+				updateBestBaseapp();
+			}
+		}
+	}
+
+	ServerApp::onChannelDeregister(pChannel);
+}
+
+//-------------------------------------------------------------------------------------
+void BaseMgrApp::onAddComponent(const Components::ComponentInfos* pInfos)
+{
+	Components::ComponentInfos* cinfo = Components::getSingleton().findComponent(pInfos->cid);
+
+	if (pInfos->componentType == LOGINAPP_TYPE && cinfo->pChannel != NULL)
+	{
+		Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
+		(*pBundle).newMessage(LoginappInterface::onBaseappInitProgress);
+
+		login_basemgr::BaseappInitProgress bipCmd;
+		bipCmd.set_baseappsinitprogress((DWORD)baseappsInitProgress_);
+		ADDTOBUNDLE((*pBundle), bipCmd)
+
+		cinfo->pChannel->send(pBundle);
+	}
+
+	ServerApp::onAddComponent(pInfos);
+}
+
+//-------------------------------------------------------------------------------------
+void BaseMgrApp::updateBaseapp(Network::Channel* pChannel, COMPONENT_ID componentID,
+	ENTITY_ID numBases, ENTITY_ID numProxices, float load)
+{
+	Baseapp& baseapp = baseapps_[componentID];
+
+	baseapp.load(load);
+	baseapp.numProxices(numProxices);
+	baseapp.numBases(numBases);
+
+	updateBestBaseapp();
+}
+
+//-------------------------------------------------------------------------------------
+void BaseMgrApp::onBaseappInitProgress(Network::Channel* pChannel, COMPONENT_ID cid, float progress)
+{
+	if (progress > 1.f)
+	{
+		INFO_MSG(fmt::format("Baseappmgr::onBaseappInitProgress: cid={0}, progress={1}.\n",
+			cid, (progress > 1.f ? 1.f : progress)));
+	}
+
+	KBE_ASSERT(baseapps_.find(cid) != baseapps_.end());
+
+	baseapps_[cid].initProgress(progress);
+
+	size_t completedCount = 0;
+
+	std::map< COMPONENT_ID, Baseapp >::iterator iter1 = baseapps_.begin();
+	for (; iter1 != baseapps_.end(); ++iter1)
+	{
+		if ((*iter1).second.initProgress() > 1.f)
+		{
+			Components::ComponentInfos* cinfos = Components::getSingleton().findComponent(cid);
+			if (cinfos)
+				cinfos->state = COMPONENT_STATE_RUN;
+
+			completedCount++;
+		}
+	}
+
+	if (completedCount >= baseapps_.size())
+	{
+		baseappsInitProgress_ = 100.f;
+		INFO_MSG("Baseappmgr::onBaseappInitProgress: all completed!\n");
+	}
+	else
+	{
+		baseappsInitProgress_ = float(completedCount) / float(baseapps_.size());
+	}
+
+	Components::COMPONENTS& cts = Components::getSingleton().getComponents(LOGINAPP_TYPE);
+
+	Components::COMPONENTS::iterator iter = cts.begin();
+	for (; iter != cts.end(); ++iter)
+	{
+		if ((*iter).pChannel == NULL)
+			continue;
+
+		Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
+
+		(*pBundle).newMessage(LoginappInterface::onBaseappInitProgress);
+		login_basemgr::BaseappInitProgress bipCmd;
+		bipCmd.set_baseappsinitprogress((DWORD)baseappsInitProgress_);
+		ADDTOBUNDLE((*pBundle), bipCmd)
+
+		(*iter).pChannel->send(pBundle);
+	}
+}
+
+
+//-------------------------------------------------------------------------------------
+COMPONENT_ID BaseMgrApp::findFreeBaseapp()
+{
+	std::map< COMPONENT_ID, Baseapp >::iterator iter = baseapps_.begin();
+	COMPONENT_ID cid = 0;
+
+	float minload = 1.f;
+	ENTITY_ID numEntities = 0x7fffffff;
+
+	for (; iter != baseapps_.end(); ++iter)
+	{
+		if (!iter->second.isDestroyed() &&
+			iter->second.initProgress() > 1.f &&
+			(iter->second.numEntities() == 0 ||
+				minload > iter->second.load() ||
+				(minload == iter->second.load() && numEntities > iter->second.numEntities())))
+		{
+			cid = iter->first;
+
+			numEntities = iter->second.numEntities();
+			minload = iter->second.load();
+		}
+	}
+
+	return cid;
+}
+
+
+//-------------------------------------------------------------------------------------
+void BaseMgrApp::updateBestBaseapp()
+{
+	bestBaseappID_ = findFreeBaseapp();
+}
 
 //-------------------------------------------------------------------------------------
 void BaseMgrApp::onRegisterPendingAccount(Network::Channel* pChannel, MemoryStream& s)
