@@ -1,6 +1,7 @@
 #include "dbmgr.h"
 #include "interfaces_handler.h"
 #include "db_interface/db_interface.h"
+#include "sync_app_datas_handler.h"
 #include "dbmgr_interface.h"
 #include "network/common.h"
 #include "network/tcp_packet.h"
@@ -11,7 +12,12 @@
 #include "server/components.h"
 #include <sstream>
 
+#include "proto/coms.pb.h"
 #include "proto/ldb.pb.h"
+#include "proto/basedb.pb.h"
+#include "../../server/baseapp/baseapp_interface.h"
+#include "proto/celldb.pb.h"
+#include "../../server/cellapp/cellapp_interface.h"
 
 namespace KBEngine{
 	
@@ -26,7 +32,9 @@ DBMgrApp::DBMgrApp(Network::EventDispatcher& dispatcher,
 	ServerApp(dispatcher, ninterface, componentType, componentID),
 	loopCheckTimerHandle_(),
 	mainProcessTimer_(),
-	pInterfacesAccountHandler_(NULL)
+	idServer_(1, 1024),
+	pInterfacesAccountHandler_(NULL),
+	pSyncAppDatasHandler_(NULL)
 {
 }
 
@@ -205,6 +213,100 @@ void DBMgrApp::onAccountLogin(Network::Channel* pChannel, MemoryStream& s)
 	}
 
 	pInterfacesAccountHandler_->loginAccount(pChannel, loginName, password, datas);
+}
+
+//服务器组件注册
+void DBMgrApp::OnRegisterServer(Network::Channel* pChannel, /*KBEngine::*/MemoryStream& s)
+{
+	if (pChannel->isExternal())
+		return;
+	MemoryStream tempS(s);
+	ServerApp::OnRegisterServer(pChannel, s);
+	servercommon::RegisterSelf regCmd;
+	PARSEBUNDLE(tempS, regCmd);
+	COMPONENT_TYPE componentType = (COMPONENT_TYPE)regCmd.componenttype();
+	uint32 uid = regCmd.uid();
+	COMPONENT_ID componentID = regCmd.componentid();
+	uint32 extaddr = 0;
+	KBEngine::COMPONENT_TYPE tcomponentType = (KBEngine::COMPONENT_TYPE)componentType;
+
+	if (pSyncAppDatasHandler_ == NULL)
+		pSyncAppDatasHandler_ = new SyncAppDatasHandler(this->networkInterface());
+
+	// 下一步:
+	// 如果是连接到dbmgr则需要等待接收app初始信息
+	// 例如：初始会分配entityID段以及这个app启动的顺序信息（是否第一个baseapp启动）
+	if (tcomponentType == BASEAPP_TYPE ||
+		tcomponentType == CELLAPP_TYPE ||
+		tcomponentType == LOGINAPP_TYPE)
+	{
+	
+	}
+
+	pSyncAppDatasHandler_->pushApp(componentID);
+	ERROR_MSG(fmt::format("dbmgr OnRegisterServer  type:{0}, name:{1}\n ",
+		componentType, COMPONENT_NAME_EX(componentType)));
+	// 如果是baseapp或者cellapp则将自己注册到所有其他baseapp和cellapp
+	if (tcomponentType == BASEAPP_TYPE ||
+		tcomponentType == CELLAPP_TYPE)
+	{
+		KBEngine::COMPONENT_TYPE broadcastCpTypes[2] = { BASEAPP_TYPE, CELLAPP_TYPE };
+		for (int idx = 0; idx < 2; ++idx)
+		{
+			Components::COMPONENTS& cts = Components::getSingleton().getComponents(broadcastCpTypes[idx]);
+			Components::COMPONENTS::iterator fiter = cts.begin();
+			for (; fiter != cts.end(); ++fiter)
+			{
+				if ((*fiter).cid == componentID)
+					continue;
+
+				Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
+				ENTITTAPP_COMMON_NETWORK_MESSAGE(broadcastCpTypes[idx], (*pBundle), onGetEntityAppFromDbmgr);
+
+				if (broadcastCpTypes[idx] == BASEAPP_TYPE)
+				{
+					//BaseappInterface::onGetEntityAppFromDbmgrArgs11::staticAddToBundle((*pBundle),
+					//	uid, username, componentType, componentID, startGlobalOrder, startGroupOrder,
+					//	intaddr, intport, extaddr, extport, g_kbeSrvConfig.getConfig().externalAddress);
+					base_dbmgr::GetEntityAppFromDbmgr geafCmd;
+					geafCmd.set_componentid(regCmd.componentid());
+					geafCmd.set_componenttype(regCmd.componenttype());
+					geafCmd.set_uid(regCmd.uid());
+					geafCmd.set_username(regCmd.username());
+					geafCmd.set_intaddr(regCmd.intaddr());
+					geafCmd.set_intport(regCmd.intport());
+					geafCmd.set_extaddr(regCmd.extaddr());
+					geafCmd.set_extport(regCmd.extport());
+					ERROR_MSG(fmt::format("onGetEntityAppFromDbmgr: baseapp  ip:{0}, "
+						"port:{1} cmd:{2}/{3} \n",
+						regCmd.intaddr(), regCmd.intport(), pBundle->messageID()>>8, (uint8)pBundle->messageID()));
+					ADDTOBUNDLE((*pBundle), geafCmd);
+				}
+				else
+				{
+					cell_dbmgr::GetEntityAppFromDbmgr geafCmd;
+					geafCmd.set_componentid(regCmd.componentid());
+					geafCmd.set_componenttype(regCmd.componenttype());
+					geafCmd.set_uid(regCmd.uid());
+					geafCmd.set_username(regCmd.username());
+					geafCmd.set_intaddr(regCmd.intaddr());
+					geafCmd.set_intport(regCmd.intport());
+					geafCmd.set_extaddr(regCmd.extaddr());
+					geafCmd.set_extport(regCmd.extport());
+					ERROR_MSG(fmt::format("onGetEntityAppFromDbmgr: celleapp  ip:{0}, "
+						"port:{1}  cmd:{2}/{3} \n",
+						regCmd.intaddr(), regCmd.intport(), pBundle->messageID() >> 8, (uint8)pBundle->messageID()));
+					ADDTOBUNDLE((*pBundle), geafCmd);
+					/*CellappInterface::onGetEntityAppFromDbmgrArgs11::staticAddToBundle((*pBundle),
+						uid, username, componentType, componentID, startGlobalOrder, startGroupOrder,
+						intaddr, intport, extaddr, extport, g_kbeSrvConfig.getConfig().externalAddress);*/
+				}
+
+				KBE_ASSERT((*fiter).pChannel != NULL);
+				(*fiter).pChannel->send(pBundle);
+			}
+		}
+	}
 }
 
 }

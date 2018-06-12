@@ -24,6 +24,7 @@
 namespace KBEngine{
 
 class InterfacesHandler;
+class SyncAppDatasHandler;
 class DBMgrApp:	public ServerApp, 
 	public Singleton<DBMgrApp>
 {
@@ -40,6 +41,9 @@ public:
 		COMPONENT_ID componentID);
 
 	~DBMgrApp();
+
+	/** 获取ID服务器指针 */
+	IDServer<ENTITY_ID>& idServer(void) { return idServer_; }
 	
 	bool run();
 	
@@ -59,11 +63,22 @@ public:
 	void onAccountLogin(Network::Channel* pChannel, MemoryStream& s);
 	bool initInterfacesHandler();
 	bool initDB();
+
+	SyncAppDatasHandler* pSyncAppDatasHandler() const { return pSyncAppDatasHandler_; }
+	void pSyncAppDatasHandler(SyncAppDatasHandler* p) { pSyncAppDatasHandler_ = p; }
+
+	virtual void OnRegisterServer(Network::Channel* pChannel, MemoryStream& s);
 protected:
 	TimerHandle											loopCheckTimerHandle_;
 	TimerHandle											mainProcessTimer_;
 
+	// entityID分配服务端
+	IDServer<ENTITY_ID>									idServer_;
+
 	InterfacesHandler*									pInterfacesAccountHandler_;
+
+	//分配ids的
+	SyncAppDatasHandler*								pSyncAppDatasHandler_;
 };
 
 }

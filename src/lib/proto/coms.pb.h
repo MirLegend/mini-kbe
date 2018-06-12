@@ -139,6 +139,20 @@ class RegisterSelf : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 extport() const;
   inline void set_extport(::google::protobuf::int32 value);
 
+  // optional int32 intaddr = 7;
+  inline bool has_intaddr() const;
+  inline void clear_intaddr();
+  static const int kIntaddrFieldNumber = 7;
+  inline ::google::protobuf::int32 intaddr() const;
+  inline void set_intaddr(::google::protobuf::int32 value);
+
+  // optional int32 intport = 8;
+  inline bool has_intport() const;
+  inline void clear_intport();
+  static const int kIntportFieldNumber = 8;
+  inline ::google::protobuf::int32 intport() const;
+  inline void set_intport(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:servercommon.RegisterSelf)
  private:
   inline void set_has_componenttype();
@@ -153,6 +167,10 @@ class RegisterSelf : public ::google::protobuf::Message {
   inline void clear_has_extaddr();
   inline void set_has_extport();
   inline void clear_has_extport();
+  inline void set_has_intaddr();
+  inline void clear_has_intaddr();
+  inline void set_has_intport();
+  inline void clear_has_intport();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -164,6 +182,8 @@ class RegisterSelf : public ::google::protobuf::Message {
   ::google::protobuf::int64 componentid_;
   ::google::protobuf::int32 extaddr_;
   ::google::protobuf::int32 extport_;
+  ::google::protobuf::int32 intaddr_;
+  ::google::protobuf::int32 intport_;
   friend void  protobuf_AddDesc_coms_2eproto();
   friend void protobuf_AssignDesc_coms_2eproto();
   friend void protobuf_ShutdownFile_coms_2eproto();
@@ -605,6 +625,54 @@ inline void RegisterSelf::set_extport(::google::protobuf::int32 value) {
   set_has_extport();
   extport_ = value;
   // @@protoc_insertion_point(field_set:servercommon.RegisterSelf.extport)
+}
+
+// optional int32 intaddr = 7;
+inline bool RegisterSelf::has_intaddr() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void RegisterSelf::set_has_intaddr() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void RegisterSelf::clear_has_intaddr() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void RegisterSelf::clear_intaddr() {
+  intaddr_ = 0;
+  clear_has_intaddr();
+}
+inline ::google::protobuf::int32 RegisterSelf::intaddr() const {
+  // @@protoc_insertion_point(field_get:servercommon.RegisterSelf.intaddr)
+  return intaddr_;
+}
+inline void RegisterSelf::set_intaddr(::google::protobuf::int32 value) {
+  set_has_intaddr();
+  intaddr_ = value;
+  // @@protoc_insertion_point(field_set:servercommon.RegisterSelf.intaddr)
+}
+
+// optional int32 intport = 8;
+inline bool RegisterSelf::has_intport() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void RegisterSelf::set_has_intport() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void RegisterSelf::clear_has_intport() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void RegisterSelf::clear_intport() {
+  intport_ = 0;
+  clear_has_intport();
+}
+inline ::google::protobuf::int32 RegisterSelf::intport() const {
+  // @@protoc_insertion_point(field_get:servercommon.RegisterSelf.intport)
+  return intport_;
+}
+inline void RegisterSelf::set_intport(::google::protobuf::int32 value) {
+  set_has_intport();
+  intport_ = value;
+  // @@protoc_insertion_point(field_set:servercommon.RegisterSelf.intport)
 }
 
 // -------------------------------------------------------------------

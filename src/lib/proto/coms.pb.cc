@@ -40,13 +40,15 @@ void protobuf_AssignDesc_coms_2eproto() {
       "coms.proto");
   GOOGLE_CHECK(file != NULL);
   RegisterSelf_descriptor_ = file->message_type(0);
-  static const int RegisterSelf_offsets_[6] = {
+  static const int RegisterSelf_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterSelf, componenttype_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterSelf, uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterSelf, username_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterSelf, componentid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterSelf, extaddr_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterSelf, extport_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterSelf, intaddr_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterSelf, intport_),
   };
   RegisterSelf_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -134,15 +136,16 @@ void protobuf_AddDesc_coms_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\ncoms.proto\022\014servercommon\"{\n\014RegisterSe"
-    "lf\022\025\n\rcomponentType\030\001 \001(\005\022\013\n\003uid\030\002 \001(\005\022\020"
-    "\n\010username\030\003 \001(\t\022\023\n\013componentID\030\004 \001(\003\022\017\n"
-    "\007extaddr\030\005 \001(\005\022\017\n\007extport\030\006 \001(\005\"\215\001\n\016CBRe"
-    "gisterSelf\022\016\n\006result\030\001 \002(\005\022\025\n\rcomponentT"
-    "ype\030\002 \001(\005\022\013\n\003uid\030\003 \001(\005\022\020\n\010username\030\004 \001(\t"
-    "\022\023\n\013componentID\030\005 \001(\003\022\017\n\007intaddr\030\006 \001(\005\022\017"
-    "\n\007intport\030\007 \001(\005\"8\n\nActiveTick\022\025\n\rcompone"
-    "ntType\030\001 \001(\005\022\023\n\013componentID\030\002 \001(\003", 353);
+    "\n\ncoms.proto\022\014servercommon\"\235\001\n\014RegisterS"
+    "elf\022\025\n\rcomponentType\030\001 \001(\005\022\013\n\003uid\030\002 \001(\005\022"
+    "\020\n\010username\030\003 \001(\t\022\023\n\013componentID\030\004 \001(\003\022\017"
+    "\n\007extaddr\030\005 \001(\005\022\017\n\007extport\030\006 \001(\005\022\017\n\007inta"
+    "ddr\030\007 \001(\005\022\017\n\007intport\030\010 \001(\005\"\215\001\n\016CBRegiste"
+    "rSelf\022\016\n\006result\030\001 \002(\005\022\025\n\rcomponentType\030\002"
+    " \001(\005\022\013\n\003uid\030\003 \001(\005\022\020\n\010username\030\004 \001(\t\022\023\n\013c"
+    "omponentID\030\005 \001(\003\022\017\n\007intaddr\030\006 \001(\005\022\017\n\007int"
+    "port\030\007 \001(\005\"8\n\nActiveTick\022\025\n\rcomponentTyp"
+    "e\030\001 \001(\005\022\023\n\013componentID\030\002 \001(\003", 388);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "coms.proto", &protobuf_RegisterTypes);
   RegisterSelf::default_instance_ = new RegisterSelf();
@@ -170,6 +173,8 @@ const int RegisterSelf::kUsernameFieldNumber;
 const int RegisterSelf::kComponentIDFieldNumber;
 const int RegisterSelf::kExtaddrFieldNumber;
 const int RegisterSelf::kExtportFieldNumber;
+const int RegisterSelf::kIntaddrFieldNumber;
+const int RegisterSelf::kIntportFieldNumber;
 #endif  // !_MSC_VER
 
 RegisterSelf::RegisterSelf()
@@ -197,6 +202,8 @@ void RegisterSelf::SharedCtor() {
   componentid_ = GOOGLE_LONGLONG(0);
   extaddr_ = 0;
   extport_ = 0;
+  intaddr_ = 0;
+  intport_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -245,9 +252,9 @@ void RegisterSelf::Clear() {
     ::memset(&first, 0, n);                                \
   } while (0)
 
-  if (_has_bits_[0 / 32] & 63) {
+  if (_has_bits_[0 / 32] & 255) {
     ZR_(componenttype_, uid_);
-    ZR_(componentid_, extport_);
+    ZR_(componentid_, intport_);
     if (has_username()) {
       if (username_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
         username_->clear();
@@ -359,6 +366,36 @@ bool RegisterSelf::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(56)) goto parse_intaddr;
+        break;
+      }
+
+      // optional int32 intaddr = 7;
+      case 7: {
+        if (tag == 56) {
+         parse_intaddr:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &intaddr_)));
+          set_has_intaddr();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(64)) goto parse_intport;
+        break;
+      }
+
+      // optional int32 intport = 8;
+      case 8: {
+        if (tag == 64) {
+         parse_intport:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &intport_)));
+          set_has_intport();
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -423,6 +460,16 @@ void RegisterSelf::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->extport(), output);
   }
 
+  // optional int32 intaddr = 7;
+  if (has_intaddr()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->intaddr(), output);
+  }
+
+  // optional int32 intport = 8;
+  if (has_intport()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->intport(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -467,6 +514,16 @@ void RegisterSelf::SerializeWithCachedSizes(
   // optional int32 extport = 6;
   if (has_extport()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->extport(), target);
+  }
+
+  // optional int32 intaddr = 7;
+  if (has_intaddr()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->intaddr(), target);
+  }
+
+  // optional int32 intport = 8;
+  if (has_intport()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->intport(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -523,6 +580,20 @@ int RegisterSelf::ByteSize() const {
           this->extport());
     }
 
+    // optional int32 intaddr = 7;
+    if (has_intaddr()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->intaddr());
+    }
+
+    // optional int32 intport = 8;
+    if (has_intport()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->intport());
+    }
+
   }
   if (!unknown_fields().empty()) {
     total_size +=
@@ -568,6 +639,12 @@ void RegisterSelf::MergeFrom(const RegisterSelf& from) {
     if (from.has_extport()) {
       set_extport(from.extport());
     }
+    if (from.has_intaddr()) {
+      set_intaddr(from.intaddr());
+    }
+    if (from.has_intport()) {
+      set_intport(from.intport());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -597,6 +674,8 @@ void RegisterSelf::Swap(RegisterSelf* other) {
     std::swap(componentid_, other->componentid_);
     std::swap(extaddr_, other->extaddr_);
     std::swap(extport_, other->extport_);
+    std::swap(intaddr_, other->intaddr_);
+    std::swap(intport_, other->intport_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

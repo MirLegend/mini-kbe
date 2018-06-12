@@ -464,7 +464,7 @@ void LoginApp::onBaseappInitProgress(Network::Channel* pChannel, MemoryStream& s
 	float progress;
 	login_basemgr::BaseappInitProgress bipCmd;
 	PARSEBUNDLE(s, bipCmd);
-	progress = (float)bipCmd.baseappsinitprogress();
+	progress = (float)bipCmd.baseappsinitprogress()/100.0f;
 	if (progress > 1.f)
 	{
 		INFO_MSG(fmt::format("Loginapp::onBaseappInitProgress: progress={}.\n",

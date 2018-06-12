@@ -587,10 +587,8 @@ bool Components::findComponents()
 }
 
 //-------------------------------------------------------------------------------------		
-int Components::connectComponent(COMPONENT_TYPE rcomponentType, int32 ruid, COMPONENT_ID rcomponentID)
+int Components::connectComponent(COMPONENT_TYPE rcomponentType, COMPONENT_ID rcomponentID, uint32 intaddr, uint16 intport)
 {
-	ENGINE_COMPONENT_INFO& serverConfig = g_kbeSrvConfig.getComponent(rcomponentType);
-
 	Network::EndPoint * pEndpoint = Network::EndPoint::ObjPool().createObject();
 	pEndpoint->socket(SOCK_STREAM);
 	if (!pEndpoint->good())
@@ -599,7 +597,7 @@ int Components::connectComponent(COMPONENT_TYPE rcomponentType, int32 ruid, COMP
 		Network::EndPoint::ObjPool().reclaimObject(pEndpoint);
 		return -1;
 	}
-	Network::Address addr(serverConfig.ip, serverConfig.port);
+	Network::Address addr(intaddr, intport);
 	pEndpoint->addr(addr);
 	int ret = pEndpoint->connect(addr.port, addr.ip);
 
@@ -634,8 +632,8 @@ int Components::connectComponent(COMPONENT_TYPE rcomponentType, int32 ruid, COMP
 		{
 			Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
 			{
-				printf("[NetProtoStreamHandlerHandler]: register, compentType:{%d}, name:%s, \
-				compentId:%llu \n", rcomponentType, COMPONENT_NAME_EX(rcomponentType), rcomponentID);
+				ERROR_MSG(fmt::format("[NetProtoStreamHandlerHandler]: register, compentType:{0}, name:{1}, \
+				compentId:{2} \n", rcomponentType, COMPONENT_NAME_EX(rcomponentType), rcomponentID));
 
 				COMMON_NETWORK_MESSAGE(rcomponentType, (*pBundle), OnRegisterServer);
 
@@ -644,6 +642,10 @@ int Components::connectComponent(COMPONENT_TYPE rcomponentType, int32 ruid, COMP
 				regCmd.set_componenttype(this->componentType());
 				regCmd.set_uid(getUserUID());
 				regCmd.set_username(COMPONENT_NAME_EX(this->componentType()));
+				regCmd.set_intaddr(_pNetworkInterface->intaddr().ip);
+				regCmd.set_intport(_pNetworkInterface->intaddr().port);
+				regCmd.set_extaddr(_pNetworkInterface->extaddr().ip);
+				regCmd.set_extport(_pNetworkInterface->extaddr().port);
 
 				ADDTOBUNDLE((*pBundle), regCmd)
 
@@ -664,6 +666,14 @@ int Components::connectComponent(COMPONENT_TYPE rcomponentType, int32 ruid, COMP
 	}
 
 	return ret;
+}
+
+//-------------------------------------------------------------------------------------		
+int Components::connectComponent(COMPONENT_TYPE rcomponentType, int32 ruid, COMPONENT_ID rcomponentID)
+{
+	ENGINE_COMPONENT_INFO& serverConfig = g_kbeSrvConfig.getComponent(rcomponentType);
+	Network::Address addr(serverConfig.ip, serverConfig.port);
+	return connectComponent(rcomponentType, rcomponentID, addr.ip, addr.port);
 }
 
 
@@ -708,7 +718,7 @@ void Components::OnRegisterServer(Network::Channel* pChannel, MemoryStream& s)
 		if (cinfos == NULL)
 		{
 			Components::getSingleton().addComponent(uid, regCmd.username().c_str(),
-				(KBEngine::COMPONENT_TYPE)componentType, componentID, pChannel->addr().ip, pChannel->addr().port,
+				(KBEngine::COMPONENT_TYPE)componentType, componentID, regCmd.intaddr(), regCmd.intport(),
 				regCmd.has_extaddr() ? regCmd.extaddr() : 0, regCmd.has_extport() ? regCmd.extport() : 0, pChannel);
 			cbregCmd.set_result(0);
 			cbregCmd.set_uid(getUserUID());

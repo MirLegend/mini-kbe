@@ -10,6 +10,9 @@
 #include "server/components.h"
 #include <sstream>
 
+#include "../../server/basemgr/basemgr_interface.h"
+#include "proto/celldb.pb.h"
+
 namespace KBEngine{
 	
 ServerConfig g_serverConfig;
@@ -106,6 +109,63 @@ bool CellApp::canShutdown()
 	}
 
 	return true;
+}
+
+void CellApp::onDbmgrInitCompleted(Network::Channel* pChannel, MemoryStream& s)
+{
+	if (pChannel->isExternal())
+		return;
+	ERROR_MSG(fmt::format("CellApp::onDbmgrInitCompleted\n"));
+	s.done();
+	//cell_dbmgr::DbmgrInitCompleted dicCmd;
+	//PARSEBUNDLE(s, dicCmd);
+
+	//idClient_.onAddRange(dicCmd.startentityid(), dicCmd.endentityid());
+	//g_kbetime = dicCmd.g_kbetime();
+
+	////PyObject* pyResult = PyObject_CallMethod(getEntryScript().get(),
+	////	const_cast<char*>("onInit"),
+	////	const_cast<char*>("i"),
+	////	0);
+
+	//pInitProgressHandler_ = new InitProgressHandler(this->networkInterface());
+}
+
+void CellApp::onGetEntityAppFromDbmgr(Network::Channel* pChannel, MemoryStream& s)
+{
+	if (pChannel->isExternal())
+		return;
+
+	cell_dbmgr::GetEntityAppFromDbmgr geafCmd;
+	PARSEBUNDLE(s, geafCmd);
+
+	Components::ComponentInfos* cinfos = Components::getSingleton().findComponent((
+		KBEngine::COMPONENT_TYPE)geafCmd.componenttype(), geafCmd.componentid());
+
+	ERROR_MSG(fmt::format("CellApp::onGetEntityAppFromDbmgr: app(uid:{0}, username:{1}, componentType:{2}, "
+		"componentID:{3}\n",
+		geafCmd.uid(),
+		geafCmd.username(),
+		COMPONENT_NAME_EX((COMPONENT_TYPE)geafCmd.componenttype()),
+		geafCmd.componentid()
+		));
+	if (cinfos)
+	{
+		if (cinfos->pIntAddr->ip != geafCmd.intaddr() || cinfos->pIntAddr->port != geafCmd.intport())
+		{
+			ERROR_MSG(fmt::format("CellApp::onGetEntityAppFromDbmgr: Illegal app(uid:{0}, username:{1}, componentType:{2}, "
+				"componentID:{3}\n",
+				geafCmd.uid(),
+				geafCmd.username(),
+				COMPONENT_NAME_EX((COMPONENT_TYPE)geafCmd.componenttype()),
+				geafCmd.componentid()
+				));
+		}
+	}
+	Components::getSingleton().connectComponent((COMPONENT_TYPE)geafCmd.componenttype(),
+		geafCmd.componentid(), geafCmd.intaddr(), geafCmd.intport());
+
+	KBE_ASSERT(Components::getSingleton().getDbmgr() != NULL);
 }
 
 //-------------------------------------------------------------------------------------

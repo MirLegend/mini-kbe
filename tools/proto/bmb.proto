@@ -19,3 +19,10 @@ message PendingAccountGetBaseappAddr
 	optional string ip = 3;
 	optional uint32 port = 4;
 }
+
+//base -> basemgr 4 - 3 //base向basemgr更新自身初始化进度
+message BaseappInitProgress
+{
+	optional uint32 componentId = 1;
+	optional uint32 progress = 2;
+}

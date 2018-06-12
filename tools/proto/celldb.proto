@@ -1,0 +1,20 @@
+package cell_dbmgr;
+
+//dbmgr -> cell 7 - 1 //dbmgr向cell返回ids
+message DbmgrInitCompleted {
+	optional uint32 g_kbetime = 1;
+	optional int32 startEntityID = 2;
+	optional int32 endEntityID = 3;
+}
+
+//dbmgr -> cell 7 - 2 //dbmgr向所有cell返回刚注册的app
+message GetEntityAppFromDbmgr {
+	optional int32 componentType = 1;
+	optional int32 uid = 2;
+	optional string username = 3;
+	optional int64 componentID = 4;
+	optional int32 extaddr = 5;  //外部地址
+	optional int32 extport = 6; //外部对端口
+	optional int32 intaddr = 7;  //外部地址
+	optional int32 intport = 8; //外部对端口
+}

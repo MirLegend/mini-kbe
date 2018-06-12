@@ -110,8 +110,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\lib\proto\basedb.pb.cc" />
     <ClCompile Include="..\..\lib\proto\bmb.pb.cc" />
     <ClCompile Include="..\..\lib\proto\coms.pb.cc" />
+    <ClCompile Include="initprogress_handler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="baseapp.cpp" />
     <ClCompile Include="baseapp_interface.cpp" />
@@ -160,8 +162,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\lib\proto\basedb.pb.h" />
     <ClInclude Include="baseapp.h" />
     <ClInclude Include="baseapp_interface.h" />
+    <ClInclude Include="initprogress_handler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

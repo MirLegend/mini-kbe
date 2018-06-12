@@ -1,6 +1,7 @@
 
 #include "baseapp.h"
 #include "baseapp_interface.h"
+#include "initprogress_handler.h"
 #include "network/common.h"
 #include "network/tcp_packet.h"
 #include "network/udp_packet.h"
@@ -12,6 +13,7 @@
 
 #include "proto/bmb.pb.h"
 #include "../../server/basemgr/basemgr_interface.h"
+#include "proto/basedb.pb.h"
 
 namespace KBEngine{
 	
@@ -25,13 +27,18 @@ BaseApp::BaseApp(Network::EventDispatcher& dispatcher,
 				 COMPONENT_ID componentID):
 	ServerApp(dispatcher, ninterface, componentType, componentID),
 	loopCheckTimerHandle_(),
-	pendingLoginMgr_()
+	pendingLoginMgr_(),
+	idClient_(),
+	pInitProgressHandler_(NULL)
 {
+	idClient_.pApp(this);
 }
 
 //-------------------------------------------------------------------------------------
 BaseApp::~BaseApp()
 {
+	// 不需要主动释放
+	pInitProgressHandler_ = NULL;
 }
 
 //-------------------------------------------------------------------------------------		
@@ -166,6 +173,70 @@ void BaseApp::registerPendingLogin(Network::Channel* pChannel, MemoryStream& s)
 	pendingLoginMgr_.add(ptinfos);
 }
 
+
+void BaseApp::onDbmgrInitCompleted(Network::Channel* pChannel, MemoryStream& s)
+{
+	if (pChannel->isExternal())
+		return;
+	ERROR_MSG(fmt::format("CellApp::onDbmgrInitCompleted\n"));
+	base_dbmgr::DbmgrInitCompleted dicCmd;
+	PARSEBUNDLE(s, dicCmd);
+
+	idClient_.onAddRange(dicCmd.startentityid(), dicCmd.endentityid());
+	g_kbetime = dicCmd.g_kbetime();
+
+	//PyObject* pyResult = PyObject_CallMethod(getEntryScript().get(),
+	//	const_cast<char*>("onInit"),
+	//	const_cast<char*>("i"),
+	//	0);
+
+	pInitProgressHandler_ = new InitProgressHandler(this->networkInterface());
+}
+
+void BaseApp::onGetEntityAppFromDbmgr(Network::Channel* pChannel, MemoryStream& s)
+{
+	if (pChannel->isExternal())
+		return;
+
+	base_dbmgr::GetEntityAppFromDbmgr geafCmd;
+	PARSEBUNDLE(s, geafCmd);
+
+	Components::ComponentInfos* cinfos = Components::getSingleton().findComponent((
+		KBEngine::COMPONENT_TYPE)geafCmd.componenttype(), geafCmd.componentid());
+
+	ERROR_MSG(fmt::format("BaseApp::onGetEntityAppFromDbmgr: app(uid:{0}, username:{1}, componentType:{2}, "
+		"componentID:{3}\n",
+		geafCmd.uid(),
+		geafCmd.username(),
+		COMPONENT_NAME_EX((COMPONENT_TYPE)geafCmd.componenttype()),
+		geafCmd.componentid()
+		));
+	if (cinfos)
+	{
+		if (cinfos->pIntAddr->ip != geafCmd.intaddr() || cinfos->pIntAddr->port != geafCmd.intport())
+		{
+			ERROR_MSG(fmt::format("Baseapp::onGetEntityAppFromDbmgr: Illegal app(uid:{0}, username:{1}, componentType:{2}, "
+				"componentID:{3}\n",
+				geafCmd.uid(),
+				geafCmd.username(),
+				COMPONENT_NAME_EX((COMPONENT_TYPE)geafCmd.componenttype()),
+				geafCmd.componentid()
+				 ));
+
+			/*Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
+			(*pBundle).newMessage(DbmgrInterface::reqKillServer);
+			(*pBundle) << g_componentID << g_componentType << KBEngine::getUsername() << KBEngine::getUserUID() << "Duplicate app-id.";
+			pChannel->send(pBundle);*/
+		}
+	}
+
+	//ServerApp::onRegisterNewApp(pChannel, uid, username, componentType, componentID, globalorderID, grouporderID,
+	//	intaddr, intport, extaddr, extport, extaddrEx);
+	Components::getSingleton().connectComponent((COMPONENT_TYPE)geafCmd.componenttype(),
+		geafCmd.componentid(), geafCmd.intaddr(), geafCmd.intport());
+
+	KBE_ASSERT(Components::getSingleton().getDbmgr() != NULL);
+}
 //-------------------------------------------------------------------------------------
 
 }

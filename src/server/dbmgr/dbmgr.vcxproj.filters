@@ -42,6 +42,15 @@
     <ClCompile Include="dbtasks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sync_app_datas_handler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\proto\basedb.pb.cc">
+      <Filter>pb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\proto\celldb.pb.cc">
+      <Filter>pb</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -61,6 +70,15 @@
     </ClInclude>
     <ClInclude Include="dbtasks.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sync_app_datas_handler.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\proto\basedb.pb.h">
+      <Filter>pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\proto\celldb.pb.h">
+      <Filter>pb</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

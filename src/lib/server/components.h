@@ -141,6 +141,7 @@ public:
 	Components::ComponentInfos* findComponent(Network::Channel * pChannel);
 	Components::ComponentInfos* findComponent(Network::Address* pAddress);
 
+	int connectComponent(COMPONENT_TYPE rcomponentType, COMPONENT_ID rcomponentID, uint32 intaddr, uint16 intport);
 	int connectComponent(COMPONENT_TYPE componentType, int32 uid, COMPONENT_ID componentID);
 	
 	/** 

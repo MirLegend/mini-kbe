@@ -179,8 +179,12 @@ void BaseMgrApp::updateBaseapp(Network::Channel* pChannel, COMPONENT_ID componen
 }
 
 //-------------------------------------------------------------------------------------
-void BaseMgrApp::onBaseappInitProgress(Network::Channel* pChannel, COMPONENT_ID cid, float progress)
+void BaseMgrApp::onBaseappInitProgress(Network::Channel* pChannel, MemoryStream& s)
 {
+	basemgr_base::BaseappInitProgress bipCmd;
+	PARSEBUNDLE(s, bipCmd);
+	COMPONENT_ID cid = bipCmd.componentid();
+	float progress = bipCmd.progress()/100.0f;
 	if (progress > 1.f)
 	{
 		INFO_MSG(fmt::format("Baseappmgr::onBaseappInitProgress: cid={0}, progress={1}.\n",
@@ -228,7 +232,7 @@ void BaseMgrApp::onBaseappInitProgress(Network::Channel* pChannel, COMPONENT_ID 
 
 		(*pBundle).newMessage(LoginappInterface::onBaseappInitProgress);
 		login_basemgr::BaseappInitProgress bipCmd;
-		bipCmd.set_baseappsinitprogress((DWORD)baseappsInitProgress_);
+		bipCmd.set_baseappsinitprogress((DWORD)baseappsInitProgress_*100);
 		ADDTOBUNDLE((*pBundle), bipCmd)
 
 		(*iter).pChannel->send(pBundle);

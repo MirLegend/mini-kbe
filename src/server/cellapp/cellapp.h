@@ -56,6 +56,10 @@ public:
 
 	virtual bool canShutdown();
 
+	void onDbmgrInitCompleted(Network::Channel* pChannel, MemoryStream& s
+		/*GAME_TIME gametime, ENTITY_ID startID, ENTITY_ID endID*/);
+	void onGetEntityAppFromDbmgr(Network::Channel* pChannel, MemoryStream& s);
+
 protected:
 	TimerHandle	timer_;
 };

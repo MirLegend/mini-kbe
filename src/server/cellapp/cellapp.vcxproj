@@ -110,6 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\lib\proto\celldb.pb.cc" />
     <ClCompile Include="..\..\lib\proto\coms.pb.cc" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="cellapp.cpp" />
@@ -159,6 +160,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\lib\proto\celldb.pb.h" />
     <ClInclude Include="cellapp.h" />
     <ClInclude Include="cellapp_interface.h" />
   </ItemGroup>

@@ -8,6 +8,8 @@ message RegisterSelf {
   optional int64 componentID = 4;
   optional int32 extaddr = 5;  //外部地址
   optional int32 extport = 6; //外部对端口
+  optional int32 intaddr = 7;  //外部地址
+  optional int32 intport = 8; //外部对端口
 }
 
 //s-s 服务器组件间注册 1 - 2 //注册返回

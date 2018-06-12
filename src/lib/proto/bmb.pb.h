@@ -35,6 +35,7 @@ void protobuf_ShutdownFile_bmb_2eproto();
 
 class registerPendingLogin;
 class PendingAccountGetBaseappAddr;
+class BaseappInitProgress;
 
 // ===================================================================
 
@@ -318,6 +319,95 @@ class PendingAccountGetBaseappAddr : public ::google::protobuf::Message {
 
   void InitAsDefaultInstance();
   static PendingAccountGetBaseappAddr* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class BaseappInitProgress : public ::google::protobuf::Message {
+ public:
+  BaseappInitProgress();
+  virtual ~BaseappInitProgress();
+
+  BaseappInitProgress(const BaseappInitProgress& from);
+
+  inline BaseappInitProgress& operator=(const BaseappInitProgress& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const BaseappInitProgress& default_instance();
+
+  void Swap(BaseappInitProgress* other);
+
+  // implements Message ----------------------------------------------
+
+  BaseappInitProgress* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const BaseappInitProgress& from);
+  void MergeFrom(const BaseappInitProgress& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional uint32 componentId = 1;
+  inline bool has_componentid() const;
+  inline void clear_componentid();
+  static const int kComponentIdFieldNumber = 1;
+  inline ::google::protobuf::uint32 componentid() const;
+  inline void set_componentid(::google::protobuf::uint32 value);
+
+  // optional uint32 progress = 2;
+  inline bool has_progress() const;
+  inline void clear_progress();
+  static const int kProgressFieldNumber = 2;
+  inline ::google::protobuf::uint32 progress() const;
+  inline void set_progress(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:basemgr_base.BaseappInitProgress)
+ private:
+  inline void set_has_componentid();
+  inline void clear_has_componentid();
+  inline void set_has_progress();
+  inline void clear_has_progress();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 componentid_;
+  ::google::protobuf::uint32 progress_;
+  friend void  protobuf_AddDesc_bmb_2eproto();
+  friend void protobuf_AssignDesc_bmb_2eproto();
+  friend void protobuf_ShutdownFile_bmb_2eproto();
+
+  void InitAsDefaultInstance();
+  static BaseappInitProgress* default_instance_;
 };
 // ===================================================================
 
@@ -956,6 +1046,58 @@ inline void PendingAccountGetBaseappAddr::set_port(::google::protobuf::uint32 va
   set_has_port();
   port_ = value;
   // @@protoc_insertion_point(field_set:basemgr_base.PendingAccountGetBaseappAddr.port)
+}
+
+// -------------------------------------------------------------------
+
+// BaseappInitProgress
+
+// optional uint32 componentId = 1;
+inline bool BaseappInitProgress::has_componentid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void BaseappInitProgress::set_has_componentid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void BaseappInitProgress::clear_has_componentid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void BaseappInitProgress::clear_componentid() {
+  componentid_ = 0u;
+  clear_has_componentid();
+}
+inline ::google::protobuf::uint32 BaseappInitProgress::componentid() const {
+  // @@protoc_insertion_point(field_get:basemgr_base.BaseappInitProgress.componentId)
+  return componentid_;
+}
+inline void BaseappInitProgress::set_componentid(::google::protobuf::uint32 value) {
+  set_has_componentid();
+  componentid_ = value;
+  // @@protoc_insertion_point(field_set:basemgr_base.BaseappInitProgress.componentId)
+}
+
+// optional uint32 progress = 2;
+inline bool BaseappInitProgress::has_progress() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void BaseappInitProgress::set_has_progress() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void BaseappInitProgress::clear_has_progress() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void BaseappInitProgress::clear_progress() {
+  progress_ = 0u;
+  clear_has_progress();
+}
+inline ::google::protobuf::uint32 BaseappInitProgress::progress() const {
+  // @@protoc_insertion_point(field_get:basemgr_base.BaseappInitProgress.progress)
+  return progress_;
+}
+inline void BaseappInitProgress::set_progress(::google::protobuf::uint32 value) {
+  set_has_progress();
+  progress_ = value;
+  // @@protoc_insertion_point(field_set:basemgr_base.BaseappInitProgress.progress)
 }
 
 
