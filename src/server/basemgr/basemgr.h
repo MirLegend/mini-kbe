@@ -59,6 +59,8 @@ public:
 	virtual void onChannelDeregister(Network::Channel * pChannel);
 	virtual void onAddComponent(const Components::ComponentInfos* pInfos);
 
+	std::map< COMPONENT_ID, Baseapp >& baseapps();
+
 	/** 网络接口
 	更新baseapp情况。
 	*/

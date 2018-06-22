@@ -281,7 +281,7 @@ void Bundle::newMessage(const MessageHandler& msgHandler)
 	(*this) << subCmd;
 	pCurrPacket_->messageID(msgHandler.msgID);
 	WARNING_MSG(fmt::format("Bundle::newMessage: cmd({},{}) {} bundle length:{}!\n",
-		mainCmd, subCmd, msgHandler.msgID, currMsgLength_));
+		(uint32)mainCmd, (uint32)subCmd, msgHandler.msgID, currMsgLength_));
 
 	++numMessages_;
 	currMsgID_ = msgHandler.msgID;

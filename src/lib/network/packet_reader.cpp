@@ -84,7 +84,7 @@ void PacketReader::processMessages(KBEngine::Network::MessageHandlers* pMsgHandl
 			}
 
 			Network::MessageHandler* pMsgHandler = pMsgHandlers->find(MSGIDMAKE(currMainCmd, currSubCmd));
-
+			WARNING_MSG(fmt::format("processMessages  Cmd={}/{},\n", (uint32)currMainCmd, (uint32)currSubCmd));
 			if(pMsgHandler == NULL)
 			{
 				MemoryStream* pPacket1 = pFragmentStream_ != NULL ? pFragmentStream_ : pPacket;
@@ -144,7 +144,7 @@ void PacketReader::processMessages(KBEngine::Network::MessageHandlers* pMsgHandl
 							{
 								// 此处获得了扩展长度信息
 								(*pPacket) >> currMsgLen_;
-								WARNING_MSG(fmt::format("processMessages  read currMsgLen_ {}\n", currMsgLen_));
+								//WARNING_MSG(fmt::format("processMessages  read currMsgLen_ {}\n", currMsgLen_));
 								//NetworkStats::getSingleton().trackMessage(NetworkStats::RECV, *pMsgHandler, 
 								//	currMsgLen_ + NETWORK_MESSAGE_ID_SIZE + NETWORK_MESSAGE_LENGTH1_SIZE);
 							}
@@ -205,6 +205,10 @@ void PacketReader::processMessages(KBEngine::Network::MessageHandlers* pMsgHandl
 				pPacket->wpos(frpos);
 
 				//TRACE_MESSAGE_PACKET(true, pPacket, pMsgHandler, currMsgLen_, pChannel_->c_str());
+				//if (currMainCmd == 4 && currSubCmd == 3)
+				{
+					WARNING_MSG(fmt::format("strart processMessages =========================  Cmd={}/{},\n", (uint32)currMainCmd, (uint32)currSubCmd));
+				}
 				pMsgHandler->handle(pChannel_, *pPacket);
 
 				// 如果handler没有处理完数据则输出一个警告

@@ -48,6 +48,12 @@ bool BaseMgrApp::initializeWatcher()
 }
 
 //-------------------------------------------------------------------------------------
+std::map< COMPONENT_ID, Baseapp >& BaseMgrApp::baseapps()
+{
+	return baseapps_;
+}
+
+//-------------------------------------------------------------------------------------
 bool BaseMgrApp::run()
 {
 	dispatcher_.processUntilBreak();
@@ -181,6 +187,7 @@ void BaseMgrApp::updateBaseapp(Network::Channel* pChannel, COMPONENT_ID componen
 //-------------------------------------------------------------------------------------
 void BaseMgrApp::onBaseappInitProgress(Network::Channel* pChannel, MemoryStream& s)
 {
+	DEBUG_MSG("BaseMgrApp::onBaseappInitProgress!\n");
 	basemgr_base::BaseappInitProgress bipCmd;
 	PARSEBUNDLE(s, bipCmd);
 	COMPONENT_ID cid = bipCmd.componentid();
@@ -191,9 +198,10 @@ void BaseMgrApp::onBaseappInitProgress(Network::Channel* pChannel, MemoryStream&
 			cid, (progress > 1.f ? 1.f : progress)));
 	}
 
-	KBE_ASSERT(baseapps_.find(cid) != baseapps_.end());
+	//KBE_ASSERT(baseapps_.find(cid) != baseapps_.end());
+	Baseapp& baseapp = baseapps_[cid];
 
-	baseapps_[cid].initProgress(progress);
+	baseapp.initProgress(progress);
 
 	size_t completedCount = 0;
 

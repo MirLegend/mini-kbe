@@ -213,13 +213,14 @@ void Components::addComponent(int32 uid, const char* username,
 		*cinfos = componentInfos;
 
 	INFO_MSG(fmt::format("Components::addComponent[{}], uid={}, "
-		"componentID={}, totalcount={}\n",
+		"componentID={}, totalcount={}, port={}\n",
 		COMPONENT_NAME_EX(componentType),
 		uid,
 		componentID,
 		/*((int32)componentInfos.globalOrderid),
 		((int32)componentInfos.groupOrderid),*/
-		components.size()));
+		components.size(),
+		pChannel->addr().port));
 
 	if (_pHandler)
 		_pHandler->onAddComponent(&componentInfos);
@@ -354,7 +355,7 @@ Components::COMPONENTS& Components::getComponents(COMPONENT_TYPE componentType)
 Components::ComponentInfos* Components::findComponent(COMPONENT_TYPE componentType, int32 uid,
 																			COMPONENT_ID componentID)
 {
-	COMPONENTS& components = getComponents(componentType);
+	/*COMPONENTS& components = getComponents(componentType);
 	COMPONENTS::iterator iter = components.begin();
 	for(; iter != components.end(); ++iter)
 	{
@@ -362,7 +363,8 @@ Components::ComponentInfos* Components::findComponent(COMPONENT_TYPE componentTy
 			return &(*iter);
 	}
 
-	return NULL;
+	return NULL;*/
+	return findComponent(componentType, componentID);
 }
 
 //-------------------------------------------------------------------------------------		
@@ -650,7 +652,7 @@ int Components::connectComponent(COMPONENT_TYPE rcomponentType, COMPONENT_ID rco
 				ADDTOBUNDLE((*pBundle), regCmd)
 
 					WARNING_MSG(fmt::format("Bundle::staticAddToBundle: cmd({},{}) bundle length:{}!\n",
-						pBundle->messageID() >> 8, (uint8)pBundle->messageID(), pBundle->currMsgLength()));
+						pBundle->messageID() >> 8, (uint32)((uint8)pBundle->messageID()), pBundle->currMsgLength()));
 			}
 
 			pChannel->send(pBundle);

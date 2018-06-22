@@ -178,7 +178,7 @@ void BaseApp::onDbmgrInitCompleted(Network::Channel* pChannel, MemoryStream& s)
 {
 	if (pChannel->isExternal())
 		return;
-	ERROR_MSG(fmt::format("CellApp::onDbmgrInitCompleted\n"));
+	ERROR_MSG(fmt::format("BaseApp::onDbmgrInitCompleted\n"));
 	base_dbmgr::DbmgrInitCompleted dicCmd;
 	PARSEBUNDLE(s, dicCmd);
 

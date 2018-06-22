@@ -119,13 +119,15 @@ bool InitProgressHandler::process()
 	}
 
 	Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
-
+	DEBUG_MSG(fmt::format("InitProgressHandler::process completed basemgr.port:{}, compoentid:{}\n",
+		pChannel->addr().port, pChannel->componentID()));
 	(*pBundle).newMessage(BaseappmgrInterface::onBaseappInitProgress);
 	basemgr_base::BaseappInitProgress bipCmd;
 	bipCmd.set_componentid(g_componentID);
 	bipCmd.set_progress((uint32)(v * 100));
+	ADDTOBUNDLE((*pBundle), bipCmd);
 	pChannel->send(pBundle);
-
+	
 	if(completed)
 	{
 		delete this;
