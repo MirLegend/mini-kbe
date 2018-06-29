@@ -98,7 +98,7 @@ public:
 	KBETable(),
 	accountDefMemoryStream_()
 	{
-		tableName("kbe_accountinfos");
+		tableName("ziyu_dota_players");
 	}
 	
 	virtual ~KBEAccountTable()

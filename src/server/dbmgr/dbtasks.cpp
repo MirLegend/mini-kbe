@@ -131,21 +131,16 @@ bool DBTaskAccountLogin::db_thread_process()
 		(EntityTables::getSingleton().findKBETable("kbe_entitylog"));
 	KBE_ASSERT(pELTable);
 
-	KBEAccountTable* pTable = static_cast<KBEAccountTable*>(EntityTables::getSingleton().findKBETable("kbe_accountinfos"));
+	KBEAccountTable* pTable = static_cast<KBEAccountTable*>(EntityTables::getSingleton().findKBETable("ziyu_dota_players"));
 	KBE_ASSERT(pTable);
 
 	ACCOUNT_INFOS info;
-	info.dbid = 0;
-	info.flags = 0;
-	info.deadline = 0;
+	info.usrId = 0;
 	if (!pTable->queryAccount(pdbi_, accountName_, info))
 	{
-		flags_ = info.flags;
-		deadline_ = info.deadline;
-
 		if (true || g_kbeSrvConfig.getDBMgr().notFoundAccountAutoCreate)
 		{
-			if (!DBTaskCreateAccount::writeAccount(pdbi_, accountName_, password_, postdatas_, info) || info.dbid == 0)
+			if (!DBTaskCreateAccount::writeAccount(pdbi_, accountName_, password_, postdatas_, info) || info.usrId == 0)
 			{
 				ERROR_MSG(fmt::format("DBTaskAccountLogin::db_thread_process(): writeAccount[{}] is error!\n",
 					accountName_));
@@ -172,10 +167,12 @@ bool DBTaskAccountLogin::db_thread_process()
 		}
 	}
 
-	if (info.dbid == 0)
+	if (info.usrId == 0)
+	{
+		ERROR_MSG(fmt::format("DBTaskAccountLogin::db_thread_process(): info.dbid == 0, login failed!\n"));
 		return false;
+	}
 
-	
 	{
 		if (kbe_stricmp(info.password.c_str(), KBE_MD5::getDigest(password_.data(), password_.length()).c_str()) != 0)
 		{
@@ -184,11 +181,11 @@ bool DBTaskAccountLogin::db_thread_process()
 		}
 	}
 
-	pTable->updateCount(pdbi_, accountName_, info.dbid);
+	pTable->updateCount(pdbi_, accountName_, info.usrId);
 
 	retcode_ = SERVER_ERR_ACCOUNT_IS_ONLINE;
 	KBEEntityLogTable::EntityLog entitylog;
-	bool success = !pELTable->queryEntity(pdbi_, info.dbid, entitylog);
+	bool success = !pELTable->queryEntity(pdbi_, info.usrId, entitylog);
 
 	// 如果有在线纪录
 	if (!success)
@@ -201,9 +198,7 @@ bool DBTaskAccountLogin::db_thread_process()
 		retcode_ = SERVER_SUCCESS;
 	}
 
-	dbid_ = info.dbid;
-	flags_ = info.flags;
-	deadline_ = info.deadline;
+	dbid_ = info.usrId;
 	return false;
 }
 
@@ -270,7 +265,7 @@ DBTaskCreateAccount::~DBTaskCreateAccount()
 bool DBTaskCreateAccount::db_thread_process()
 {
 	ACCOUNT_INFOS info;
-	success_ = DBTaskCreateAccount::writeAccount(pdbi_, accountName_, password_, postdatas_, info) && info.dbid > 0;
+	success_ = DBTaskCreateAccount::writeAccount(pdbi_, accountName_, password_, postdatas_, info) && info.usrId > 0;
 	return false;
 }
 
@@ -278,7 +273,7 @@ bool DBTaskCreateAccount::db_thread_process()
 bool DBTaskCreateAccount::writeAccount(DBInterface* pdbi, const std::string& accountName,
 	const std::string& passwd, const std::string& datas, ACCOUNT_INFOS& info)
 {
-	info.dbid = 0;
+	info.usrId = 0;
 	if (accountName.size() == 0)
 	{
 		return false;
@@ -286,7 +281,7 @@ bool DBTaskCreateAccount::writeAccount(DBInterface* pdbi, const std::string& acc
 
 	// 寻找dblog是否有此账号， 如果有则创建失败
 	// 如果没有则向account表新建一个entity数据同时在accountlog表写入一个log关联dbid
-	KBEAccountTable* pTable = static_cast<KBEAccountTable*>(EntityTables::getSingleton().findKBETable("kbe_accountinfos"));
+	KBEAccountTable* pTable = static_cast<KBEAccountTable*>(EntityTables::getSingleton().findKBETable("ziyu_dota_players"));
 	KBE_ASSERT(pTable);
 
 	if (pTable->queryAccount(pdbi, accountName, info))
@@ -300,30 +295,29 @@ bool DBTaskCreateAccount::writeAccount(DBInterface* pdbi, const std::string& acc
 		return false;
 	}
 
-	bool hasset = (info.dbid != 0);
+	bool hasset = (info.usrId != 0);
 	if (!hasset)
 	{
 		//info.flags = g_kbeSrvConfig.getDBMgr().accountDefaultFlags;
 		//info.deadline = g_kbeSrvConfig.getDBMgr().accountDefaultDeadline;
 	}
 
-	DBID entityDBID = info.dbid;
+	DBID entityDBID = info.usrId;
 
-	//if (entityDBID == 0)
-	//{
-	//	// 防止多线程问题， 这里做一个拷贝。
-	//	MemoryStream copyAccountDefMemoryStream(pTable->accountDefMemoryStream());
+	if (entityDBID == 0)
+	{
+		// 防止多线程问题， 这里做一个拷贝。
+		MemoryStream copyAccountDefMemoryStream(pTable->accountDefMemoryStream());
 
-	//	entityDBID = EntityTables::getSingleton().writeEntity(pdbi, 0, -1,
-	//		&copyAccountDefMemoryStream);
-	//}
+		entityDBID = EntityTables::getSingleton().writeEntity(pdbi, 0, -1,
+			&copyAccountDefMemoryStream);
+	}
 
-	//KBE_ASSERT(entityDBID > 0);
+	KBE_ASSERT(entityDBID > 0);
 
 	info.name = accountName;
 	info.password = passwd;
-	info.dbid = entityDBID;
-	info.datas = datas;
+	info.usrId = entityDBID;
 
 	if (!hasset)
 	{
@@ -340,7 +334,7 @@ bool DBTaskCreateAccount::writeAccount(DBInterface* pdbi, const std::string& acc
 	}
 	else
 	{
-		if (!pTable->setFlagsDeadline(pdbi, accountName, info.flags, info.deadline))
+		if (!pTable->setFlagsDeadline(pdbi, accountName, 0, 0/*info.flags, info.deadline*/))
 		{
 			if (pdbi->getlasterror() > 0)
 			{

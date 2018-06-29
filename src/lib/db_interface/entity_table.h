@@ -73,18 +73,19 @@ struct ACCOUNT_INFOS
 	ACCOUNT_INFOS():
 	name(),
 	password(),
-	datas(),
-	dbid(0),
-	flags(0),
-	deadline(0)
+	usrId(0)
+	//datas(),
+	//dbid(0),
+	//flags(0),
+	//deadline(0)
 	{
 	}
 
-	std::string name, password, datas, email;
-	DBID dbid;
-
-	uint32 flags;
-	uint64 deadline;
+	std::string name, password/*, datas, email*/;
+	//DBID dbid;
+	DBID usrId;
+	//uint32 flags;
+	//uint64 deadline;
 };
 
 /**
