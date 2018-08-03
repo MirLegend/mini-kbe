@@ -1,0 +1,80 @@
+<root>
+
+	<!-- Type: 数据类型
+	DBLength: 存储数据长度
+	Flags: 约束
+	IndexType: 索引类型
+	Default:  默认值
+	-->
+	<user_dbid>
+		<Type>			INT64		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				514		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</user_dbid>
+
+	<accountName>
+		<Type>			UNICODE		</Type> 
+		<DBLength>			255		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>			UNIQUE		</IndexType>
+		<Default>					</Default>
+	</accountName>
+		
+	<password>
+		<Type>			UNICODE		</Type> 
+		<DBLength>			255		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</password>
+		
+	<reg_ip>
+		<Type>			UNICODE		</Type> 
+		<DBLength>			32		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</reg_ip>
+		
+	<last_login_ip>
+		<Type>			UNICODE		</Type> 
+		<DBLength>			32		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</last_login_ip>
+		
+	<regtime>
+		<Type>			INT64		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>			0		</Default>
+	</regtime>
+		
+	<lasttime>
+		<Type>			INT64		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>			0		</Default>
+	</lasttime>
+		
+	<numlogin>
+		<Type>			INT32		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>			0		</Default>
+	</numlogin>
+		
+	<server_id>
+		<Type>			INT32		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>			0		</Default>
+	</server_id>
+</root>

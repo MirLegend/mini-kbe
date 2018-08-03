@@ -71,7 +71,18 @@ public:
 	void onDbmgrInitCompleted(Network::Channel* pChannel, MemoryStream& s
 		/*GAME_TIME gametime, ENTITY_ID startID, ENTITY_ID endID*/);
 	void onGetEntityAppFromDbmgr(Network::Channel* pChannel, MemoryStream& s);
+	void onQueryPlayerCBFromDbmgr(Network::Channel* pChannel, MemoryStream& s);
 
+	void onClientHello(Network::Channel* pChannel, MemoryStream& s); //客户端握手
+	void loginBaseapp(Network::Channel* pChannel, MemoryStream& s);
+	/**
+	登录失败
+	@failedcode: 失败返回码 NETWORK_ERR_SRV_NO_READY:服务器没有准备好,
+	NETWORK_ERR_ILLEGAL_LOGIN:非法登录,
+	NETWORK_ERR_NAME_PASSWORD:用户名或者密码不正确
+	*/
+	void loginBaseappFailed(Network::Channel* pChannel, std::string& accountName,
+		SERVER_ERROR_CODE failedcode, bool relogin = false);
 protected:
 	TimerHandle												loopCheckTimerHandle_;
 	// 记录登录到服务器但还未处理完毕的账号

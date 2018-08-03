@@ -10,11 +10,32 @@ message DbmgrInitCompleted {
 //dbmgr -> base 6 - 2 //dbmgr向所有base返回刚注册的app
 message GetEntityAppFromDbmgr {
 	optional int32 componentType = 1;
-	optional int32 uid = 2;
+	optional uint32 uid = 2;
 	optional string username = 3;
 	optional int64 componentID = 4;
-	optional int32 extaddr = 5;  //外部地址
-	optional int32 extport = 6; //外部对端口
-	optional int32 intaddr = 7;  //外部地址
-	optional int32 intport = 8; //外部对端口
+	optional uint32 extaddr = 5;  //外部地址
+	optional uint32 extport = 6; //外部对端口
+	optional uint32 intaddr = 7;  //外部地址
+	optional uint32 intport = 8; //外部对端口
+}
+
+//base -> dbmgr 6 - 3 //base向db 查询角色信息
+message QueryAccount {
+	optional string account = 1; //账号
+	optional string password = 2; //密码
+	optional int64 componentID = 3;
+	optional int32 entityID = 4;
+	optional int64 entityDBID = 5;
+	optional uint32 addrip = 6;  //外部地址
+	optional uint32 addrport = 7; //外部对端口
+}
+
+//dbmgr -> base 6 - 4 //dbmgr向所有base返回查询角色信息
+message QueryPlayerCBFromDbmgr {
+	optional string account = 1; //账号
+	optional string password = 2; //密码
+	optional int64 entityDBID = 3;
+	optional uint32 success = 4;
+	optional int32 entityID = 5;
+	optional bytes datas = 6;
 }

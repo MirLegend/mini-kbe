@@ -27,6 +27,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 #include "helper/debug_helper.h"
 #include "db_interface/entity_table.h"
 #include "db_interface/kbe_tables.h"
+#include "entity_table_mysql.h"
 
 namespace KBEngine { 
 /*
@@ -73,6 +74,27 @@ public:
 	virtual bool updateCount(DBInterface * dbi, const std::string& name, DBID dbid);
 	virtual bool updatePassword(DBInterface * dbi, const std::string& name, const std::string& password);
 protected:
+};
+class EntityTableMysql;
+class KBEPlayerTableMysql : public EntityTableMysql
+{
+public:
+	KBEPlayerTableMysql();
+	virtual ~KBEPlayerTableMysql() {}
+
+	virtual bool initialize(std::string name, const DBTABLEITEMS& tableItems);
+	/**
+	同步表到数据库中
+	*/
+	//virtual bool syncToDB(DBInterface* dbi);
+	//virtual bool syncIndexToDB(DBInterface* dbi) { return true; }
+	/**
+	获取所有的数据放到流中
+	*/
+	//virtual bool queryTable(DBInterface* dbi, DBID dbid, MemoryStream* s);
+
+protected:
+	
 };
 
 }

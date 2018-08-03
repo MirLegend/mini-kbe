@@ -166,6 +166,7 @@ bool DBInterfaceMysql::initInterface(DBInterface* dbi)
 {
 	EntityTables::getSingleton().addKBETable(new KBEAccountTableMysql());
 	EntityTables::getSingleton().addKBETable(new KBEEntityLogTableMysql());
+	//EntityTables::getSingleton().addTable(new KBEPlayerTableMysql());
 	return true;
 }
 

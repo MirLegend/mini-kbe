@@ -65,7 +65,7 @@ public:
 		std::string extraDatas;
 	};
 
-	typedef std::vector< std::pair< std::string/*tableName*/, KBEShared_ptr< DBContext > > > DB_RW_CONTEXTS;
+	//typedef std::vector< std::pair< std::string/*tableName*/, KBEShared_ptr< DBContext > > > DB_RW_CONTEXTS;
 	typedef std::vector< KBEShared_ptr<DB_ITEM_DATA>  > DB_ITEM_DATAS;
 
 	DBContext()
@@ -78,12 +78,12 @@ public:
 	
 	DB_ITEM_DATAS items;
 	std::string tableName;
-	std::string parentTableName;
-	DBID parentTableDBID;
+	//std::string parentTableName;
+	//DBID parentTableDBID;
 	DBID dbid;
-	DB_RW_CONTEXTS optable;
+	//DB_RW_CONTEXTS optable;
 	bool isEmpty;
-	std::map<DBID, std::vector<DBID> > dbids;
+	//std::map<DBID, std::vector<DBID> > dbids;
 	std::vector< std::string >results;
 	std::vector< std::string >::size_type readresultIdx;
 

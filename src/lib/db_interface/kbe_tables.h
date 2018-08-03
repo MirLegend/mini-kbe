@@ -48,9 +48,9 @@ public:
 	/**
 		≥ı ºªØ
 	*/
-	virtual bool initialize(std::string name){ return true; };
+	virtual bool initialize(std::string nameconst, const DBTABLEITEMS& tableItems){ return true; };
 	
-	virtual EntityTableItem* createItem(std::string type) {return NULL;}
+	virtual EntityTableItem* createItem(std::string typevirtual, const stTableItem* pTableItemDescription) {return NULL;}
 	
 protected:
 
@@ -98,7 +98,7 @@ public:
 	KBETable(),
 	accountDefMemoryStream_()
 	{
-		tableName("ziyu_dota_players");
+		tableName("ziyu_dota_accounts");
 	}
 	
 	virtual ~KBEAccountTable()

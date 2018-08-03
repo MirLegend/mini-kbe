@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dependencies", "dependencies", "{8BF90F4F-766B-4B4D-B7F3-BF4189A29F4E}"
+	ProjectSection(SolutionItems) = preProject
+		lib\db_mysql\entity_table_mysql.h = lib\db_mysql\entity_table_mysql.h
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{C57D8946-CC54-4360-89FA-DAC04E93423A}"
 EndProject
@@ -68,6 +71,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "db_mysql", "lib\db_mysql\db_mysql.vcxproj", "{24CB1A43-C6E1-442E-AF99-A91D26BA8FA0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "db_redis", "lib\db_redis\db_redis.vcxproj", "{70E890EA-9496-4F7C-B903-5FCF87A73AC4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientTest", "..\..\..\minikbe-client\mini-kbe-ClientTest\ClientTest\ClientTest.vcxproj", "{B2439655-1AA9-4745-A7D8-3A419322FFDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1837,6 +1842,86 @@ Global
 		{70E890EA-9496-4F7C-B903-5FCF87A73AC4}.Template|Win32.Build.0 = Release|Win32
 		{70E890EA-9496-4F7C-B903-5FCF87A73AC4}.Template|x64.ActiveCfg = Release|Win32
 		{70E890EA-9496-4F7C-B903-5FCF87A73AC4}.Template|x64.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Consumer_Release_Indie|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Consumer_Release_Indie|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Consumer_Release_Indie|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Consumer_Release_Indie|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Consumer_Release|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Consumer_Release|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Consumer_Release|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Consumer_Release|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Debug|Win32.Build.0 = Debug|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Debug|x64.ActiveCfg = Debug|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Debug|x64.Build.0 = Debug|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Debug9x|Win32.ActiveCfg = Debug|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Debug9x|Win32.Build.0 = Debug|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Debug9x|x64.ActiveCfg = Debug|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Debug9x|x64.Build.0 = Debug|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.dummy|Win32.ActiveCfg = Debug|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.dummy|Win32.Build.0 = Debug|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.dummy|x64.ActiveCfg = Debug|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.dummy|x64.Build.0 = Debug|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Editor_Debug|Win32.ActiveCfg = Debug|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Editor_Debug|Win32.Build.0 = Debug|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Editor_Debug|x64.ActiveCfg = Debug|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Editor_Debug|x64.Build.0 = Debug|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Editor_Hybrid_Indie|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Editor_Hybrid_Indie|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Editor_Hybrid_Indie|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Editor_Hybrid_Indie|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Editor_Hybrid|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Editor_Hybrid|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Editor_Hybrid|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Editor_Hybrid|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Evaluation|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Evaluation|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Evaluation|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Evaluation|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Exporter_Debug|Win32.ActiveCfg = Debug|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Exporter_Debug|Win32.Build.0 = Debug|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Exporter_Debug|x64.ActiveCfg = Debug|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Exporter_Debug|x64.Build.0 = Debug|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Exporter_Release|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Exporter_Release|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Exporter_Release|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Exporter_Release|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Hybrid|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Hybrid|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Hybrid|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Hybrid|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.PGInstrument|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.PGInstrument|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.PGInstrument|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.PGInstrument|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.PGUpdate|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.PGUpdate|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.PGUpdate|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.PGUpdate|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.PyModule_Hybrid|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.PyModule_Hybrid|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.PyModule_Hybrid|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.PyModule_Hybrid|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Release_Indie|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Release_Indie|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Release_Indie|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Release_Indie|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Release|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Release|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Release|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Release|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Release9x|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Release9x|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Release9x|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Release9x|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Static_Release|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Static_Release|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Static_Release|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Static_Release|x64.Build.0 = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Template|Win32.ActiveCfg = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Template|Win32.Build.0 = Release|Win32
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Template|x64.ActiveCfg = Release|x64
+		{B2439655-1AA9-4745-A7D8-3A419322FFDB}.Template|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

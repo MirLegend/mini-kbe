@@ -114,6 +114,8 @@
     <ClCompile Include="..\..\lib\proto\celldb.pb.cc" />
     <ClCompile Include="..\..\lib\proto\coms.pb.cc" />
     <ClCompile Include="..\..\lib\proto\ldb.pb.cc" />
+    <ClCompile Include="buffered_dbtasks.cpp" />
+    <ClCompile Include="dbTalbeModule.cpp" />
     <ClCompile Include="dbtasks.cpp" />
     <ClCompile Include="interfaces_handler.cpp" />
     <ClCompile Include="main.cpp" />
@@ -168,6 +170,7 @@
     <ClInclude Include="..\..\lib\proto\basedb.pb.h" />
     <ClInclude Include="..\..\lib\proto\celldb.pb.h" />
     <ClInclude Include="buffered_dbtasks.h" />
+    <ClInclude Include="dbTalbeModule.h" />
     <ClInclude Include="dbtasks.h" />
     <ClInclude Include="interfaces_handler.h" />
     <ClInclude Include="dbmgr.h" />

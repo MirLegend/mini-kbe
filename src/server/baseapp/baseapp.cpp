@@ -11,9 +11,11 @@
 #include "server/components.h"
 #include <sstream>
 
+#include "proto/cb.pb.h"
 #include "proto/bmb.pb.h"
 #include "../../server/basemgr/basemgr_interface.h"
 #include "proto/basedb.pb.h"
+#include "../../server/dbmgr/dbmgr_interface.h"
 
 namespace KBEngine{
 	
@@ -237,6 +239,236 @@ void BaseApp::onGetEntityAppFromDbmgr(Network::Channel* pChannel, MemoryStream& 
 
 	KBE_ASSERT(Components::getSingleton().getDbmgr() != NULL);
 }
-//-------------------------------------------------------------------------------------
 
+//-------------------------------------------------------------------------------------
+void BaseApp::onClientHello(Network::Channel* pChannel, MemoryStream& s)
+{
+	client_baseserver::Hello helloCmd;
+	PARSEBUNDLE(s, helloCmd)
+		uint32 clientVersion = helloCmd.version();
+	const std::string& extradata = helloCmd.extradata();
+	printf("BaseApp::onClientHello ........... clientVersion:%d,  extradata:%s \n", clientVersion, extradata.c_str());
+
+	Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
+	pBundle->newMessage(91, 2);
+
+	client_baseserver::HelloCB helloCbCmd;
+	helloCbCmd.set_result(1);
+	helloCbCmd.set_version(68);
+	helloCbCmd.set_extradata(extradata);
+
+	ADDTOBUNDLE((*pBundle), helloCbCmd)
+	pChannel->send(pBundle);
+}
+
+//-------------------------------------------------------------------------------------
+void BaseApp::loginBaseapp(Network::Channel* pChannel, MemoryStream& s)
+{
+	client_baseserver::Login loginCmd;
+	PARSEBUNDLE(s, loginCmd)
+	std::string accountName = loginCmd.account();
+	std::string password = loginCmd.password();
+	accountName = KBEngine::strutil::kbe_trim(accountName);
+	if (accountName.size() > ACCOUNT_NAME_MAX_LENGTH)
+	{
+		ERROR_MSG(fmt::format("Baseapp::loginBaseapp: accountName too big, size={}, limit={}.\n",
+			accountName.size(), ACCOUNT_NAME_MAX_LENGTH));
+
+		return;
+	}
+
+	if (password.size() > ACCOUNT_PASSWD_MAX_LENGTH)
+	{
+		ERROR_MSG(fmt::format("Baseapp::loginBaseapp: password too big, size={}, limit={}.\n",
+			password.size(), ACCOUNT_PASSWD_MAX_LENGTH));
+
+		return;
+	}
+
+	INFO_MSG(fmt::format("Baseapp::loginBaseapp: new user[{0}], channel[{1}].\n",
+		accountName, pChannel->c_str()));
+
+	Components::ComponentInfos* dbmgrinfos = Components::getSingleton().getDbmgr();
+	if (dbmgrinfos == NULL || dbmgrinfos->pChannel == NULL || dbmgrinfos->cid == 0)
+	{
+		loginBaseappFailed(pChannel, accountName, SERVER_ERR_SRV_NO_READY);
+		return;
+	}
+
+	PendingLoginMgr::PLInfos* ptinfos = pendingLoginMgr_.find(accountName);
+	if (ptinfos == NULL)
+	{
+		loginBaseappFailed(pChannel, accountName, SERVER_ERR_ILLEGAL_LOGIN);
+		return;
+	}
+
+	if (ptinfos->password != password)
+	{
+		loginBaseappFailed(pChannel, accountName, SERVER_ERR_PASSWORD);
+		return;
+	}
+
+	/*if ((ptinfos->flags & ACCOUNT_FLAG_LOCK) > 0)
+	{
+		loginBaseappFailed(pChannel, accountName, SERVER_ERR_ACCOUNT_LOCK);
+		return;
+	}
+
+	if ((ptinfos->flags & ACCOUNT_FLAG_NOT_ACTIVATED) > 0)
+	{
+		loginBaseappFailed(pChannel, accountName, SERVER_ERR_ACCOUNT_NOT_ACTIVATED);
+		return;
+	}
+
+	if (ptinfos->deadline > 0 && ::time(NULL) - ptinfos->deadline <= 0)
+	{
+		loginBaseappFailed(pChannel, accountName, SERVER_ERR_ACCOUNT_DEADLINE);
+		return;
+	}*/
+
+	if (idClient_.size() == 0)
+	{
+		ERROR_MSG("Baseapp::loginBaseapp: idClient size is 0.\n");
+		loginBaseappFailed(pChannel, accountName, SERVER_ERR_SRV_NO_READY);
+		return;
+	}
+
+	// 如果entityID大于0则说明此entity是存活状态登录
+	if (ptinfos->entityID > 0)
+	{
+		INFO_MSG(fmt::format("Baseapp::loginBaseapp: user[{}] has entity({}).\n",
+			accountName.c_str(), ptinfos->entityID));
+
+		//Proxy* base = static_cast<Proxy*>(findEntity(ptinfos->entityID));
+		//if (base == NULL || base->isDestroyed())
+		//{
+		//	loginBaseappFailed(pChannel, accountName, SERVER_ERR_BUSY);
+		//	return;
+		//}
+
+		//// 通知脚本异常登录请求有脚本决定是否允许这个通道强制登录
+		//int32 ret = base->onLogOnAttempt(pChannel->addr().ipAsString(),
+		//	ntohs(pChannel->addr().port), password.c_str());
+
+		//switch (ret)
+		//{
+		//case LOG_ON_ACCEPT:
+		//	if (base->clientMailbox() != NULL)
+		//	{
+		//		// 通告在别处登录
+		//		Network::Channel* pOldClientChannel = base->clientMailbox()->getChannel();
+		//		if (pOldClientChannel != NULL)
+		//		{
+		//			INFO_MSG(fmt::format("Baseapp::loginBaseapp: script LOG_ON_ACCEPT. oldClientChannel={}\n",
+		//				pOldClientChannel->c_str()));
+
+		//			kickChannel(pOldClientChannel, SERVER_ERR_ACCOUNT_LOGIN_ANOTHER);
+		//		}
+		//		else
+		//		{
+		//			INFO_MSG("Baseapp::loginBaseapp: script LOG_ON_ACCEPT.\n");
+		//		}
+
+		//		base->clientMailbox()->addr(pChannel->addr());
+		//		base->addr(pChannel->addr());
+		//		base->setClientType(ptinfos->ctype);
+		//		base->setClientDatas(ptinfos->datas);
+		//		createClientProxies(base, true);
+		//	}
+		//	else
+		//	{
+		//		// 创建entity的客户端mailbox
+		//		EntityMailbox* entityClientMailbox = new EntityMailbox(base->pScriptModule(),
+		//			&pChannel->addr(), 0, base->id(), MAILBOX_TYPE_CLIENT);
+
+		//		base->clientMailbox(entityClientMailbox);
+		//		base->addr(pChannel->addr());
+		//		base->setClientType(ptinfos->ctype);
+		//		base->setClientDatas(ptinfos->datas);
+
+		//		// 将通道代理的关系与该entity绑定， 在后面通信中可提供身份合法性识别
+		//		entityClientMailbox->getChannel()->proxyID(base->id());
+		//		createClientProxies(base, true);
+		//	}
+		//	break;
+		//case LOG_ON_WAIT_FOR_DESTROY:
+		//default:
+			INFO_MSG("Baseapp::loginBaseapp: script LOG_ON_REJECT.\n");
+			loginBaseappFailed(pChannel, accountName, SERVER_ERR_ACCOUNT_IS_ONLINE);
+			return;
+		//};
+	}
+	else
+	{
+		ENTITY_ID entityID = idClient_.alloc();
+		KBE_ASSERT(entityID > 0);
+		//Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
+		//(*pBundle).newMessage(DbmgrInterface::queryAccount);
+		//DbmgrInterface::queryAccountArgs7::staticAddToBundle((*pBundle), accountName, password, g_componentID,
+		//	entityID, ptinfos->entityDBID, pChannel->addr().ip, pChannel->addr().port);
+
+		Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
+		(*pBundle).newMessage(DbmgrInterface::QueryAccount);
+
+		base_dbmgr::QueryAccount queryCmd;
+		queryCmd.set_account(accountName);
+		queryCmd.set_password(password);
+		queryCmd.set_componentid(g_componentID);
+		queryCmd.set_entityid(entityID);
+		queryCmd.set_entitydbid(ptinfos->entityDBID);
+		queryCmd.set_addrip(pChannel->addr().ip);
+		queryCmd.set_addrport(pChannel->addr().port);
+
+		ADDTOBUNDLE((*pBundle), queryCmd)
+		dbmgrinfos->pChannel->send(pBundle); //发送给dbmgr
+	}
+
+	// 记录客户端地址
+	ptinfos->addr = pChannel->addr();
+}
+
+//-------------------------------------------------------------------------------------
+void BaseApp::loginBaseappFailed(Network::Channel* pChannel, std::string& accountName,
+	SERVER_ERROR_CODE failedcode, bool relogin)
+{
+	if (failedcode == SERVER_ERR_NAME)
+	{
+		DEBUG_MSG(fmt::format("Baseapp::login: not found user[{}], login is failed!\n",
+			accountName.c_str()));
+
+		failedcode = SERVER_ERR_NAME_PASSWORD;
+	}
+	else if (failedcode == SERVER_ERR_PASSWORD)
+	{
+		DEBUG_MSG(fmt::format("Baseapp::login: user[{}] password is error, login is failed!\n",
+			accountName.c_str()));
+
+		failedcode = SERVER_ERR_NAME_PASSWORD;
+	}
+
+	if (pChannel == NULL)
+		return;
+
+	Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
+
+	//if (relogin)
+	//	(*pBundle).newMessage(ClientInterface::onReLoginBaseappFailed);
+	//else
+	//	(*pBundle).newMessage(ClientInterface::onLoginBaseappFailed);
+
+	pBundle->newMessage(90, 4);
+
+	client_baseserver::LoginBaseappFailed loginfailedCmd;
+	loginfailedCmd.set_retcode(failedcode);
+
+	ADDTOBUNDLE((*pBundle), loginfailedCmd)
+	pChannel->send(pBundle);
+}
+
+void BaseApp::onQueryPlayerCBFromDbmgr(Network::Channel* pChannel, MemoryStream& s)
+{
+
+}
+
+//-------------------------------------------------------------------------------------
 }

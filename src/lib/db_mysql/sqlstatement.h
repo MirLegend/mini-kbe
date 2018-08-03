@@ -43,7 +43,7 @@ public:
 	  sqlstr_(),
 	  tableName_(tableName),
 	  dbid_(dbid),
-	  parentDBID_(parentDBID),
+	  //parentDBID_(parentDBID),
 	  dbi_(dbi)
 	{
 	}
@@ -80,7 +80,7 @@ protected:
 	std::string sqlstr_;
 	std::string tableName_;
 	DBID dbid_;
-	DBID parentDBID_;
+	//DBID parentDBID_;
 	DBInterface* dbi_; 
 };
 
@@ -137,6 +137,8 @@ public:
 
 		sqlstr1_ += ")";
 		sqlstr_ += sqlstr1_;
+
+		DEBUG_MSG(fmt::format("SqlStatementInsert slq:{}", sqlstr_));
 	}
 
 	virtual ~SqlStatementInsert()
@@ -158,7 +160,8 @@ public:
 			return false;
 		}
 
-		dbid_ = static_cast<DBInterfaceMysql*>(dbi != NULL ? dbi : dbi_)->insertID();
+		dbid_ = 0; // static_cast<DBInterfaceMysql*>(dbi != NULL ? dbi : dbi_)->insertID();
+		DEBUG_MSG(fmt::format("SqlStatementInsert dbid_:{}", dbid_));
 		return ret;
 	}
 
@@ -204,7 +207,7 @@ public:
 		if(sqlstr_.at(sqlstr_.size() - 1) == ',')
 			sqlstr_.erase(sqlstr_.size() - 1);
 
-		sqlstr_ += " where id=";
+		sqlstr_ += " where sm_id=";
 		
 		char strdbid[MAX_BUF];
 		kbe_snprintf(strdbid, MAX_BUF, "%" PRDBID, dbid);
@@ -221,49 +224,23 @@ protected:
 class SqlStatementQuery : public SqlStatement
 {
 public:
-	SqlStatementQuery(DBInterface* dbi, std::string tableName, const std::vector<DBID>& parentTableDBIDs, 
+	SqlStatementQuery(DBInterface* dbi, std::string tableName,
 		DBID dbid, DBContext::DB_ITEM_DATAS& tableItemDatas):
 	  SqlStatement(dbi, tableName, 0, dbid, tableItemDatas),
 	  sqlstr1_()
 	{
 
 		// select id,xxx from tbl_SpawnPoint where id=123;
-		sqlstr_ = "select id,";
+		sqlstr_ = "select sm_id,";
 		// 无论哪种情况都查询出ID字段
 		sqlstr1_ += " from " ENTITY_TABLE_PERFIX "_";
 		sqlstr1_ += tableName;
 		
 		char strdbid[MAX_BUF];
-
-		if(parentTableDBIDs.size() == 0)
 		{
-			sqlstr1_ += " where id=";
+			sqlstr1_ += " where sm_id=";
 			kbe_snprintf(strdbid, MAX_BUF, "%" PRDBID, dbid);
 			sqlstr1_ += strdbid;
-		}
-		else
-		{
-			sqlstr_ += TABLE_PARENTID_CONST_STR",";
-
-			if(parentTableDBIDs.size() > 1)
-			{
-				sqlstr1_ += " where " TABLE_PARENTID_CONST_STR " in(";
-				std::vector<DBID>::const_iterator iter = parentTableDBIDs.begin();
-				for(; iter != parentTableDBIDs.end(); ++iter)
-				{
-					kbe_snprintf(strdbid, MAX_BUF, "%" PRDBID ",", (*iter));
-					sqlstr1_ += strdbid;
-				}
-
-				sqlstr1_.erase(sqlstr1_.end() - 1);
-				sqlstr1_ += ")";
-			}
-			else
-			{
-				sqlstr1_ += " where " TABLE_PARENTID_CONST_STR "=";
-				kbe_snprintf(strdbid, MAX_BUF, "%" PRDBID, parentTableDBIDs[0]);
-				sqlstr1_ += strdbid;
-			}
 		}
 
 		DBContext::DB_ITEM_DATAS::iterator tableValIter = tableItemDatas.begin();

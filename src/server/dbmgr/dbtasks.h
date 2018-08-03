@@ -35,6 +35,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 namespace KBEngine{ 
 
 class DBInterface;
+class Buffered_DBTasks;
 struct ACCOUNT_INFOS;
 
 /*
@@ -132,6 +133,72 @@ protected:
 
 };
 
+
+/*
+EntityDBTask
+*/
+class EntityDBTask : public DBTask
+{
+public:
+	EntityDBTask(const Network::Address& addr, MemoryStream& datas, ENTITY_ID entityID, DBID entityDBID) :
+		DBTask(addr, datas),
+		_entityID(entityID),
+		_entityDBID(entityDBID),
+		_pBuffered_DBTasks(NULL)
+	{
+	}
+
+	EntityDBTask(const Network::Address& addr, ENTITY_ID entityID, DBID entityDBID) :
+		DBTask(addr),
+		_entityID(entityID),
+		_entityDBID(entityDBID),
+		_pBuffered_DBTasks(NULL)
+	{
+	}
+
+	virtual ~EntityDBTask() {}
+
+	ENTITY_ID EntityDBTask_entityID() const { return _entityID; }
+	DBID EntityDBTask_entityDBID() const { return _entityDBID; }
+
+	void pBuffered_DBTasks(Buffered_DBTasks* v) { _pBuffered_DBTasks = v; }
+	virtual thread::TPTask::TPTaskState presentMainThread();
+
+	DBTask* tryGetNextTask();
+
+private:
+	ENTITY_ID _entityID;
+	DBID _entityDBID;
+	Buffered_DBTasks* _pBuffered_DBTasks;
+};
+
+/**
+baseapp请求查询account信息
+*/
+class DBTaskQueryAccount : public EntityDBTask
+{
+public:
+	DBTaskQueryAccount(const Network::Address& addr, std::string& accountName, std::string& password,
+		COMPONENT_ID componentID, ENTITY_ID entityID, DBID entityDBID, uint32 ip, uint16 port);
+	virtual ~DBTaskQueryAccount();
+	virtual bool db_thread_process();
+	virtual thread::TPTask::TPTaskState presentMainThread();
+
+protected:
+	std::string accountName_;
+	std::string password_;
+	bool success_;
+	MemoryStream s_;
+	DBID dbid_;
+	COMPONENT_ID componentID_;
+	ENTITY_ID entityID_;
+	std::string error_;
+	uint32 ip_;
+	uint16 port_;
+
+	uint32 flags_;
+	uint64 deadline_;
+};
 
 }
 

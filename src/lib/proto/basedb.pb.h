@@ -35,6 +35,8 @@ void protobuf_ShutdownFile_basedb_2eproto();
 
 class DbmgrInitCompleted;
 class GetEntityAppFromDbmgr;
+class QueryAccount;
+class QueryPlayerCBFromDbmgr;
 
 // ===================================================================
 
@@ -197,12 +199,12 @@ class GetEntityAppFromDbmgr : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 componenttype() const;
   inline void set_componenttype(::google::protobuf::int32 value);
 
-  // optional int32 uid = 2;
+  // optional uint32 uid = 2;
   inline bool has_uid() const;
   inline void clear_uid();
   static const int kUidFieldNumber = 2;
-  inline ::google::protobuf::int32 uid() const;
-  inline void set_uid(::google::protobuf::int32 value);
+  inline ::google::protobuf::uint32 uid() const;
+  inline void set_uid(::google::protobuf::uint32 value);
 
   // optional string username = 3;
   inline bool has_username() const;
@@ -223,33 +225,33 @@ class GetEntityAppFromDbmgr : public ::google::protobuf::Message {
   inline ::google::protobuf::int64 componentid() const;
   inline void set_componentid(::google::protobuf::int64 value);
 
-  // optional int32 extaddr = 5;
+  // optional uint32 extaddr = 5;
   inline bool has_extaddr() const;
   inline void clear_extaddr();
   static const int kExtaddrFieldNumber = 5;
-  inline ::google::protobuf::int32 extaddr() const;
-  inline void set_extaddr(::google::protobuf::int32 value);
+  inline ::google::protobuf::uint32 extaddr() const;
+  inline void set_extaddr(::google::protobuf::uint32 value);
 
-  // optional int32 extport = 6;
+  // optional uint32 extport = 6;
   inline bool has_extport() const;
   inline void clear_extport();
   static const int kExtportFieldNumber = 6;
-  inline ::google::protobuf::int32 extport() const;
-  inline void set_extport(::google::protobuf::int32 value);
+  inline ::google::protobuf::uint32 extport() const;
+  inline void set_extport(::google::protobuf::uint32 value);
 
-  // optional int32 intaddr = 7;
+  // optional uint32 intaddr = 7;
   inline bool has_intaddr() const;
   inline void clear_intaddr();
   static const int kIntaddrFieldNumber = 7;
-  inline ::google::protobuf::int32 intaddr() const;
-  inline void set_intaddr(::google::protobuf::int32 value);
+  inline ::google::protobuf::uint32 intaddr() const;
+  inline void set_intaddr(::google::protobuf::uint32 value);
 
-  // optional int32 intport = 8;
+  // optional uint32 intport = 8;
   inline bool has_intport() const;
   inline void clear_intport();
   static const int kIntportFieldNumber = 8;
-  inline ::google::protobuf::int32 intport() const;
-  inline void set_intport(::google::protobuf::int32 value);
+  inline ::google::protobuf::uint32 intport() const;
+  inline void set_intport(::google::protobuf::uint32 value);
 
   // @@protoc_insertion_point(class_scope:base_dbmgr.GetEntityAppFromDbmgr)
  private:
@@ -275,19 +277,312 @@ class GetEntityAppFromDbmgr : public ::google::protobuf::Message {
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
   ::google::protobuf::int32 componenttype_;
-  ::google::protobuf::int32 uid_;
+  ::google::protobuf::uint32 uid_;
   ::std::string* username_;
   ::google::protobuf::int64 componentid_;
-  ::google::protobuf::int32 extaddr_;
-  ::google::protobuf::int32 extport_;
-  ::google::protobuf::int32 intaddr_;
-  ::google::protobuf::int32 intport_;
+  ::google::protobuf::uint32 extaddr_;
+  ::google::protobuf::uint32 extport_;
+  ::google::protobuf::uint32 intaddr_;
+  ::google::protobuf::uint32 intport_;
   friend void  protobuf_AddDesc_basedb_2eproto();
   friend void protobuf_AssignDesc_basedb_2eproto();
   friend void protobuf_ShutdownFile_basedb_2eproto();
 
   void InitAsDefaultInstance();
   static GetEntityAppFromDbmgr* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class QueryAccount : public ::google::protobuf::Message {
+ public:
+  QueryAccount();
+  virtual ~QueryAccount();
+
+  QueryAccount(const QueryAccount& from);
+
+  inline QueryAccount& operator=(const QueryAccount& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAccount& default_instance();
+
+  void Swap(QueryAccount* other);
+
+  // implements Message ----------------------------------------------
+
+  QueryAccount* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const QueryAccount& from);
+  void MergeFrom(const QueryAccount& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string account = 1;
+  inline bool has_account() const;
+  inline void clear_account();
+  static const int kAccountFieldNumber = 1;
+  inline const ::std::string& account() const;
+  inline void set_account(const ::std::string& value);
+  inline void set_account(const char* value);
+  inline void set_account(const char* value, size_t size);
+  inline ::std::string* mutable_account();
+  inline ::std::string* release_account();
+  inline void set_allocated_account(::std::string* account);
+
+  // optional string password = 2;
+  inline bool has_password() const;
+  inline void clear_password();
+  static const int kPasswordFieldNumber = 2;
+  inline const ::std::string& password() const;
+  inline void set_password(const ::std::string& value);
+  inline void set_password(const char* value);
+  inline void set_password(const char* value, size_t size);
+  inline ::std::string* mutable_password();
+  inline ::std::string* release_password();
+  inline void set_allocated_password(::std::string* password);
+
+  // optional int64 componentID = 3;
+  inline bool has_componentid() const;
+  inline void clear_componentid();
+  static const int kComponentIDFieldNumber = 3;
+  inline ::google::protobuf::int64 componentid() const;
+  inline void set_componentid(::google::protobuf::int64 value);
+
+  // optional int32 entityID = 4;
+  inline bool has_entityid() const;
+  inline void clear_entityid();
+  static const int kEntityIDFieldNumber = 4;
+  inline ::google::protobuf::int32 entityid() const;
+  inline void set_entityid(::google::protobuf::int32 value);
+
+  // optional int64 entityDBID = 5;
+  inline bool has_entitydbid() const;
+  inline void clear_entitydbid();
+  static const int kEntityDBIDFieldNumber = 5;
+  inline ::google::protobuf::int64 entitydbid() const;
+  inline void set_entitydbid(::google::protobuf::int64 value);
+
+  // optional uint32 addrip = 6;
+  inline bool has_addrip() const;
+  inline void clear_addrip();
+  static const int kAddripFieldNumber = 6;
+  inline ::google::protobuf::uint32 addrip() const;
+  inline void set_addrip(::google::protobuf::uint32 value);
+
+  // optional uint32 addrport = 7;
+  inline bool has_addrport() const;
+  inline void clear_addrport();
+  static const int kAddrportFieldNumber = 7;
+  inline ::google::protobuf::uint32 addrport() const;
+  inline void set_addrport(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:base_dbmgr.QueryAccount)
+ private:
+  inline void set_has_account();
+  inline void clear_has_account();
+  inline void set_has_password();
+  inline void clear_has_password();
+  inline void set_has_componentid();
+  inline void clear_has_componentid();
+  inline void set_has_entityid();
+  inline void clear_has_entityid();
+  inline void set_has_entitydbid();
+  inline void clear_has_entitydbid();
+  inline void set_has_addrip();
+  inline void clear_has_addrip();
+  inline void set_has_addrport();
+  inline void clear_has_addrport();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::std::string* account_;
+  ::std::string* password_;
+  ::google::protobuf::int64 componentid_;
+  ::google::protobuf::int64 entitydbid_;
+  ::google::protobuf::int32 entityid_;
+  ::google::protobuf::uint32 addrip_;
+  ::google::protobuf::uint32 addrport_;
+  friend void  protobuf_AddDesc_basedb_2eproto();
+  friend void protobuf_AssignDesc_basedb_2eproto();
+  friend void protobuf_ShutdownFile_basedb_2eproto();
+
+  void InitAsDefaultInstance();
+  static QueryAccount* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class QueryPlayerCBFromDbmgr : public ::google::protobuf::Message {
+ public:
+  QueryPlayerCBFromDbmgr();
+  virtual ~QueryPlayerCBFromDbmgr();
+
+  QueryPlayerCBFromDbmgr(const QueryPlayerCBFromDbmgr& from);
+
+  inline QueryPlayerCBFromDbmgr& operator=(const QueryPlayerCBFromDbmgr& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryPlayerCBFromDbmgr& default_instance();
+
+  void Swap(QueryPlayerCBFromDbmgr* other);
+
+  // implements Message ----------------------------------------------
+
+  QueryPlayerCBFromDbmgr* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const QueryPlayerCBFromDbmgr& from);
+  void MergeFrom(const QueryPlayerCBFromDbmgr& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string account = 1;
+  inline bool has_account() const;
+  inline void clear_account();
+  static const int kAccountFieldNumber = 1;
+  inline const ::std::string& account() const;
+  inline void set_account(const ::std::string& value);
+  inline void set_account(const char* value);
+  inline void set_account(const char* value, size_t size);
+  inline ::std::string* mutable_account();
+  inline ::std::string* release_account();
+  inline void set_allocated_account(::std::string* account);
+
+  // optional string password = 2;
+  inline bool has_password() const;
+  inline void clear_password();
+  static const int kPasswordFieldNumber = 2;
+  inline const ::std::string& password() const;
+  inline void set_password(const ::std::string& value);
+  inline void set_password(const char* value);
+  inline void set_password(const char* value, size_t size);
+  inline ::std::string* mutable_password();
+  inline ::std::string* release_password();
+  inline void set_allocated_password(::std::string* password);
+
+  // optional int64 entityDBID = 3;
+  inline bool has_entitydbid() const;
+  inline void clear_entitydbid();
+  static const int kEntityDBIDFieldNumber = 3;
+  inline ::google::protobuf::int64 entitydbid() const;
+  inline void set_entitydbid(::google::protobuf::int64 value);
+
+  // optional uint32 success = 4;
+  inline bool has_success() const;
+  inline void clear_success();
+  static const int kSuccessFieldNumber = 4;
+  inline ::google::protobuf::uint32 success() const;
+  inline void set_success(::google::protobuf::uint32 value);
+
+  // optional int32 entityID = 5;
+  inline bool has_entityid() const;
+  inline void clear_entityid();
+  static const int kEntityIDFieldNumber = 5;
+  inline ::google::protobuf::int32 entityid() const;
+  inline void set_entityid(::google::protobuf::int32 value);
+
+  // optional bytes datas = 6;
+  inline bool has_datas() const;
+  inline void clear_datas();
+  static const int kDatasFieldNumber = 6;
+  inline const ::std::string& datas() const;
+  inline void set_datas(const ::std::string& value);
+  inline void set_datas(const char* value);
+  inline void set_datas(const void* value, size_t size);
+  inline ::std::string* mutable_datas();
+  inline ::std::string* release_datas();
+  inline void set_allocated_datas(::std::string* datas);
+
+  // @@protoc_insertion_point(class_scope:base_dbmgr.QueryPlayerCBFromDbmgr)
+ private:
+  inline void set_has_account();
+  inline void clear_has_account();
+  inline void set_has_password();
+  inline void clear_has_password();
+  inline void set_has_entitydbid();
+  inline void clear_has_entitydbid();
+  inline void set_has_success();
+  inline void clear_has_success();
+  inline void set_has_entityid();
+  inline void clear_has_entityid();
+  inline void set_has_datas();
+  inline void clear_has_datas();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::std::string* account_;
+  ::std::string* password_;
+  ::google::protobuf::int64 entitydbid_;
+  ::google::protobuf::uint32 success_;
+  ::google::protobuf::int32 entityid_;
+  ::std::string* datas_;
+  friend void  protobuf_AddDesc_basedb_2eproto();
+  friend void protobuf_AssignDesc_basedb_2eproto();
+  friend void protobuf_ShutdownFile_basedb_2eproto();
+
+  void InitAsDefaultInstance();
+  static QueryPlayerCBFromDbmgr* default_instance_;
 };
 // ===================================================================
 
@@ -396,7 +691,7 @@ inline void GetEntityAppFromDbmgr::set_componenttype(::google::protobuf::int32 v
   // @@protoc_insertion_point(field_set:base_dbmgr.GetEntityAppFromDbmgr.componentType)
 }
 
-// optional int32 uid = 2;
+// optional uint32 uid = 2;
 inline bool GetEntityAppFromDbmgr::has_uid() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -407,14 +702,14 @@ inline void GetEntityAppFromDbmgr::clear_has_uid() {
   _has_bits_[0] &= ~0x00000002u;
 }
 inline void GetEntityAppFromDbmgr::clear_uid() {
-  uid_ = 0;
+  uid_ = 0u;
   clear_has_uid();
 }
-inline ::google::protobuf::int32 GetEntityAppFromDbmgr::uid() const {
+inline ::google::protobuf::uint32 GetEntityAppFromDbmgr::uid() const {
   // @@protoc_insertion_point(field_get:base_dbmgr.GetEntityAppFromDbmgr.uid)
   return uid_;
 }
-inline void GetEntityAppFromDbmgr::set_uid(::google::protobuf::int32 value) {
+inline void GetEntityAppFromDbmgr::set_uid(::google::protobuf::uint32 value) {
   set_has_uid();
   uid_ = value;
   // @@protoc_insertion_point(field_set:base_dbmgr.GetEntityAppFromDbmgr.uid)
@@ -520,7 +815,7 @@ inline void GetEntityAppFromDbmgr::set_componentid(::google::protobuf::int64 val
   // @@protoc_insertion_point(field_set:base_dbmgr.GetEntityAppFromDbmgr.componentID)
 }
 
-// optional int32 extaddr = 5;
+// optional uint32 extaddr = 5;
 inline bool GetEntityAppFromDbmgr::has_extaddr() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
@@ -531,20 +826,20 @@ inline void GetEntityAppFromDbmgr::clear_has_extaddr() {
   _has_bits_[0] &= ~0x00000010u;
 }
 inline void GetEntityAppFromDbmgr::clear_extaddr() {
-  extaddr_ = 0;
+  extaddr_ = 0u;
   clear_has_extaddr();
 }
-inline ::google::protobuf::int32 GetEntityAppFromDbmgr::extaddr() const {
+inline ::google::protobuf::uint32 GetEntityAppFromDbmgr::extaddr() const {
   // @@protoc_insertion_point(field_get:base_dbmgr.GetEntityAppFromDbmgr.extaddr)
   return extaddr_;
 }
-inline void GetEntityAppFromDbmgr::set_extaddr(::google::protobuf::int32 value) {
+inline void GetEntityAppFromDbmgr::set_extaddr(::google::protobuf::uint32 value) {
   set_has_extaddr();
   extaddr_ = value;
   // @@protoc_insertion_point(field_set:base_dbmgr.GetEntityAppFromDbmgr.extaddr)
 }
 
-// optional int32 extport = 6;
+// optional uint32 extport = 6;
 inline bool GetEntityAppFromDbmgr::has_extport() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
@@ -555,20 +850,20 @@ inline void GetEntityAppFromDbmgr::clear_has_extport() {
   _has_bits_[0] &= ~0x00000020u;
 }
 inline void GetEntityAppFromDbmgr::clear_extport() {
-  extport_ = 0;
+  extport_ = 0u;
   clear_has_extport();
 }
-inline ::google::protobuf::int32 GetEntityAppFromDbmgr::extport() const {
+inline ::google::protobuf::uint32 GetEntityAppFromDbmgr::extport() const {
   // @@protoc_insertion_point(field_get:base_dbmgr.GetEntityAppFromDbmgr.extport)
   return extport_;
 }
-inline void GetEntityAppFromDbmgr::set_extport(::google::protobuf::int32 value) {
+inline void GetEntityAppFromDbmgr::set_extport(::google::protobuf::uint32 value) {
   set_has_extport();
   extport_ = value;
   // @@protoc_insertion_point(field_set:base_dbmgr.GetEntityAppFromDbmgr.extport)
 }
 
-// optional int32 intaddr = 7;
+// optional uint32 intaddr = 7;
 inline bool GetEntityAppFromDbmgr::has_intaddr() const {
   return (_has_bits_[0] & 0x00000040u) != 0;
 }
@@ -579,20 +874,20 @@ inline void GetEntityAppFromDbmgr::clear_has_intaddr() {
   _has_bits_[0] &= ~0x00000040u;
 }
 inline void GetEntityAppFromDbmgr::clear_intaddr() {
-  intaddr_ = 0;
+  intaddr_ = 0u;
   clear_has_intaddr();
 }
-inline ::google::protobuf::int32 GetEntityAppFromDbmgr::intaddr() const {
+inline ::google::protobuf::uint32 GetEntityAppFromDbmgr::intaddr() const {
   // @@protoc_insertion_point(field_get:base_dbmgr.GetEntityAppFromDbmgr.intaddr)
   return intaddr_;
 }
-inline void GetEntityAppFromDbmgr::set_intaddr(::google::protobuf::int32 value) {
+inline void GetEntityAppFromDbmgr::set_intaddr(::google::protobuf::uint32 value) {
   set_has_intaddr();
   intaddr_ = value;
   // @@protoc_insertion_point(field_set:base_dbmgr.GetEntityAppFromDbmgr.intaddr)
 }
 
-// optional int32 intport = 8;
+// optional uint32 intport = 8;
 inline bool GetEntityAppFromDbmgr::has_intport() const {
   return (_has_bits_[0] & 0x00000080u) != 0;
 }
@@ -603,17 +898,597 @@ inline void GetEntityAppFromDbmgr::clear_has_intport() {
   _has_bits_[0] &= ~0x00000080u;
 }
 inline void GetEntityAppFromDbmgr::clear_intport() {
-  intport_ = 0;
+  intport_ = 0u;
   clear_has_intport();
 }
-inline ::google::protobuf::int32 GetEntityAppFromDbmgr::intport() const {
+inline ::google::protobuf::uint32 GetEntityAppFromDbmgr::intport() const {
   // @@protoc_insertion_point(field_get:base_dbmgr.GetEntityAppFromDbmgr.intport)
   return intport_;
 }
-inline void GetEntityAppFromDbmgr::set_intport(::google::protobuf::int32 value) {
+inline void GetEntityAppFromDbmgr::set_intport(::google::protobuf::uint32 value) {
   set_has_intport();
   intport_ = value;
   // @@protoc_insertion_point(field_set:base_dbmgr.GetEntityAppFromDbmgr.intport)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAccount
+
+// optional string account = 1;
+inline bool QueryAccount::has_account() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void QueryAccount::set_has_account() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void QueryAccount::clear_has_account() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void QueryAccount::clear_account() {
+  if (account_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    account_->clear();
+  }
+  clear_has_account();
+}
+inline const ::std::string& QueryAccount::account() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.QueryAccount.account)
+  return *account_;
+}
+inline void QueryAccount::set_account(const ::std::string& value) {
+  set_has_account();
+  if (account_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    account_ = new ::std::string;
+  }
+  account_->assign(value);
+  // @@protoc_insertion_point(field_set:base_dbmgr.QueryAccount.account)
+}
+inline void QueryAccount::set_account(const char* value) {
+  set_has_account();
+  if (account_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    account_ = new ::std::string;
+  }
+  account_->assign(value);
+  // @@protoc_insertion_point(field_set_char:base_dbmgr.QueryAccount.account)
+}
+inline void QueryAccount::set_account(const char* value, size_t size) {
+  set_has_account();
+  if (account_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    account_ = new ::std::string;
+  }
+  account_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:base_dbmgr.QueryAccount.account)
+}
+inline ::std::string* QueryAccount::mutable_account() {
+  set_has_account();
+  if (account_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    account_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:base_dbmgr.QueryAccount.account)
+  return account_;
+}
+inline ::std::string* QueryAccount::release_account() {
+  clear_has_account();
+  if (account_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = account_;
+    account_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void QueryAccount::set_allocated_account(::std::string* account) {
+  if (account_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete account_;
+  }
+  if (account) {
+    set_has_account();
+    account_ = account;
+  } else {
+    clear_has_account();
+    account_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:base_dbmgr.QueryAccount.account)
+}
+
+// optional string password = 2;
+inline bool QueryAccount::has_password() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void QueryAccount::set_has_password() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void QueryAccount::clear_has_password() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void QueryAccount::clear_password() {
+  if (password_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    password_->clear();
+  }
+  clear_has_password();
+}
+inline const ::std::string& QueryAccount::password() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.QueryAccount.password)
+  return *password_;
+}
+inline void QueryAccount::set_password(const ::std::string& value) {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    password_ = new ::std::string;
+  }
+  password_->assign(value);
+  // @@protoc_insertion_point(field_set:base_dbmgr.QueryAccount.password)
+}
+inline void QueryAccount::set_password(const char* value) {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    password_ = new ::std::string;
+  }
+  password_->assign(value);
+  // @@protoc_insertion_point(field_set_char:base_dbmgr.QueryAccount.password)
+}
+inline void QueryAccount::set_password(const char* value, size_t size) {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    password_ = new ::std::string;
+  }
+  password_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:base_dbmgr.QueryAccount.password)
+}
+inline ::std::string* QueryAccount::mutable_password() {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    password_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:base_dbmgr.QueryAccount.password)
+  return password_;
+}
+inline ::std::string* QueryAccount::release_password() {
+  clear_has_password();
+  if (password_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = password_;
+    password_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void QueryAccount::set_allocated_password(::std::string* password) {
+  if (password_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete password_;
+  }
+  if (password) {
+    set_has_password();
+    password_ = password;
+  } else {
+    clear_has_password();
+    password_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:base_dbmgr.QueryAccount.password)
+}
+
+// optional int64 componentID = 3;
+inline bool QueryAccount::has_componentid() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void QueryAccount::set_has_componentid() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void QueryAccount::clear_has_componentid() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void QueryAccount::clear_componentid() {
+  componentid_ = GOOGLE_LONGLONG(0);
+  clear_has_componentid();
+}
+inline ::google::protobuf::int64 QueryAccount::componentid() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.QueryAccount.componentID)
+  return componentid_;
+}
+inline void QueryAccount::set_componentid(::google::protobuf::int64 value) {
+  set_has_componentid();
+  componentid_ = value;
+  // @@protoc_insertion_point(field_set:base_dbmgr.QueryAccount.componentID)
+}
+
+// optional int32 entityID = 4;
+inline bool QueryAccount::has_entityid() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void QueryAccount::set_has_entityid() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void QueryAccount::clear_has_entityid() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void QueryAccount::clear_entityid() {
+  entityid_ = 0;
+  clear_has_entityid();
+}
+inline ::google::protobuf::int32 QueryAccount::entityid() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.QueryAccount.entityID)
+  return entityid_;
+}
+inline void QueryAccount::set_entityid(::google::protobuf::int32 value) {
+  set_has_entityid();
+  entityid_ = value;
+  // @@protoc_insertion_point(field_set:base_dbmgr.QueryAccount.entityID)
+}
+
+// optional int64 entityDBID = 5;
+inline bool QueryAccount::has_entitydbid() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void QueryAccount::set_has_entitydbid() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void QueryAccount::clear_has_entitydbid() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void QueryAccount::clear_entitydbid() {
+  entitydbid_ = GOOGLE_LONGLONG(0);
+  clear_has_entitydbid();
+}
+inline ::google::protobuf::int64 QueryAccount::entitydbid() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.QueryAccount.entityDBID)
+  return entitydbid_;
+}
+inline void QueryAccount::set_entitydbid(::google::protobuf::int64 value) {
+  set_has_entitydbid();
+  entitydbid_ = value;
+  // @@protoc_insertion_point(field_set:base_dbmgr.QueryAccount.entityDBID)
+}
+
+// optional uint32 addrip = 6;
+inline bool QueryAccount::has_addrip() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void QueryAccount::set_has_addrip() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void QueryAccount::clear_has_addrip() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void QueryAccount::clear_addrip() {
+  addrip_ = 0u;
+  clear_has_addrip();
+}
+inline ::google::protobuf::uint32 QueryAccount::addrip() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.QueryAccount.addrip)
+  return addrip_;
+}
+inline void QueryAccount::set_addrip(::google::protobuf::uint32 value) {
+  set_has_addrip();
+  addrip_ = value;
+  // @@protoc_insertion_point(field_set:base_dbmgr.QueryAccount.addrip)
+}
+
+// optional uint32 addrport = 7;
+inline bool QueryAccount::has_addrport() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void QueryAccount::set_has_addrport() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void QueryAccount::clear_has_addrport() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void QueryAccount::clear_addrport() {
+  addrport_ = 0u;
+  clear_has_addrport();
+}
+inline ::google::protobuf::uint32 QueryAccount::addrport() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.QueryAccount.addrport)
+  return addrport_;
+}
+inline void QueryAccount::set_addrport(::google::protobuf::uint32 value) {
+  set_has_addrport();
+  addrport_ = value;
+  // @@protoc_insertion_point(field_set:base_dbmgr.QueryAccount.addrport)
+}
+
+// -------------------------------------------------------------------
+
+// QueryPlayerCBFromDbmgr
+
+// optional string account = 1;
+inline bool QueryPlayerCBFromDbmgr::has_account() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void QueryPlayerCBFromDbmgr::set_has_account() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void QueryPlayerCBFromDbmgr::clear_has_account() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void QueryPlayerCBFromDbmgr::clear_account() {
+  if (account_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    account_->clear();
+  }
+  clear_has_account();
+}
+inline const ::std::string& QueryPlayerCBFromDbmgr::account() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.QueryPlayerCBFromDbmgr.account)
+  return *account_;
+}
+inline void QueryPlayerCBFromDbmgr::set_account(const ::std::string& value) {
+  set_has_account();
+  if (account_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    account_ = new ::std::string;
+  }
+  account_->assign(value);
+  // @@protoc_insertion_point(field_set:base_dbmgr.QueryPlayerCBFromDbmgr.account)
+}
+inline void QueryPlayerCBFromDbmgr::set_account(const char* value) {
+  set_has_account();
+  if (account_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    account_ = new ::std::string;
+  }
+  account_->assign(value);
+  // @@protoc_insertion_point(field_set_char:base_dbmgr.QueryPlayerCBFromDbmgr.account)
+}
+inline void QueryPlayerCBFromDbmgr::set_account(const char* value, size_t size) {
+  set_has_account();
+  if (account_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    account_ = new ::std::string;
+  }
+  account_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:base_dbmgr.QueryPlayerCBFromDbmgr.account)
+}
+inline ::std::string* QueryPlayerCBFromDbmgr::mutable_account() {
+  set_has_account();
+  if (account_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    account_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:base_dbmgr.QueryPlayerCBFromDbmgr.account)
+  return account_;
+}
+inline ::std::string* QueryPlayerCBFromDbmgr::release_account() {
+  clear_has_account();
+  if (account_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = account_;
+    account_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void QueryPlayerCBFromDbmgr::set_allocated_account(::std::string* account) {
+  if (account_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete account_;
+  }
+  if (account) {
+    set_has_account();
+    account_ = account;
+  } else {
+    clear_has_account();
+    account_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:base_dbmgr.QueryPlayerCBFromDbmgr.account)
+}
+
+// optional string password = 2;
+inline bool QueryPlayerCBFromDbmgr::has_password() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void QueryPlayerCBFromDbmgr::set_has_password() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void QueryPlayerCBFromDbmgr::clear_has_password() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void QueryPlayerCBFromDbmgr::clear_password() {
+  if (password_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    password_->clear();
+  }
+  clear_has_password();
+}
+inline const ::std::string& QueryPlayerCBFromDbmgr::password() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.QueryPlayerCBFromDbmgr.password)
+  return *password_;
+}
+inline void QueryPlayerCBFromDbmgr::set_password(const ::std::string& value) {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    password_ = new ::std::string;
+  }
+  password_->assign(value);
+  // @@protoc_insertion_point(field_set:base_dbmgr.QueryPlayerCBFromDbmgr.password)
+}
+inline void QueryPlayerCBFromDbmgr::set_password(const char* value) {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    password_ = new ::std::string;
+  }
+  password_->assign(value);
+  // @@protoc_insertion_point(field_set_char:base_dbmgr.QueryPlayerCBFromDbmgr.password)
+}
+inline void QueryPlayerCBFromDbmgr::set_password(const char* value, size_t size) {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    password_ = new ::std::string;
+  }
+  password_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:base_dbmgr.QueryPlayerCBFromDbmgr.password)
+}
+inline ::std::string* QueryPlayerCBFromDbmgr::mutable_password() {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    password_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:base_dbmgr.QueryPlayerCBFromDbmgr.password)
+  return password_;
+}
+inline ::std::string* QueryPlayerCBFromDbmgr::release_password() {
+  clear_has_password();
+  if (password_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = password_;
+    password_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void QueryPlayerCBFromDbmgr::set_allocated_password(::std::string* password) {
+  if (password_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete password_;
+  }
+  if (password) {
+    set_has_password();
+    password_ = password;
+  } else {
+    clear_has_password();
+    password_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:base_dbmgr.QueryPlayerCBFromDbmgr.password)
+}
+
+// optional int64 entityDBID = 3;
+inline bool QueryPlayerCBFromDbmgr::has_entitydbid() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void QueryPlayerCBFromDbmgr::set_has_entitydbid() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void QueryPlayerCBFromDbmgr::clear_has_entitydbid() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void QueryPlayerCBFromDbmgr::clear_entitydbid() {
+  entitydbid_ = GOOGLE_LONGLONG(0);
+  clear_has_entitydbid();
+}
+inline ::google::protobuf::int64 QueryPlayerCBFromDbmgr::entitydbid() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.QueryPlayerCBFromDbmgr.entityDBID)
+  return entitydbid_;
+}
+inline void QueryPlayerCBFromDbmgr::set_entitydbid(::google::protobuf::int64 value) {
+  set_has_entitydbid();
+  entitydbid_ = value;
+  // @@protoc_insertion_point(field_set:base_dbmgr.QueryPlayerCBFromDbmgr.entityDBID)
+}
+
+// optional uint32 success = 4;
+inline bool QueryPlayerCBFromDbmgr::has_success() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void QueryPlayerCBFromDbmgr::set_has_success() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void QueryPlayerCBFromDbmgr::clear_has_success() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void QueryPlayerCBFromDbmgr::clear_success() {
+  success_ = 0u;
+  clear_has_success();
+}
+inline ::google::protobuf::uint32 QueryPlayerCBFromDbmgr::success() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.QueryPlayerCBFromDbmgr.success)
+  return success_;
+}
+inline void QueryPlayerCBFromDbmgr::set_success(::google::protobuf::uint32 value) {
+  set_has_success();
+  success_ = value;
+  // @@protoc_insertion_point(field_set:base_dbmgr.QueryPlayerCBFromDbmgr.success)
+}
+
+// optional int32 entityID = 5;
+inline bool QueryPlayerCBFromDbmgr::has_entityid() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void QueryPlayerCBFromDbmgr::set_has_entityid() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void QueryPlayerCBFromDbmgr::clear_has_entityid() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void QueryPlayerCBFromDbmgr::clear_entityid() {
+  entityid_ = 0;
+  clear_has_entityid();
+}
+inline ::google::protobuf::int32 QueryPlayerCBFromDbmgr::entityid() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.QueryPlayerCBFromDbmgr.entityID)
+  return entityid_;
+}
+inline void QueryPlayerCBFromDbmgr::set_entityid(::google::protobuf::int32 value) {
+  set_has_entityid();
+  entityid_ = value;
+  // @@protoc_insertion_point(field_set:base_dbmgr.QueryPlayerCBFromDbmgr.entityID)
+}
+
+// optional bytes datas = 6;
+inline bool QueryPlayerCBFromDbmgr::has_datas() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void QueryPlayerCBFromDbmgr::set_has_datas() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void QueryPlayerCBFromDbmgr::clear_has_datas() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void QueryPlayerCBFromDbmgr::clear_datas() {
+  if (datas_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    datas_->clear();
+  }
+  clear_has_datas();
+}
+inline const ::std::string& QueryPlayerCBFromDbmgr::datas() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.QueryPlayerCBFromDbmgr.datas)
+  return *datas_;
+}
+inline void QueryPlayerCBFromDbmgr::set_datas(const ::std::string& value) {
+  set_has_datas();
+  if (datas_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    datas_ = new ::std::string;
+  }
+  datas_->assign(value);
+  // @@protoc_insertion_point(field_set:base_dbmgr.QueryPlayerCBFromDbmgr.datas)
+}
+inline void QueryPlayerCBFromDbmgr::set_datas(const char* value) {
+  set_has_datas();
+  if (datas_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    datas_ = new ::std::string;
+  }
+  datas_->assign(value);
+  // @@protoc_insertion_point(field_set_char:base_dbmgr.QueryPlayerCBFromDbmgr.datas)
+}
+inline void QueryPlayerCBFromDbmgr::set_datas(const void* value, size_t size) {
+  set_has_datas();
+  if (datas_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    datas_ = new ::std::string;
+  }
+  datas_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:base_dbmgr.QueryPlayerCBFromDbmgr.datas)
+}
+inline ::std::string* QueryPlayerCBFromDbmgr::mutable_datas() {
+  set_has_datas();
+  if (datas_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    datas_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:base_dbmgr.QueryPlayerCBFromDbmgr.datas)
+  return datas_;
+}
+inline ::std::string* QueryPlayerCBFromDbmgr::release_datas() {
+  clear_has_datas();
+  if (datas_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = datas_;
+    datas_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void QueryPlayerCBFromDbmgr::set_allocated_datas(::std::string* datas) {
+  if (datas_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete datas_;
+  }
+  if (datas) {
+    set_has_datas();
+    datas_ = datas;
+  } else {
+    clear_has_datas();
+    datas_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:base_dbmgr.QueryPlayerCBFromDbmgr.datas)
 }
 
 

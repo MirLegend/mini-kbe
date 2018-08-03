@@ -1,7 +1,7 @@
 <root>
 	<serverpaths>
-		<root_path> E:\ServerEngine\trunk </root_path>
-		<res_path> ./;E:\ServerEngine\trunk\kbeSmall\res\;E:\ServerEngine\ServerSvn/assets/;E:\ServerEngine\ServerSvn/assets/scripts/;E:\ServerEngine\ServerSvn/assets/res/ </res_path>
-		<bin_path> E:\ServerEngine\trunk\kbeSmall\bin\server </bin_path>
+		<root_path> F:\minikbe\mini-kbe </root_path>
+		<res_path> ./;F:\minikbe\mini-kbe\bin\server\;F:\minikbe\mini-kbe\bin\server\server\ </res_path>
+		<bin_path> F:\minikbe\mini-kbe\bin\server\ </bin_path>
 	</serverpaths>
 </root>

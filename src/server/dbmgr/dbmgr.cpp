@@ -1,4 +1,5 @@
 #include "dbmgr.h"
+#include "dbTalbeModule.h"
 #include "interfaces_handler.h"
 #include "db_interface/db_interface.h"
 #include "sync_app_datas_handler.h"
@@ -10,6 +11,7 @@
 #include "network/bundle_broadcast.h"
 #include "thread/threadpool.h"
 #include "server/components.h"
+#include "resmgr/resmgr.h"
 #include <sstream>
 
 #include "proto/coms.pb.h"
@@ -34,7 +36,9 @@ DBMgrApp::DBMgrApp(Network::EventDispatcher& dispatcher,
 	mainProcessTimer_(),
 	idServer_(1, 1024),
 	pInterfacesAccountHandler_(NULL),
-	pSyncAppDatasHandler_(NULL)
+	pSyncAppDatasHandler_(NULL),
+	bufferedDBTasks_(),
+	numQueryEntity_(0)
 {
 }
 
@@ -133,8 +137,9 @@ bool DBMgrApp::initDB()
 		ERROR_MSG("Dbmgr::initDB(): can't create dbinterface!\n");
 		return false;
 	}
-
-	bool ret = DBUtil::initInterface(pDBInterface);
+	
+	DBTalbeModule::LoadDBTableDefs();
+	bool ret = DBUtil::initInterface(pDBInterface, DBTalbeModule::tabelDefs);
 	pDBInterface->detach();
 	SAFE_RELEASE(pDBInterface);
 
@@ -308,5 +313,30 @@ void DBMgrApp::OnRegisterServer(Network::Channel* pChannel, /*KBEngine::*/Memory
 		}
 	}
 }
+
+void DBMgrApp::QueryAccount(Network::Channel* pChannel, MemoryStream& s)
+{
+	base_dbmgr::QueryAccount queryCmd;
+	PARSEBUNDLE(s, queryCmd);
+	std::string accountName = queryCmd.account();
+	std::string password = queryCmd.password();
+	COMPONENT_ID componentID = queryCmd.componentid();
+	ENTITY_ID entityID = queryCmd.entityid();
+	DBID entityDBID = queryCmd.entitydbid();
+	uint32 ip = queryCmd.addrip();
+	uint16 port = queryCmd.addrport();
+
+	if (accountName.size() == 0)
+	{
+		ERROR_MSG("Dbmgr::queryAccount: accountName is empty.\n");
+		return;
+	}
+
+	bufferedDBTasks_.addTask(new DBTaskQueryAccount(pChannel->addr(),
+		accountName, password, componentID, entityID, entityDBID, ip, port));
+
+	numQueryEntity_++;
+}
+
 
 }

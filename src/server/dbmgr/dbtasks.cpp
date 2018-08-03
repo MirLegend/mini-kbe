@@ -20,6 +20,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "dbtasks.h"
 #include "dbmgr.h"
+#include "buffered_dbtasks.h"
 #include "network/common.h"
 #include "network/channel.h"
 #include "network/message_handler.h"
@@ -34,6 +35,8 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "proto/ldb.pb.h"
 #include "../../server/login/login_interface.h"
+#include "proto/basedb.pb.h"
+#include "../../server/baseapp/baseapp_interface.h"
 
 #if KBE_PLATFORM == PLATFORM_WIN32
 #ifdef _DEBUG
@@ -131,7 +134,7 @@ bool DBTaskAccountLogin::db_thread_process()
 		(EntityTables::getSingleton().findKBETable("kbe_entitylog"));
 	KBE_ASSERT(pELTable);
 
-	KBEAccountTable* pTable = static_cast<KBEAccountTable*>(EntityTables::getSingleton().findKBETable("ziyu_dota_players"));
+	KBEAccountTable* pTable = static_cast<KBEAccountTable*>(EntityTables::getSingleton().findKBETable("ziyu_dota_accounts"));
 	KBE_ASSERT(pTable);
 
 	ACCOUNT_INFOS info;
@@ -281,7 +284,7 @@ bool DBTaskCreateAccount::writeAccount(DBInterface* pdbi, const std::string& acc
 
 	// 寻找dblog是否有此账号， 如果有则创建失败
 	// 如果没有则向account表新建一个entity数据同时在accountlog表写入一个log关联dbid
-	KBEAccountTable* pTable = static_cast<KBEAccountTable*>(EntityTables::getSingleton().findKBETable("ziyu_dota_players"));
+	KBEAccountTable* pTable = static_cast<KBEAccountTable*>(EntityTables::getSingleton().findKBETable("ziyu_dota_accounts"));
 	KBE_ASSERT(pTable);
 
 	if (pTable->queryAccount(pdbi, accountName, info))
@@ -302,22 +305,9 @@ bool DBTaskCreateAccount::writeAccount(DBInterface* pdbi, const std::string& acc
 		//info.deadline = g_kbeSrvConfig.getDBMgr().accountDefaultDeadline;
 	}
 
-	DBID entityDBID = info.usrId;
-
-	if (entityDBID == 0)
-	{
-		// 防止多线程问题， 这里做一个拷贝。
-		MemoryStream copyAccountDefMemoryStream(pTable->accountDefMemoryStream());
-
-		entityDBID = EntityTables::getSingleton().writeEntity(pdbi, 0, -1,
-			&copyAccountDefMemoryStream);
-	}
-
-	KBE_ASSERT(entityDBID > 0);
-
 	info.name = accountName;
 	info.password = passwd;
-	info.usrId = entityDBID;
+	//info.usrId = entityDBID;
 
 	if (!hasset)
 	{
@@ -328,8 +318,22 @@ bool DBTaskCreateAccount::writeAccount(DBInterface* pdbi, const std::string& acc
 				WARNING_MSG(fmt::format("DBTaskCreateAccount::writeAccount(): logAccount error:{}\n",
 					pdbi->getstrerror()));
 			}
-
 			return false;
+		}
+		DBID entityDBID = info.usrId;
+		KBE_ASSERT(entityDBID > 0);
+		//if (entityDBID == 0)
+		{
+			// 防止多线程问题， 这里做一个拷贝。
+			MemoryStream copyAccountDefMemoryStream/*(pTable->accountDefMemoryStream())*/;
+			EntityTable* pPlayerTable = EntityTables::getSingleton().findTable("dota_players");
+			KBE_ASSERT(pPlayerTable != NULL);
+			copyAccountDefMemoryStream << pPlayerTable->findItemUtype("id");
+			copyAccountDefMemoryStream << entityDBID;
+			DEBUG_MSG(fmt::format("-------------Creat Player dbid:{}------------", entityDBID));
+			pPlayerTable->writeTable(pdbi, 0, true, &copyAccountDefMemoryStream);
+			//entityDBID = EntityTables::getSingleton().writeEntity(pdbi, 0/*entityDBID*/, true,
+			//	&copyAccountDefMemoryStream, "dota_players");
 		}
 	}
 	else
@@ -455,6 +459,160 @@ thread::TPTask::TPTaskState DBTaskExecuteRawDatabaseCommand::presentMainThread()
 
 	return thread::TPTask::TPTASK_STATE_COMPLETED;
 }
+
+//-------------------------------------------------------------------------------------
+DBTask* EntityDBTask::tryGetNextTask()
+{
+	KBE_ASSERT(_pBuffered_DBTasks != NULL);
+	return _pBuffered_DBTasks->tryGetNextTask(this);
+}
+
+//-------------------------------------------------------------------------------------
+thread::TPTask::TPTaskState EntityDBTask::presentMainThread()
+{
+	return DBTask::presentMainThread();
+}
+
+
+//-------------------------------------------------------------------------------------
+DBTaskQueryAccount::DBTaskQueryAccount(const Network::Address& addr, std::string& accountName, std::string& password,
+	COMPONENT_ID componentID, ENTITY_ID entityID, DBID entityDBID, uint32 ip, uint16 port) :
+	EntityDBTask(addr, entityID, entityDBID),
+	accountName_(accountName),
+	password_(password),
+	success_(false),
+	s_(),
+	dbid_(entityDBID),
+	componentID_(componentID),
+	entityID_(entityID),
+	error_(),
+	ip_(ip),
+	port_(port),
+	flags_(0),
+	deadline_(0)
+{
+}
+
+//-------------------------------------------------------------------------------------
+DBTaskQueryAccount::~DBTaskQueryAccount()
+{
+}
+
+//-------------------------------------------------------------------------------------
+bool DBTaskQueryAccount::db_thread_process()
+{
+	if (accountName_.size() == 0)
+	{
+		error_ = "accountName_ is NULL";
+		return false;
+	}
+
+	KBEAccountTable* pTable = static_cast<KBEAccountTable*>(EntityTables::getSingleton().findKBETable("ziyu_dota_accounts"));
+	KBE_ASSERT(pTable);
+
+	ACCOUNT_INFOS info;
+	info.name = "";
+	info.password = "";
+	info.usrId = dbid_;
+
+	if (dbid_ == 0)
+	{
+		if (!pTable->queryAccount(pdbi_, accountName_, info))
+		{
+			error_ = "pTable->queryAccount() is failed!";
+
+			if (pdbi_->getlasterror() > 0)
+			{
+				error_ += pdbi_->getstrerror();
+			}
+
+			return false;
+		}
+
+		if (info.usrId == 0 /*|| info.flags != ACCOUNT_FLAG_NORMAL*/)
+		{
+			error_ = "dbid is 0 or flags != ACCOUNT_FLAG_NORMAL";
+			return false;
+		}
+
+		if (kbe_stricmp(info.password.c_str(), KBE_MD5::getDigest(password_.data(), password_.length()).c_str()) != 0)
+		{
+			error_ = "password is error";
+			return false;
+		}
+	}
+
+	//ScriptDefModule* pModule = EntityDef::findScriptModule(DBUtil::accountScriptName());
+	//success_ = EntityTables::getSingleton().queryEntity(pdbi_, info.dbid, &s_, pModule);
+	success_ = EntityTables::getSingleton().queryEntity(pdbi_, info.usrId, &s_, "dota_players");
+
+	if (!success_ && pdbi_->getlasterror() > 0)
+	{
+		error_ += "queryEntity: ";
+		error_ += pdbi_->getstrerror();
+	}
+
+	dbid_ = info.usrId;
+
+	if (!success_)
+		return false;
+
+	success_ = false;
+
+	// 先写log， 如果写失败则可能这个entity已经在线
+	KBEEntityLogTable* pELTable = static_cast<KBEEntityLogTable*>
+		(EntityTables::getSingleton().findKBETable("kbe_entitylog"));
+	KBE_ASSERT(pELTable);
+
+	success_ = pELTable->logEntity(pdbi_, inet_ntoa((struct in_addr&)ip_), port_, dbid_,
+		componentID_, entityID_);
+
+	if (!success_ && pdbi_->getlasterror() > 0)
+	{
+		error_ += "logEntity: ";
+		error_ += pdbi_->getstrerror();
+	}
+
+	return false;
+}
+
+//-------------------------------------------------------------------------------------
+thread::TPTask::TPTaskState DBTaskQueryAccount::presentMainThread()
+{
+	DEBUG_MSG(fmt::format("Dbmgr::queryAccount:{}, success={}, flags={}, deadline={}.\n",
+		accountName_.c_str(), success_, flags_, deadline_));
+
+	Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
+	(*pBundle).newMessage(BaseappInterface::onQueryPlayerCBFromDbmgr);
+	
+	base_dbmgr::QueryPlayerCBFromDbmgr queryCmd;
+	queryCmd.set_account(accountName_);
+	queryCmd.set_password(password_);
+	queryCmd.set_entitydbid(dbid_);
+	queryCmd.set_success(success_);
+	queryCmd.set_entityid(entityID_);
+
+	if (success_)
+	{
+		queryCmd.set_datas(s_.data() + s_.rpos(), s_.length());
+		//pBundle->append(s_);
+	}
+	else
+	{
+		queryCmd.set_datas(error_);
+		//(*pBundle) << error_;
+	}
+
+	ADDTOBUNDLE((*pBundle), queryCmd);
+	if (!this->send(pBundle))
+	{
+		ERROR_MSG(fmt::format("DBTaskQueryAccount::presentMainThread: channel({}) not found.\n", addr_.c_str()));
+		Network::Bundle::ObjPool().reclaimObject(pBundle);
+	}
+
+	return EntityDBTask::presentMainThread();
+}
+
 
 //-------------------------------------------------------------------------------------
 }

@@ -1,0 +1,25 @@
+package client_baseserver;
+
+//c-s 客户端 -> 服务器 91 - 1 //连接握手
+message Hello {
+	optional uint32 version = 1;
+	optional string extraData = 2;
+}
+
+//s-c 服务器 -> 客户端 91 - 2 //连接握手返回
+message HelloCB {
+	optional uint32 result = 1;
+	optional uint32 version = 2;
+	optional string extraData = 3;
+}
+
+//c-s 客户端 -> 服务器 91 - 3 //登陆
+message Login {
+	optional string account = 1; //账号
+	optional string password = 2; //密码
+}
+
+//s-c 服务器 -> 客户端 91 - 4 //登陆base失败
+message LoginBaseappFailed {
+	optional uint32 retCode = 1;
+}

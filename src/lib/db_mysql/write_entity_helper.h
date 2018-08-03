@@ -82,7 +82,7 @@ public:
 		if(!context.isEmpty)
 		{
 			SqlStatement* pSqlcmd = createSql(dbi, optype, context.tableName, 
-				context.parentTableDBID, 
+				0, 
 				context.dbid, context.items);
 
 			ret = pSqlcmd->query();
@@ -90,7 +90,7 @@ public:
 			delete pSqlcmd;
 		}
 
-		if(optype == TABLE_OP_INSERT)
+		/*if(optype == TABLE_OP_INSERT)
 		{
 			// 开始更新所有的子表
 			DBContext::DB_RW_CONTEXTS::iterator iter1 = context.optable.begin();
@@ -296,7 +296,7 @@ public:
 					}
 				}
 			}
-		}
+		} */
 		return ret;
 	}
 

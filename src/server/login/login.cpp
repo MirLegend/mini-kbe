@@ -136,6 +136,15 @@ void LoginApp::onClientHello(Network::Channel* pChannel, MemoryStream& s)
 
 	ADDTOBUNDLE((*pBundle), helloCbCmd)
 	pChannel->send(pBundle);
+
+	//Network::Bundle* pBundle1 = Network::Bundle::ObjPool().createObject();
+	//(*pBundle1).newMessage(90, 6);
+	//client_loginserver::LoginFailed loginfailCmd;
+	//loginfailCmd.set_failedcode(1);
+	//loginfailCmd.set_extradata(extradata);
+
+	//ADDTOBUNDLE((*pBundle1), loginfailCmd)
+	//pChannel->send(pBundle1);
 }
 
 //-------------------------------------------------------------------------------------

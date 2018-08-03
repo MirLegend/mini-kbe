@@ -1,0 +1,152 @@
+<root>
+
+	<!-- Type: 数据类型
+	DBLength: 存储数据长度
+	Flags: 约束
+	IndexType: 索引类型
+	Default:  默认值
+	-->
+	<id>
+		<Type>			INT64		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				2		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</id>
+
+	<server_id>
+		<Type>			INT32		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>			INDEX		</IndexType>
+		<Default>					</Default>
+	</server_id>
+		
+	<nickname>
+		<Type>			UNICODE		</Type> 
+		<DBLength>			32		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>			UNIQUE		</IndexType>
+		<Default>					</Default>
+	</nickname>
+		
+	<last_set_name_time>
+		<Type>			INT32		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</last_set_name_time>
+		
+	<avatar>
+		<Type>			INT32		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</avatar>
+		
+	<level>
+		<Type>			INT32		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>			1		</Default>
+	</level>
+		
+	<exp>
+		<Type>			INT64		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</exp>
+		
+	<money>
+		<Type>			INT64		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</money>
+		
+	<gem>
+		<Type>			INT64		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</gem>
+		
+	<arena_point>
+		<Type>			INT32		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</arena_point>
+		
+	<crusade_point>
+		<Type>			INT32		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</crusade_point>
+		
+	<guild_point>
+		<Type>			INT32		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</guild_point>
+		
+	<last_midas_time>
+		<Type>			INT32		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</last_midas_time>
+		
+	<today_midas_times>
+		<Type>			INT32		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</today_midas_times>
+		
+	<total_online_time>
+		<Type>			INT32		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</total_online_time>
+		
+	<tutorialstep>
+		<Type>			INT16		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</tutorialstep>
+		
+	<rechargegem>
+		<Type>			INT64		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</rechargegem>
+		
+	<facebook_follow>
+		<Type>			INT8		</Type> 
+		<DBLength>			0		</DBLength>
+		<Flags>				0		</Flags>
+		<IndexType>					</IndexType>
+		<Default>					</Default>
+	</facebook_follow>
+</root>

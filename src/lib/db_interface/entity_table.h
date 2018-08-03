@@ -38,8 +38,8 @@ class EntityTable;
 class MemoryStream;
 
 #define TABLE_ITEM_TYPE_UNKONWN		0
-#define TABLE_ITEM_TYPE_FIXEDARRAY	1
-#define TABLE_ITEM_TYPE_FIXEDDICT	2
+//#define TABLE_ITEM_TYPE_FIXEDARRAY	1
+//#define TABLE_ITEM_TYPE_FIXEDDICT	2
 #define TABLE_ITEM_TYPE_STRING		3
 #define TABLE_ITEM_TYPE_DIGIT		4
 #define TABLE_ITEM_TYPE_BLOB		5
@@ -68,6 +68,21 @@ enum DB_TABLE_OP
 	TABLE_OP_DELETE					= 3
 };
 
+typedef struct  
+{
+	int32 utype;
+	char tblItemName[32];
+	char tblItemType[32];
+	uint32 length; //数据存储长度
+	uint32 flag; //约束
+	char indexType[8]; //属性的索引类别，UNIQUE, INDEX，分别对应唯一索引、普通索引
+	char defaultValue[32];
+} stTableItem;
+
+//typedef std::vector<stTableItem> DBTABLEITEMS;
+typedef KBEUnordered_map<std::string, stTableItem> DBTABLEITEMS;
+typedef std::map<std::string, DBTABLEITEMS> DBTABLEDEFS;
+
 struct ACCOUNT_INFOS
 {
 	ACCOUNT_INFOS():
@@ -94,18 +109,20 @@ struct ACCOUNT_INFOS
 class EntityTableItem
 {
 public:
-	EntityTableItem(std::string itemDBType, uint32 datalength, uint32 flags):
+	EntityTableItem(std::string itemDBType, const stTableItem* pTableItemDescription, uint32 datalength, uint32 flags):
 		itemName_(),
 		tableName_(),
 		utype_(0),
 		pParentTable_(NULL),
 		pParentTableItem_(NULL),
+		pTableItemDescription_(pTableItemDescription),
 		//pDataType_(NULL),
 		itemDBType_(itemDBType),
 		datalength_(datalength),
 		flags_(flags),
 		indexType_()
 	{
+		indexType_ = pTableItemDescription_->indexType;
 	};
 
 	virtual ~EntityTableItem(){};
@@ -134,12 +151,14 @@ public:
 	void pParentTableItem(EntityTableItem* v){ pParentTableItem_ = v; }
 	EntityTableItem* pParentTableItem(){ return pParentTableItem_; }
 
-	uint32 datalength() const{ return datalength_; }
+	const stTableItem* pTableItemDescription() { return pTableItemDescription_; }
 
+	uint32 datalength() const{ return datalength_; }
+	uint32 datalength(uint32 datalength) { datalength_ = datalength; }
 	/**
 		初始化
 	*/
-	virtual bool initialize(std::string itemName) = 0;
+	virtual bool initialize(std::string itemName,const stTableItem* pTableItemDescription) = 0;
 
 	void tableName(std::string name){ tableName_ = name; }
 	const char* tableName(){ return tableName_.c_str(); }
@@ -167,6 +186,8 @@ protected:
 	EntityTable* pParentTable_;
 	EntityTableItem* pParentTableItem_;
 
+	const stTableItem* pTableItemDescription_;
+
 	std::string itemDBType_;
 	uint32 datalength_;
 	uint32 flags_;
@@ -186,7 +207,7 @@ public:
 	tableName_(),
 	tableItems_(),
 	tableFixedOrderItems_(),
-	isChild_(false),
+	//isChild_(false),
 	sync_(false)
 	{
 	};
@@ -199,7 +220,7 @@ public:
 	/**
 		初始化
 	*/
-	virtual bool initialize(std::string name) = 0;
+	virtual bool initialize(std::string name, const DBTABLEITEMS& tableItems) = 0;
 
 	/**
 		同步entity表到数据库中
@@ -214,7 +235,7 @@ public:
 	/** 
 		创建一个表item
 	*/
-	virtual EntityTableItem* createItem(std::string type) = 0;
+	virtual EntityTableItem* createItem(std::string type, const stTableItem* pTableItemDescription) = 0;
 
 	/** 
 		获得所有表字段
@@ -224,15 +245,16 @@ public:
 
 	void addItem(EntityTableItem* pItem);
 
-	bool isChild() const{ return isChild_; }
-	void isChild(bool b){ isChild_ = b; }
+	//bool isChild() const{ return isChild_; }
+	//void isChild(bool b){ isChild_ = b; }
 
 	EntityTableItem* findItem(int32/*ENTITY_PROPERTY_UID*/ utype);
+	int32 findItemUtype(const char* itemName);
 
 	/**
 		更新表
 	*/
-	virtual DBID writeTable(DBInterface* dbi, DBID dbid, int8 shouldAutoLoad, MemoryStream* s);
+	virtual DBID writeTable(DBInterface* dbi, DBID dbid, bool binsert, MemoryStream* s);
 
 	/**
 		从数据库删除entity
@@ -264,12 +286,13 @@ protected:
 
 	// 所有的字段
 	TABLEITEM_MAP tableItems_;
+	const DBTABLEITEMS* mpTableItemDef;
 
 	// 和ScriptDefModule中保持一致秩序的item引用
 	std::vector<EntityTableItem*> tableFixedOrderItems_; 
 
 	// 是否为子表
-	bool isChild_; 
+	//bool isChild_; 
 
 	bool sync_;
 };
@@ -281,7 +304,7 @@ public:
 	EntityTables();
 	virtual ~EntityTables();
 	
-	bool load(DBInterface* dbi);
+	bool load(DBInterface* dbi, const DBTABLEDEFS& tabelDefs);
 
 	bool syncToDB(DBInterface* dbi);
 
@@ -301,17 +324,17 @@ public:
 	/**
 		写entity到数据库
 	*/
-	DBID writeEntity(DBInterface* dbi, DBID dbid, int8 shouldAutoLoad, MemoryStream* s);
+	DBID writeEntity(DBInterface* dbi, DBID dbid, bool binsert, MemoryStream* s, const std::string tableName);
 
 	/**
 		从数据库删除entity
 	*/
-	bool removeEntity(DBInterface* dbi, DBID dbid);
+	bool removeEntity(DBInterface* dbi, DBID dbid, const std::string& tableName);
 
 	/**
 		获取某个表所有的数据放到流中
 	*/
-	bool queryEntity(DBInterface* dbi, DBID dbid, MemoryStream* s);
+	bool queryEntity(DBInterface* dbi, DBID dbid, MemoryStream* s, const std::string& tableName);
 
 	void onTableSyncSuccessfully(KBEShared_ptr<EntityTable> pEntityTable, bool error);
 

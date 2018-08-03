@@ -175,7 +175,7 @@ const char* DBUtil::dbtype()
 }
 
 //-------------------------------------------------------------------------------------
-bool DBUtil::initInterface(DBInterface* dbi)
+bool DBUtil::initInterface(DBInterface* dbi, const DBTABLEDEFS& tabelDefs)
 {
 	ENGINE_COMPONENT_INFO& dbcfg = g_kbeSrvConfig.getDBMgr();
 	//if(strcmp(dbcfg.db_type, "mysql") == 0)
@@ -186,6 +186,8 @@ bool DBUtil::initInterface(DBInterface* dbi)
 	//{
 	//	DBInterfaceRedis::initInterface(dbi);
 	//}
+
+
 	
 	if(!pThreadPool_->isInitialize())
 	{
@@ -194,7 +196,7 @@ bool DBUtil::initInterface(DBInterface* dbi)
 			return false;
 	}
 
-	bool ret = EntityTables::getSingleton().load(dbi);
+	bool ret = EntityTables::getSingleton().load(dbi, tabelDefs);
 
 	if(ret)
 	{

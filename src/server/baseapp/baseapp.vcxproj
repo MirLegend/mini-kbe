@@ -112,6 +112,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\lib\proto\basedb.pb.cc" />
     <ClCompile Include="..\..\lib\proto\bmb.pb.cc" />
+    <ClCompile Include="..\..\lib\proto\cb.pb.cc" />
     <ClCompile Include="..\..\lib\proto\coms.pb.cc" />
     <ClCompile Include="initprogress_handler.cpp" />
     <ClCompile Include="main.cpp" />
@@ -163,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lib\proto\basedb.pb.h" />
+    <ClInclude Include="..\..\lib\proto\cb.pb.h" />
     <ClInclude Include="baseapp.h" />
     <ClInclude Include="baseapp_interface.h" />
     <ClInclude Include="initprogress_handler.h" />

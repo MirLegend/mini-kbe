@@ -106,6 +106,7 @@
     <ClInclude Include="db_interface_mysql.h" />
     <ClInclude Include="db_context.h" />
     <ClInclude Include="db_transaction.h" />
+    <ClInclude Include="entity_table_mysql.h" />
     <ClInclude Include="kbe_table_mysql.h" />
     <ClInclude Include="read_entity_helper.h" />
     <ClInclude Include="remove_entity_helper.h" />

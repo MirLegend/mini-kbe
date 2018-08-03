@@ -2,6 +2,7 @@
 #define KBE_DBMGR_H
 // common include	
 #include "server/kbemain.h"
+#include "buffered_dbtasks.h"
 #include "server/serverapp.h"
 #include "server/idallocate.h"
 #include "server/serverconfig.h"
@@ -11,6 +12,7 @@
 #include "network/common.h"
 #include "network/address.h"
 
+#include "db_interface/entity_table.h"
 #include "db_interface/db_threadpool.h"
 
 //#define NDEBUG
@@ -68,6 +70,9 @@ public:
 	void pSyncAppDatasHandler(SyncAppDatasHandler* p) { pSyncAppDatasHandler_ = p; }
 
 	virtual void OnRegisterServer(Network::Channel* pChannel, MemoryStream& s);
+
+	void QueryAccount(Network::Channel* pChannel, MemoryStream& s);
+	
 protected:
 	TimerHandle											loopCheckTimerHandle_;
 	TimerHandle											mainProcessTimer_;
@@ -79,6 +84,10 @@ protected:
 
 	//·ÖÅäidsµÄ
 	SyncAppDatasHandler*								pSyncAppDatasHandler_;
+
+	Buffered_DBTasks									bufferedDBTasks_;
+
+	uint32												numQueryEntity_;
 };
 
 }

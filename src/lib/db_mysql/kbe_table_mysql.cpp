@@ -207,34 +207,18 @@ bool KBEAccountTableMysql::syncToDB(DBInterface* dbi)
 			"`numlogin` int unsigned not null DEFAULT 0)"
 		"ENGINE=" MYSQL_ENGINE_TYPE;*/
 
-	std::string sqlstr = "CREATE TABLE IF NOT EXISTS ziyu_dota_players "
-		"(`user_id` bigint(20) NOT NULL AUTO_INCREMENT,"
+	std::string sqlstr = "CREATE TABLE IF NOT EXISTS ziyu_dota_accounts "
+		"(`user_dbid` bigint(20) NOT NULL AUTO_INCREMENT,"
 		"`accountName` varchar(255) not null,"
 		"`password` varchar(255),"
+		"`reg_ip` varchar(32) NOT NULL,"
+		"`last_login_ip` varchar(32) NOT NULL,"
 		"`regtime` bigint(20) not null DEFAULT 0,"
 		"`lasttime` bigint(20) not null DEFAULT 0,"
 		"`numlogin` int unsigned not null DEFAULT 0,"
 		"`server_id` int(11) NOT NULL DEFAULT '0',"
-		"`nickname` varchar(250) NOT NULL DEFAULT '',"
-		"`last_set_name_time` int(11) NOT NULL DEFAULT '0',"
-		"`avatar` int(11) NOT NULL DEFAULT '0',"
-		"`level` int(11) NOT NULL DEFAULT '1',"
-		"`exp` bigint(20) NOT NULL DEFAULT '0',"
-		"`money` bigint(20) NOT NULL DEFAULT '0',"
-		"`gem` bigint(20) NOT NULL DEFAULT '0',"
-		"`arena_point` int(11) NOT NULL DEFAULT '0',"
-		"`crusade_point` int(11) NOT NULL DEFAULT '0',"
-		"`guild_point` int(11) NOT NULL,"
-		"`last_midas_time` int(11) NOT NULL DEFAULT '0',"
-		"`today_midas_times` int(11) NOT NULL DEFAULT '0',"
-		"`total_online_time` int(11) NOT NULL,"
-		"`tutorialstep` int(5) DEFAULT NULL,"
-		"`rechargegem` bigint(20) NOT NULL,"
-		"`facebook_follow` tinyint(1) NOT NULL DEFAULT '0',"
-		"PRIMARY KEY (`user_id`),"
-		"KEY `accountName` (`accountName`),"
-		"KEY `server_id` (`server_id`),"
-		"KEY `name` (`nickname`)) "
+		"PRIMARY KEY (`user_dbid`),"
+		"unique (`accountName`)) "
 		"ENGINE=" MYSQL_ENGINE_TYPE
 		" DEFAULT CHARSET=utf8";
 	ret = dbi->query(sqlstr.c_str(), sqlstr.size(), true);
@@ -257,7 +241,7 @@ bool KBEAccountTableMysql::setFlagsDeadline(DBInterface * dbi, const std::string
 	//mysql_real_escape_string(static_cast<DBInterfaceMysql*>(dbi)->mysql(), 
 	//	tbuf, name.c_str(), name.size());
 
-	//std::string sqlstr = fmt::format("update ziyu_dota_players set flags={}, deadline={} where accountName=\"{}\"", 
+	//std::string sqlstr = fmt::format("update ziyu_dota_accounts set flags={}, deadline={} where accountName=\"{}\"", 
 	//	flags, deadline, tbuf);
 
 	//SAFE_RELEASE_ARRAY(tbuf);
@@ -272,7 +256,7 @@ bool KBEAccountTableMysql::setFlagsDeadline(DBInterface * dbi, const std::string
 //-------------------------------------------------------------------------------------
 bool KBEAccountTableMysql::queryAccount(DBInterface * dbi, const std::string& name, ACCOUNT_INFOS& info)
 {
-	std::string sqlstr = "select * from ziyu_dota_players where accountName=\"";
+	std::string sqlstr = "select * from ziyu_dota_accounts where accountName=\"";
 
 	char* tbuf = new char[name.size() * 2 + 1];
 
@@ -308,7 +292,7 @@ bool KBEAccountTableMysql::queryAccount(DBInterface * dbi, const std::string& na
 //-------------------------------------------------------------------------------------
 bool KBEAccountTableMysql::queryAccountAllInfos(DBInterface * dbi, const std::string& name, ACCOUNT_INFOS& info)
 {
-	//std::string sqlstr = "select * from ziyu_dota_players where accountName=\"";
+	//std::string sqlstr = "select * from ziyu_dota_accounts where accountName=\"";
 
 	//char* tbuf = new char[name.size() * 2 + 1];
 
@@ -349,7 +333,7 @@ bool KBEAccountTableMysql::queryAccountAllInfos(DBInterface * dbi, const std::st
 bool KBEAccountTableMysql::updateCount(DBInterface * dbi, const std::string& name, DBID dbid)
 {
 	// 如果查询失败则返回存在， 避免可能产生的错误
-	if(!dbi->query(fmt::format("update ziyu_dota_players set lasttime={}, numlogin=numlogin+1 where user_id={}",
+	if(!dbi->query(fmt::format("update ziyu_dota_accounts set lasttime={}, numlogin=numlogin+1 where user_dbid={}",
 		time(NULL), dbid), false))
 		return false;
 
@@ -369,7 +353,7 @@ bool KBEAccountTableMysql::updatePassword(DBInterface * dbi, const std::string& 
 		tbuf1, name.c_str(), name.size());
 
 	// 如果查询失败则返回存在， 避免可能产生的错误
-	if(!dbi->query(fmt::format("update ziyu_dota_players set password=\"{}\" where accountName like \"{}\"", 
+	if(!dbi->query(fmt::format("update ziyu_dota_accounts set password=\"{}\" where accountName like \"{}\"", 
 		password, tbuf1), false))
 	{
 		SAFE_RELEASE_ARRAY(tbuf);
@@ -385,7 +369,7 @@ bool KBEAccountTableMysql::updatePassword(DBInterface * dbi, const std::string& 
 //-------------------------------------------------------------------------------------
 bool KBEAccountTableMysql::logAccount(DBInterface * dbi, ACCOUNT_INFOS& info)
 {
-	std::string sqlstr = "insert into ziyu_dota_players (accountName, password, regtime, lasttime) values(";
+	std::string sqlstr = "insert into ziyu_dota_accounts (accountName, password, regtime, lasttime) values(";
 
 	char* tbuf = new char[MAX_BUF * 3];
 
@@ -421,9 +405,159 @@ bool KBEAccountTableMysql::logAccount(DBInterface * dbi, ACCOUNT_INFOS& info)
 
 		return false;
 	}
-
+	info.usrId = static_cast<DBInterfaceMysql*>(dbi)->insertID();
 	return true;
 }
+
+
+KBEPlayerTableMysql::KBEPlayerTableMysql(){}
+
+const stTableItem s_tableItems[] = {
+	//{ "user_id", "INT64",0, PRI_KEY_FLAG, "", "" },
+	//{ "server_id", "INT32", 0/*UNIQUE_KEY_FLAG*/, 0, "INDEX", "" },
+	//{ "nickname", "UNICODE", 32, 0, "UNIQUE", "" },
+	//{ "last_set_name_time", "INT32", 0, 0, "" , "" },
+	//{ "avatar", "INT32", 0, 0, "", "" },
+	//{ "level", "INT32", 0 , 0, "", "" },
+	//{ "exp", "INT64", 0 , 0, "" , "" },
+	//{ "money", "INT64", 0 , 0, "", "" },
+	//{ "gem", "INT64", 0 , 0, "" , "" },
+	//{ "arena_point", "INT32", 0 , 0, "", "" },
+	//{ "crusade_point", "INT32", 0 , 0, "" , "" },
+	//{ "guild_point", "INT32", 0 , 0, "", "" },
+	//{ "last_midas_time", "INT32", 0 , 0, "" , "" },
+	//{ "today_midas_times", "INT32", 0 , 0, "", "" },
+	//{ "total_online_time", "INT32", 0 , 0, "" , "" },
+	//{ "tutorialstep", "INT16", 0 , 0, "", "" },
+	//{ "rechargegem", "INT64", 0, 0, "" , "" },
+	{1, "facebook_follow", "INT8", 0 , 0, "" , "" },
+};
+bool KBEPlayerTableMysql::initialize(std::string name, const DBTABLEITEMS& tableItems)
+{
+	// 获取表名
+	//tableName(name);
+	tableName("ziyu_dota_players");
+	
+	for (int i = 0; i < (sizeof(s_tableItems) / sizeof(s_tableItems[0])); i++)
+	{
+		EntityTableItem* pETItem = this->createItem(s_tableItems[i].tblItemType, &s_tableItems[i]);
+		//ERROR_MSG(fmt::format("EntityTableItem::{} {} \n", s_tableItems[i].tblItemName, s_tableItems[i].length));
+		pETItem->flags(pETItem->flags() | s_tableItems[i].flag);
+		pETItem->pParentTable(this);
+		pETItem->utype(i+1);
+		pETItem->tableName(this->tableName());
+		pETItem->itemName(s_tableItems[i].tblItemName);
+		tableItems_[pETItem->utype()].reset(pETItem);
+		tableFixedOrderItems_.push_back(pETItem);
+	}
+	//ERROR_MSG(fmt::format("KBEPlayerTableMysql::initialize \n"));
+	prikeyIndex = 1;
+	init_db_item_name();
+	return true;
+}
+
+/**
+同步表到数据库中
+*/
+//bool KBEPlayerTableMysql::syncToDB(DBInterface* dbi)
+//{
+//	bool ret = false;
+//
+//	std::string sqlstr = "CREATE TABLE IF NOT EXISTS ziyu_dota_players "
+//		"(`user_id` bigint(20) NOT NULL,"
+//		"`server_id` int(11) NOT NULL DEFAULT '0',"
+//		"`nickname` varchar(250) NOT NULL DEFAULT '',"
+//		"`last_set_name_time` int(11) NOT NULL DEFAULT '0',"
+//		"`avatar` int(11) NOT NULL DEFAULT '0',"
+//		"`level` int(11) NOT NULL DEFAULT '1',"
+//		"`exp` bigint(20) NOT NULL DEFAULT '0',"
+//		"`money` bigint(20) NOT NULL DEFAULT '0',"
+//		"`gem` bigint(20) NOT NULL DEFAULT '0',"
+//		"`arena_point` int(11) NOT NULL DEFAULT '0',"
+//		"`crusade_point` int(11) NOT NULL DEFAULT '0',"
+//		"`guild_point` int(11) NOT NULL,"
+//		"`last_midas_time` int(11) NOT NULL DEFAULT '0',"
+//		"`today_midas_times` int(11) NOT NULL DEFAULT '0',"
+//		"`total_online_time` int(11) NOT NULL,"
+//		"`tutorialstep` int(5) DEFAULT NULL,"
+//		"`rechargegem` bigint(20) NOT NULL,"
+//		"`facebook_follow` tinyint(1) NOT NULL DEFAULT '0',"
+//		"PRIMARY KEY (`user_id`),"
+//		"KEY `name` (`nickname`)) "
+//		"ENGINE=" MYSQL_ENGINE_TYPE
+//		" DEFAULT CHARSET=utf8";
+//	ret = dbi->query(sqlstr.c_str(), sqlstr.size(), true);
+//	KBE_ASSERT(ret);
+//	return ret;
+//}
+
+/**
+获取所有的数据放到流中
+*/
+//bool KBEPlayerTableMysql::queryTable(DBInterface* dbi, DBID dbid, MemoryStream* s)
+//{
+//	struct  
+//	{
+//		DBID usrId;
+//		uint32 serverId;
+//		std::string nickName;
+//		uint32 last_set_name_time;
+//		uint32 avatar;
+//		uint32 level;
+//		int64 exp;
+//		int64 money;
+//		int64 gem;
+//		uint32 arena_point;
+//		uint32 crusade_point;
+//		uint32 guild_point;
+//		uint32 last_midas_time;
+//		uint32 today_midas_times;
+//		uint32 total_online_time;
+//		uint32 tutorialstep;
+//		uint64 rechargegem;
+//		uint8 facebook_follow;
+//	} _table;
+//	_table.usrId = 0;
+//
+//	std::string sqlstr = "select * from ziyu_dota_players where user_id=\"";
+//	sqlstr += dbid;
+//	sqlstr += "\" LIMIT 1";
+//
+//	// 如果查询失败则返回存在， 避免可能产生的错误
+//	if (!dbi->query(sqlstr.c_str(), sqlstr.size(), false))
+//		return true;
+//
+//	MYSQL_RES * pResult = mysql_store_result(static_cast<DBInterfaceMysql*>(dbi)->mysql());
+//	if (pResult)
+//	{
+//		MYSQL_ROW arow = mysql_fetch_row(pResult);
+//		if (arow != NULL)
+//		{
+//			KBEngine::StringConv::str2value(_table.usrId, arow[0]);
+//			KBEngine::StringConv::str2value(_table.serverId, arow[1]);
+//			_table.nickName = arow[2];
+//			KBEngine::StringConv::str2value(_table.last_set_name_time, arow[3]);
+//			KBEngine::StringConv::str2value(_table.avatar, arow[4]);
+//			KBEngine::StringConv::str2value(_table.level, arow[5]);
+//			KBEngine::StringConv::str2value(_table.exp, arow[6]);
+//			KBEngine::StringConv::str2value(_table.money, arow[7]);
+//			KBEngine::StringConv::str2value(_table.gem, arow[8]);
+//			KBEngine::StringConv::str2value(_table.arena_point, arow[9]);
+//			KBEngine::StringConv::str2value(_table.crusade_point, arow[10]);
+//			KBEngine::StringConv::str2value(_table.guild_point, arow[11]);
+//			KBEngine::StringConv::str2value(_table.last_midas_time, arow[12]);
+//			KBEngine::StringConv::str2value(_table.today_midas_times, arow[13]);
+//			KBEngine::StringConv::str2value(_table.total_online_time, arow[14]);
+//			KBEngine::StringConv::str2value(_table.tutorialstep, arow[15]);
+//			KBEngine::StringConv::str2value(_table.rechargegem, arow[16]);
+//			KBEngine::StringConv::str2value(_table.facebook_follow, arow[17]);
+//		}
+//
+//		mysql_free_result(pResult);
+//	}
+//
+//	return _table.usrId > 0;
+//}
 
 //-------------------------------------------------------------------------------------
 }

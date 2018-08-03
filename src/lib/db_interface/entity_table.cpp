@@ -51,7 +51,20 @@ EntityTableItem* EntityTable::findItem(int32/*ENTITY_PROPERTY_UID*/ utype)
 }
 
 //-------------------------------------------------------------------------------------
-DBID EntityTable::writeTable(DBInterface* dbi, DBID dbid, int8 shouldAutoLoad, MemoryStream* s)
+int32 EntityTable::findItemUtype(const char* itemName)
+{
+	//std::string dbName(itemName);
+	DBTABLEITEMS::const_iterator iter = mpTableItemDef->find(/*"sm_" + */itemName);
+	if (iter != mpTableItemDef->end())
+	{
+		return iter->second.utype;
+	}
+
+	return 0;
+}
+
+//-------------------------------------------------------------------------------------
+DBID EntityTable::writeTable(DBInterface* dbi, DBID dbid, bool binsert, MemoryStream* s)
 {
 	//while(s->length() > 0)
 	//{
@@ -110,16 +123,20 @@ EntityTables::~EntityTables()
 }
 
 //-------------------------------------------------------------------------------------
-bool EntityTables::load(DBInterface* dbi)
+bool EntityTables::load(DBInterface* dbi, const DBTABLEDEFS& tabelDefs)
 {
-	/*for(; iter != smodules.end(); ++iter)
+	DBTABLEDEFS::const_iterator iter = tabelDefs.begin();
+	for (; iter != tabelDefs.end(); ++iter)
 	{
+		const std::string& tableName = iter->first;
+		const DBTABLEITEMS& tableItems = iter->second;
+
 		EntityTable* pEtable = dbi->createEntityTable();
 
-		if(!pEtable)
+		if (!pEtable)
 			continue;
 
-		if (!pEtable->initialize(pSM, pSM->getName()))
+		if (!pEtable->initialize(tableName, tableItems))
 		{
 			delete pEtable;
 			return false;
@@ -127,7 +144,7 @@ bool EntityTables::load(DBInterface* dbi)
 
 		tables_[pEtable->tableName()].reset(pEtable);
 	}
-*/
+
 	return true;
 }
 
@@ -225,7 +242,6 @@ void EntityTables::addTable(EntityTable* pTable)
 			return;
 		}
 	}
-
 	tables_[pTable->tableName()].reset(pTable);
 }
 
@@ -271,30 +287,30 @@ EntityTable* EntityTables::findKBETable(std::string name)
 };
 
 //-------------------------------------------------------------------------------------
-DBID EntityTables::writeEntity(DBInterface* dbi, DBID dbid, int8 shouldAutoLoad, MemoryStream* s)
+DBID EntityTables::writeEntity(DBInterface* dbi, DBID dbid, bool binsert, MemoryStream* s, const std::string tableName)
 {
-	/*EntityTable* pTable = this->findTable(pModule->getName());
-	KBE_ASSERT(pTable != NULL);*/
+	EntityTable* pTable = this->findTable(tableName);
+	KBE_ASSERT(pTable != NULL);
 
-	return true; // pTable->writeTable(dbi, dbid, shouldAutoLoad, s);
+	return pTable->writeTable(dbi, dbid, binsert, s);
 }
 
 //-------------------------------------------------------------------------------------
-bool EntityTables::removeEntity(DBInterface* dbi, DBID dbid)
+bool EntityTables::removeEntity(DBInterface* dbi, DBID dbid, const std::string& tableName)
 {
-	//EntityTable* pTable = this->findTable(pModule->getName());
-	//KBE_ASSERT(pTable != NULL);
+	EntityTable* pTable = this->findTable(tableName);
+	KBE_ASSERT(pTable != NULL);
 
-	return true; // pTable->removeEntity(dbi, dbid);
+	return pTable->removeEntity(dbi, dbid);
 }
 
 //-------------------------------------------------------------------------------------
-bool EntityTables::queryEntity(DBInterface* dbi, DBID dbid, MemoryStream* s)
+bool EntityTables::queryEntity(DBInterface* dbi, DBID dbid, MemoryStream* s, const std::string& tableName)
 {
-	//EntityTable* pTable = this->findTable(pModule->getName());
-	//KBE_ASSERT(pTable != NULL);
+	EntityTable* pTable = this->findTable(tableName);
+	KBE_ASSERT(pTable != NULL);
 
-	return true; // pTable->queryTable(dbi, dbid, s);
+	return pTable->queryTable(dbi, dbid, s);
 }
 
 //-------------------------------------------------------------------------------------
