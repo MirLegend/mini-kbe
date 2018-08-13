@@ -336,7 +336,6 @@ void ServerApp::onAppActiveTick(Network::Channel* pChannel, MemoryStream& s)
 
 			return;
 		}
-		//printf("recv appActiveTick from componentid:%llu, type:%d \n", componentID, (uint32)componentType);
 		pTargetChannel = cinfos->pChannel;
 		pTargetChannel->updateLastReceivedTime();
 	}

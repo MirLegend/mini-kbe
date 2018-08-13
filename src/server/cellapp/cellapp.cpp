@@ -115,7 +115,7 @@ void CellApp::onDbmgrInitCompleted(Network::Channel* pChannel, MemoryStream& s)
 {
 	if (pChannel->isExternal())
 		return;
-	ERROR_MSG(fmt::format("CellApp::onDbmgrInitCompleted\n"));
+	DEBUG_MSG(fmt::format("CellApp::onDbmgrInitCompleted\n"));
 	s.done();
 	//cell_dbmgr::DbmgrInitCompleted dicCmd;
 	//PARSEBUNDLE(s, dicCmd);
@@ -142,7 +142,7 @@ void CellApp::onGetEntityAppFromDbmgr(Network::Channel* pChannel, MemoryStream& 
 	Components::ComponentInfos* cinfos = Components::getSingleton().findComponent((
 		KBEngine::COMPONENT_TYPE)geafCmd.componenttype(), geafCmd.componentid());
 
-	ERROR_MSG(fmt::format("CellApp::onGetEntityAppFromDbmgr: app(uid:{0}, username:{1}, componentType:{2}, "
+	DEBUG_MSG(fmt::format("CellApp::onGetEntityAppFromDbmgr: app(uid:{0}, username:{1}, componentType:{2}, "
 		"componentID:{3}\n",
 		geafCmd.uid(),
 		geafCmd.username(),

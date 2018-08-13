@@ -141,7 +141,6 @@ MessageHandler* MessageHandlers::add(MessageID msgID, std::string ihName, Messag
 	msgHandler->onInstall();
 
 	msgHandlers_[msgHandler->msgID] = msgHandler;
-	//printf("MessageHandlers::add----------------------- msgID:%x , size:%d \n", msgID, msgHandlers_.size());
 
 	return msgHandler;
 }

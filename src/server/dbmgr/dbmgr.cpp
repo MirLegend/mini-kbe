@@ -249,7 +249,7 @@ void DBMgrApp::OnRegisterServer(Network::Channel* pChannel, /*KBEngine::*/Memory
 	}
 
 	pSyncAppDatasHandler_->pushApp(componentID);
-	ERROR_MSG(fmt::format("dbmgr OnRegisterServer  type:{0}, name:{1}\n ",
+	DEBUG_MSG(fmt::format("dbmgr OnRegisterServer  type:{0}, name:{1}\n ",
 		componentType, COMPONENT_NAME_EX(componentType)));
 	// 如果是baseapp或者cellapp则将自己注册到所有其他baseapp和cellapp
 	if (tcomponentType == BASEAPP_TYPE ||
@@ -282,7 +282,7 @@ void DBMgrApp::OnRegisterServer(Network::Channel* pChannel, /*KBEngine::*/Memory
 					geafCmd.set_intport(regCmd.intport());
 					geafCmd.set_extaddr(regCmd.extaddr());
 					geafCmd.set_extport(regCmd.extport());
-					ERROR_MSG(fmt::format("onGetEntityAppFromDbmgr: baseapp  ip:{0}, "
+					DEBUG_MSG(fmt::format("onGetEntityAppFromDbmgr: baseapp  ip:{0}, "
 						"port:{1} cmd:{2}/{3} \n",
 						regCmd.intaddr(), regCmd.intport(), pBundle->messageID()>>8, (uint8)pBundle->messageID()));
 					ADDTOBUNDLE((*pBundle), geafCmd);
@@ -298,7 +298,7 @@ void DBMgrApp::OnRegisterServer(Network::Channel* pChannel, /*KBEngine::*/Memory
 					geafCmd.set_intport(regCmd.intport());
 					geafCmd.set_extaddr(regCmd.extaddr());
 					geafCmd.set_extport(regCmd.extport());
-					ERROR_MSG(fmt::format("onGetEntityAppFromDbmgr: celleapp  ip:{0}, "
+					DEBUG_MSG(fmt::format("onGetEntityAppFromDbmgr: celleapp  ip:{0}, "
 						"port:{1}  cmd:{2}/{3} \n",
 						regCmd.intaddr(), regCmd.intport(), pBundle->messageID() >> 8, (uint8)pBundle->messageID()));
 					ADDTOBUNDLE((*pBundle), geafCmd);

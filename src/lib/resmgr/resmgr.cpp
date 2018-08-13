@@ -199,14 +199,14 @@ bool Resmgr::initialize()
 //-------------------------------------------------------------------------------------
 void Resmgr::print(void)
 {
-	INFO_MSG(fmt::format("Resmgr::initialize: KBE_ROOT={0}\n", kb_env_.root));
-	INFO_MSG(fmt::format("Resmgr::initialize: KBE_RES_PATH={0}\n", kb_env_.res_path));
-	INFO_MSG(fmt::format("Resmgr::initialize: KBE_BIN_PATH={0}\n", kb_env_.bin_path));
+	INFO_MSG(fmt::format("Resmgr::initialize: MINI_KBE_ROOT={0}\n", kb_env_.root));
+	INFO_MSG(fmt::format("Resmgr::initialize: MINI_KBE_RES_PATH={0}\n", kb_env_.res_path));
+	INFO_MSG(fmt::format("Resmgr::initialize: MINI_KBE_BIN_PATH={0}\n", kb_env_.bin_path));
 
 #if KBE_PLATFORM == PLATFORM_WIN32
-	printf("%s", fmt::format("KBE_ROOT = {0}\n", kb_env_.root).c_str());
-	printf("%s", fmt::format("KBE_RES_PATH = {0}\n", kb_env_.res_path).c_str());
-	printf("%s", fmt::format("KBE_BIN_PATH = {0}\n", kb_env_.bin_path).c_str());
+	printf("%s", fmt::format("MINI_KBE_ROOT = {0}\n", kb_env_.root).c_str());
+	printf("%s", fmt::format("MINI_KBE_RES_PATH = {0}\n", kb_env_.res_path).c_str());
+	printf("%s", fmt::format("MINI_KBE_BIN_PATH = {0}\n", kb_env_.bin_path).c_str());
 	printf("\n");
 #endif
 }

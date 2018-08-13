@@ -180,7 +180,7 @@ void BaseApp::onDbmgrInitCompleted(Network::Channel* pChannel, MemoryStream& s)
 {
 	if (pChannel->isExternal())
 		return;
-	ERROR_MSG(fmt::format("BaseApp::onDbmgrInitCompleted\n"));
+	DEBUG_MSG(fmt::format("BaseApp::onDbmgrInitCompleted\n"));
 	base_dbmgr::DbmgrInitCompleted dicCmd;
 	PARSEBUNDLE(s, dicCmd);
 
@@ -206,7 +206,7 @@ void BaseApp::onGetEntityAppFromDbmgr(Network::Channel* pChannel, MemoryStream& 
 	Components::ComponentInfos* cinfos = Components::getSingleton().findComponent((
 		KBEngine::COMPONENT_TYPE)geafCmd.componenttype(), geafCmd.componentid());
 
-	ERROR_MSG(fmt::format("BaseApp::onGetEntityAppFromDbmgr: app(uid:{0}, username:{1}, componentType:{2}, "
+	DEBUG_MSG(fmt::format("BaseApp::onGetEntityAppFromDbmgr: app(uid:{0}, username:{1}, componentType:{2}, "
 		"componentID:{3}\n",
 		geafCmd.uid(),
 		geafCmd.username(),
@@ -247,7 +247,6 @@ void BaseApp::onClientHello(Network::Channel* pChannel, MemoryStream& s)
 	PARSEBUNDLE(s, helloCmd)
 		uint32 clientVersion = helloCmd.version();
 	const std::string& extradata = helloCmd.extradata();
-	printf("BaseApp::onClientHello ........... clientVersion:%d,  extradata:%s \n", clientVersion, extradata.c_str());
 
 	Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
 	pBundle->newMessage(91, 2);

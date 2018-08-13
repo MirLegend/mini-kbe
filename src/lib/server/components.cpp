@@ -634,7 +634,7 @@ int Components::connectComponent(COMPONENT_TYPE rcomponentType, COMPONENT_ID rco
 		{
 			Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
 			{
-				ERROR_MSG(fmt::format("[NetProtoStreamHandlerHandler]: register, compentType:{0}, name:{1}, \
+				DEBUG_MSG(fmt::format("[NetProtoStreamHandlerHandler]: register, compentType:{0}, name:{1}, \
 				compentId:{2} \n", rcomponentType, COMPONENT_NAME_EX(rcomponentType), rcomponentID));
 
 				COMMON_NETWORK_MESSAGE(rcomponentType, (*pBundle), OnRegisterServer);
