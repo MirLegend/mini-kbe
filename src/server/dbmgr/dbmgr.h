@@ -72,6 +72,11 @@ public:
 	virtual void OnRegisterServer(Network::Channel* pChannel, MemoryStream& s);
 
 	void QueryAccount(Network::Channel* pChannel, MemoryStream& s);
+
+	/** 网络接口
+	删除某个entity的存档数据
+	*/
+	void removeEntity(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 	
 protected:
 	TimerHandle											loopCheckTimerHandle_;

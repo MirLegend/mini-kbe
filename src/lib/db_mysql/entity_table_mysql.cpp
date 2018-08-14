@@ -690,7 +690,7 @@ bool EntityTableMysql::queryTable(DBInterface* dbi, DBID dbid, MemoryStream* s)
 	//context.parentTableDBID = 0;
 	context.dbid = dbid;
 	std::string tableName = this->tableName();
-	context.tableName = ENTITY_TABLE_PERFIX"_" + tableName;
+	context.tableName = /*ENTITY_TABLE_PERFIX"_" +*/ tableName;
 	context.isEmpty = false;
 	context.readresultIdx = 0;
 
@@ -808,6 +808,10 @@ bool EntityTableItemMysql_DIGIT::syncToDB(DBInterface* dbi, void* pData)
 //-------------------------------------------------------------------------------------
 void EntityTableItemMysql_DIGIT::addToStream(MemoryStream* s, DBContext& context, DBID resultDBID)
 {
+	if (kbe_stricmp(db_item_name(), "sm_id") == 0)
+	{
+		return;
+	}
 	std::stringstream stream;
 	stream << context.results[context.readresultIdx++];
 
@@ -816,24 +820,28 @@ void EntityTableItemMysql_DIGIT::addToStream(MemoryStream* s, DBContext& context
 		int32 v;
 		stream >> v;
 		int8 vv = static_cast<int8>(v);
+		ERROR_MSG(fmt::format("addToStream: name:[{}], type[{}], value[{}]\n", pTableItemDescription_->tblItemName, dataSType_.c_str(), (uint32)vv));
 		(*s) << vv;
 	}
 	else if (dataSType_ == "INT16")
 	{
 		int16 v;
 		stream >> v;
+		ERROR_MSG(fmt::format("addToStream: name:[{}], type[{}], value[{}]\n", pTableItemDescription_->tblItemName, dataSType_.c_str(), (uint32)v));
 		(*s) << v;
 	}
 	else if (dataSType_ == "INT32")
 	{
 		int32 v;
 		stream >> v;
+		ERROR_MSG(fmt::format("addToStream: name:[{}], type[{}], value[{}]\n", pTableItemDescription_->tblItemName, dataSType_.c_str(), (uint32)v));
 		(*s) << v;
 	}
 	else if (dataSType_ == "INT64")
 	{
 		int64 v;
 		stream >> v;
+		ERROR_MSG(fmt::format("addToStream: name:[{}], type[{}], value[{}]\n", pTableItemDescription_->tblItemName, dataSType_.c_str(), (uint32)v));
 		(*s) << v;
 	}
 	else if (dataSType_ == "UINT8")
@@ -841,36 +849,42 @@ void EntityTableItemMysql_DIGIT::addToStream(MemoryStream* s, DBContext& context
 		int32 v;
 		stream >> v;
 		uint8 vv = static_cast<uint8>(v);
+		ERROR_MSG(fmt::format("addToStream: name:[{}], type[{}], value[{}]\n", pTableItemDescription_->tblItemName, dataSType_.c_str(), (uint32)vv));
 		(*s) << vv;
 	}
 	else if (dataSType_ == "UINT16")
 	{
 		uint16 v;
 		stream >> v;
+		ERROR_MSG(fmt::format("addToStream: name:[{}], type[{}], value[{}]\n", pTableItemDescription_->tblItemName, dataSType_.c_str(), (uint32)v));
 		(*s) << v;
 	}
 	else if (dataSType_ == "UINT32")
 	{
 		uint32 v;
 		stream >> v;
+		ERROR_MSG(fmt::format("addToStream: name:[{}], type[{}], value[{}]\n", pTableItemDescription_->tblItemName, dataSType_.c_str(), (uint32)v));
 		(*s) << v;
 	}
 	else if (dataSType_ == "UINT64")
 	{
 		uint64 v;
 		stream >> v;
+		ERROR_MSG(fmt::format("addToStream: name:[{}], type[{}], value[{}]\n", pTableItemDescription_->tblItemName, dataSType_.c_str(), (uint32)v));
 		(*s) << v;
 	}
 	else if (dataSType_ == "FLOAT")
 	{
 		float v;
 		stream >> v;
+		ERROR_MSG(fmt::format("addToStream: name:[{}], type[{}], value[{}]\n", pTableItemDescription_->tblItemName, dataSType_.c_str(), (uint32)v));
 		(*s) << v;
 	}
 	else if (dataSType_ == "DOUBLE")
 	{
 		double v;
 		stream >> v;
+		ERROR_MSG(fmt::format("addToStream: name:[{}], type[{}], value[{}]\n", pTableItemDescription_->tblItemName, dataSType_.c_str(), (uint32)v));
 		(*s) << v;
 	}
 }
@@ -985,6 +999,10 @@ bool EntityTableItemMysql_STRING::syncToDB(DBInterface* dbi, void* pData)
 void EntityTableItemMysql_STRING::addToStream(MemoryStream* s,
 	DBContext& context, DBID resultDBID)
 {
+	if (kbe_stricmp(db_item_name(), "sm_id") == 0)
+	{
+		return;
+	}
 	(*s) << context.results[context.readresultIdx++];
 }
 
@@ -1051,6 +1069,11 @@ bool EntityTableItemMysql_UNICODE::syncToDB(DBInterface* dbi, void* pData)
 void EntityTableItemMysql_UNICODE::addToStream(MemoryStream* s,
 	DBContext& context, DBID resultDBID)
 {
+	if (kbe_stricmp(db_item_name(), "sm_id") == 0)
+	{
+		return;
+	}
+	ERROR_MSG(fmt::format("addToStream: name:[{}], type[{}], value[{}]\n", pTableItemDescription_->tblItemName, pTableItemDescription_->tblItemType, context.results[context.readresultIdx].c_str()));
 	s->appendBlob(context.results[context.readresultIdx++]);
 }
 

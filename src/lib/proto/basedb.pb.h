@@ -37,6 +37,7 @@ class DbmgrInitCompleted;
 class GetEntityAppFromDbmgr;
 class QueryAccount;
 class QueryPlayerCBFromDbmgr;
+class RemoveEntity;
 
 // ===================================================================
 
@@ -583,6 +584,105 @@ class QueryPlayerCBFromDbmgr : public ::google::protobuf::Message {
 
   void InitAsDefaultInstance();
   static QueryPlayerCBFromDbmgr* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class RemoveEntity : public ::google::protobuf::Message {
+ public:
+  RemoveEntity();
+  virtual ~RemoveEntity();
+
+  RemoveEntity(const RemoveEntity& from);
+
+  inline RemoveEntity& operator=(const RemoveEntity& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RemoveEntity& default_instance();
+
+  void Swap(RemoveEntity* other);
+
+  // implements Message ----------------------------------------------
+
+  RemoveEntity* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const RemoveEntity& from);
+  void MergeFrom(const RemoveEntity& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional uint64 componentID = 1;
+  inline bool has_componentid() const;
+  inline void clear_componentid();
+  static const int kComponentIDFieldNumber = 1;
+  inline ::google::protobuf::uint64 componentid() const;
+  inline void set_componentid(::google::protobuf::uint64 value);
+
+  // optional int32 entityID = 2;
+  inline bool has_entityid() const;
+  inline void clear_entityid();
+  static const int kEntityIDFieldNumber = 2;
+  inline ::google::protobuf::int32 entityid() const;
+  inline void set_entityid(::google::protobuf::int32 value);
+
+  // optional int64 entityDBID = 3;
+  inline bool has_entitydbid() const;
+  inline void clear_entitydbid();
+  static const int kEntityDBIDFieldNumber = 3;
+  inline ::google::protobuf::int64 entitydbid() const;
+  inline void set_entitydbid(::google::protobuf::int64 value);
+
+  // @@protoc_insertion_point(class_scope:base_dbmgr.RemoveEntity)
+ private:
+  inline void set_has_componentid();
+  inline void clear_has_componentid();
+  inline void set_has_entityid();
+  inline void clear_has_entityid();
+  inline void set_has_entitydbid();
+  inline void clear_has_entitydbid();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::uint64 componentid_;
+  ::google::protobuf::int64 entitydbid_;
+  ::google::protobuf::int32 entityid_;
+  friend void  protobuf_AddDesc_basedb_2eproto();
+  friend void protobuf_AssignDesc_basedb_2eproto();
+  friend void protobuf_ShutdownFile_basedb_2eproto();
+
+  void InitAsDefaultInstance();
+  static RemoveEntity* default_instance_;
 };
 // ===================================================================
 
@@ -1489,6 +1589,82 @@ inline void QueryPlayerCBFromDbmgr::set_allocated_datas(::std::string* datas) {
     datas_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   }
   // @@protoc_insertion_point(field_set_allocated:base_dbmgr.QueryPlayerCBFromDbmgr.datas)
+}
+
+// -------------------------------------------------------------------
+
+// RemoveEntity
+
+// optional uint64 componentID = 1;
+inline bool RemoveEntity::has_componentid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void RemoveEntity::set_has_componentid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void RemoveEntity::clear_has_componentid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void RemoveEntity::clear_componentid() {
+  componentid_ = GOOGLE_ULONGLONG(0);
+  clear_has_componentid();
+}
+inline ::google::protobuf::uint64 RemoveEntity::componentid() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.RemoveEntity.componentID)
+  return componentid_;
+}
+inline void RemoveEntity::set_componentid(::google::protobuf::uint64 value) {
+  set_has_componentid();
+  componentid_ = value;
+  // @@protoc_insertion_point(field_set:base_dbmgr.RemoveEntity.componentID)
+}
+
+// optional int32 entityID = 2;
+inline bool RemoveEntity::has_entityid() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void RemoveEntity::set_has_entityid() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void RemoveEntity::clear_has_entityid() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void RemoveEntity::clear_entityid() {
+  entityid_ = 0;
+  clear_has_entityid();
+}
+inline ::google::protobuf::int32 RemoveEntity::entityid() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.RemoveEntity.entityID)
+  return entityid_;
+}
+inline void RemoveEntity::set_entityid(::google::protobuf::int32 value) {
+  set_has_entityid();
+  entityid_ = value;
+  // @@protoc_insertion_point(field_set:base_dbmgr.RemoveEntity.entityID)
+}
+
+// optional int64 entityDBID = 3;
+inline bool RemoveEntity::has_entitydbid() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void RemoveEntity::set_has_entitydbid() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void RemoveEntity::clear_has_entitydbid() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void RemoveEntity::clear_entitydbid() {
+  entitydbid_ = GOOGLE_LONGLONG(0);
+  clear_has_entitydbid();
+}
+inline ::google::protobuf::int64 RemoveEntity::entitydbid() const {
+  // @@protoc_insertion_point(field_get:base_dbmgr.RemoveEntity.entityDBID)
+  return entitydbid_;
+}
+inline void RemoveEntity::set_entitydbid(::google::protobuf::int64 value) {
+  set_has_entitydbid();
+  entitydbid_ = value;
+  // @@protoc_insertion_point(field_set:base_dbmgr.RemoveEntity.entityDBID)
 }
 
 

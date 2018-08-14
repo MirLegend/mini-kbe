@@ -130,6 +130,8 @@ namespace KBEngine {
 #define ADDTOBUNDLE(BUNDLE, PROTOMSG)	\
 	{std::string ss;						\
 	PROTOMSG.SerializeToString(&ss);		\
+	DEBUG_MSG(fmt::format("Bundle::newMessage: cmd:({}), protoSize:{}\n",					\
+	BUNDLE.messageID(), PROTOMSG.ByteSize()));			\
 	BUNDLE.appendBlob(ss.data(), PROTOMSG.ByteSize());}\
 
 //¥”stream÷–Ω‚Œˆprotobuf

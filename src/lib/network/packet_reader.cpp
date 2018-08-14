@@ -207,7 +207,7 @@ void PacketReader::processMessages(KBEngine::Network::MessageHandlers* pMsgHandl
 				//TRACE_MESSAGE_PACKET(true, pPacket, pMsgHandler, currMsgLen_, pChannel_->c_str());
 				//if (currMainCmd == 4 && currSubCmd == 3)
 				{
-					WARNING_MSG(fmt::format("strart processMessages =========================  Cmd={}/{},\n", (uint32)currMainCmd, (uint32)currSubCmd));
+					WARNING_MSG(fmt::format("strart processMessages =========================  Cmd={}/{}, protoSize={}\n", (uint32)currMainCmd, (uint32)currSubCmd, currMsgLen_));
 				}
 				pMsgHandler->handle(pChannel_, *pPacket);
 

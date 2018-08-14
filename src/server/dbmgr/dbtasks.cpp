@@ -602,7 +602,7 @@ thread::TPTask::TPTaskState DBTaskQueryAccount::presentMainThread()
 		queryCmd.set_datas(error_);
 		//(*pBundle) << error_;
 	}
-
+	ERROR_MSG(fmt::format("DBTaskQueryAccount::QueryPlayerCBFromDbmgr size:({}) \n", queryCmd.ByteSize()));
 	ADDTOBUNDLE((*pBundle), queryCmd);
 	if (!this->send(pBundle))
 	{
@@ -613,6 +613,42 @@ thread::TPTask::TPTaskState DBTaskQueryAccount::presentMainThread()
 	return EntityDBTask::presentMainThread();
 }
 
+
+//-------------------------------------------------------------------------------------
+DBTaskRemoveEntity::DBTaskRemoveEntity(const Network::Address& addr,
+	COMPONENT_ID componentID, ENTITY_ID eid,
+	DBID entityDBID/*, MemoryStream& datas*/) :
+	EntityDBTask(addr, MemoryStream(), eid, entityDBID),
+	componentID_(componentID),
+	eid_(eid),
+	entityDBID_(entityDBID)
+{
+}
+
+//-------------------------------------------------------------------------------------
+DBTaskRemoveEntity::~DBTaskRemoveEntity()
+{
+}
+
+//-------------------------------------------------------------------------------------
+bool DBTaskRemoveEntity::db_thread_process()
+{
+
+	KBEEntityLogTable* pELTable = static_cast<KBEEntityLogTable*>
+		(EntityTables::getSingleton().findKBETable("kbe_entitylog"));
+	KBE_ASSERT(pELTable);
+	pELTable->eraseEntityLog(pdbi_, entityDBID_);
+
+	//EntityTables::getSingleton().removeEntity(pdbi_, entityDBID_);
+	return false;
+}
+
+//-------------------------------------------------------------------------------------
+thread::TPTask::TPTaskState DBTaskRemoveEntity::presentMainThread()
+{
+	DEBUG_MSG(fmt::format("Dbmgr::removeEntity: ({}).\n",  entityDBID_));
+	return EntityDBTask::presentMainThread();
+}
 
 //-------------------------------------------------------------------------------------
 }

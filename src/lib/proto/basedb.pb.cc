@@ -32,6 +32,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* QueryPlayerCBFromDbmgr_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   QueryPlayerCBFromDbmgr_reflection_ = NULL;
+const ::google::protobuf::Descriptor* RemoveEntity_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  RemoveEntity_reflection_ = NULL;
 
 }  // namespace
 
@@ -122,6 +125,23 @@ void protobuf_AssignDesc_basedb_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(QueryPlayerCBFromDbmgr));
+  RemoveEntity_descriptor_ = file->message_type(4);
+  static const int RemoveEntity_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemoveEntity, componentid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemoveEntity, entityid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemoveEntity, entitydbid_),
+  };
+  RemoveEntity_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      RemoveEntity_descriptor_,
+      RemoveEntity::default_instance_,
+      RemoveEntity_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemoveEntity, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RemoveEntity, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(RemoveEntity));
 }
 
 namespace {
@@ -142,6 +162,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     QueryAccount_descriptor_, &QueryAccount::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     QueryPlayerCBFromDbmgr_descriptor_, &QueryPlayerCBFromDbmgr::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    RemoveEntity_descriptor_, &RemoveEntity::default_instance());
 }
 
 }  // namespace
@@ -155,6 +177,8 @@ void protobuf_ShutdownFile_basedb_2eproto() {
   delete QueryAccount_reflection_;
   delete QueryPlayerCBFromDbmgr::default_instance_;
   delete QueryPlayerCBFromDbmgr_reflection_;
+  delete RemoveEntity::default_instance_;
+  delete RemoveEntity_reflection_;
 }
 
 void protobuf_AddDesc_basedb_2eproto() {
@@ -177,17 +201,21 @@ void protobuf_AddDesc_basedb_2eproto() {
     "p\030\006 \001(\r\022\020\n\010addrport\030\007 \001(\r\"\201\001\n\026QueryPlaye"
     "rCBFromDbmgr\022\017\n\007account\030\001 \001(\t\022\020\n\010passwor"
     "d\030\002 \001(\t\022\022\n\nentityDBID\030\003 \001(\003\022\017\n\007success\030\004"
-    " \001(\r\022\020\n\010entityID\030\005 \001(\005\022\r\n\005datas\030\006 \001(\014", 557);
+    " \001(\r\022\020\n\010entityID\030\005 \001(\005\022\r\n\005datas\030\006 \001(\014\"I\n"
+    "\014RemoveEntity\022\023\n\013componentID\030\001 \001(\004\022\020\n\010en"
+    "tityID\030\002 \001(\005\022\022\n\nentityDBID\030\003 \001(\003", 632);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "basedb.proto", &protobuf_RegisterTypes);
   DbmgrInitCompleted::default_instance_ = new DbmgrInitCompleted();
   GetEntityAppFromDbmgr::default_instance_ = new GetEntityAppFromDbmgr();
   QueryAccount::default_instance_ = new QueryAccount();
   QueryPlayerCBFromDbmgr::default_instance_ = new QueryPlayerCBFromDbmgr();
+  RemoveEntity::default_instance_ = new RemoveEntity();
   DbmgrInitCompleted::default_instance_->InitAsDefaultInstance();
   GetEntityAppFromDbmgr::default_instance_->InitAsDefaultInstance();
   QueryAccount::default_instance_->InitAsDefaultInstance();
   QueryPlayerCBFromDbmgr::default_instance_->InitAsDefaultInstance();
+  RemoveEntity::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_basedb_2eproto);
 }
 
@@ -2022,6 +2050,318 @@ void QueryPlayerCBFromDbmgr::Swap(QueryPlayerCBFromDbmgr* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = QueryPlayerCBFromDbmgr_descriptor_;
   metadata.reflection = QueryPlayerCBFromDbmgr_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int RemoveEntity::kComponentIDFieldNumber;
+const int RemoveEntity::kEntityIDFieldNumber;
+const int RemoveEntity::kEntityDBIDFieldNumber;
+#endif  // !_MSC_VER
+
+RemoveEntity::RemoveEntity()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:base_dbmgr.RemoveEntity)
+}
+
+void RemoveEntity::InitAsDefaultInstance() {
+}
+
+RemoveEntity::RemoveEntity(const RemoveEntity& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:base_dbmgr.RemoveEntity)
+}
+
+void RemoveEntity::SharedCtor() {
+  _cached_size_ = 0;
+  componentid_ = GOOGLE_ULONGLONG(0);
+  entityid_ = 0;
+  entitydbid_ = GOOGLE_LONGLONG(0);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+RemoveEntity::~RemoveEntity() {
+  // @@protoc_insertion_point(destructor:base_dbmgr.RemoveEntity)
+  SharedDtor();
+}
+
+void RemoveEntity::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void RemoveEntity::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* RemoveEntity::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return RemoveEntity_descriptor_;
+}
+
+const RemoveEntity& RemoveEntity::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_basedb_2eproto();
+  return *default_instance_;
+}
+
+RemoveEntity* RemoveEntity::default_instance_ = NULL;
+
+RemoveEntity* RemoveEntity::New() const {
+  return new RemoveEntity;
+}
+
+void RemoveEntity::Clear() {
+#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
+  &reinterpret_cast<RemoveEntity*>(16)->f) - \
+   reinterpret_cast<char*>(16))
+
+#define ZR_(first, last) do {                              \
+    size_t f = OFFSET_OF_FIELD_(first);                    \
+    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
+    ::memset(&first, 0, n);                                \
+  } while (0)
+
+  ZR_(componentid_, entityid_);
+
+#undef OFFSET_OF_FIELD_
+#undef ZR_
+
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool RemoveEntity::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:base_dbmgr.RemoveEntity)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional uint64 componentID = 1;
+      case 1: {
+        if (tag == 8) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &componentid_)));
+          set_has_componentid();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(16)) goto parse_entityID;
+        break;
+      }
+
+      // optional int32 entityID = 2;
+      case 2: {
+        if (tag == 16) {
+         parse_entityID:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &entityid_)));
+          set_has_entityid();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(24)) goto parse_entityDBID;
+        break;
+      }
+
+      // optional int64 entityDBID = 3;
+      case 3: {
+        if (tag == 24) {
+         parse_entityDBID:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &entitydbid_)));
+          set_has_entitydbid();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:base_dbmgr.RemoveEntity)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:base_dbmgr.RemoveEntity)
+  return false;
+#undef DO_
+}
+
+void RemoveEntity::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:base_dbmgr.RemoveEntity)
+  // optional uint64 componentID = 1;
+  if (has_componentid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->componentid(), output);
+  }
+
+  // optional int32 entityID = 2;
+  if (has_entityid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->entityid(), output);
+  }
+
+  // optional int64 entityDBID = 3;
+  if (has_entitydbid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(3, this->entitydbid(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:base_dbmgr.RemoveEntity)
+}
+
+::google::protobuf::uint8* RemoveEntity::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:base_dbmgr.RemoveEntity)
+  // optional uint64 componentID = 1;
+  if (has_componentid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->componentid(), target);
+  }
+
+  // optional int32 entityID = 2;
+  if (has_entityid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->entityid(), target);
+  }
+
+  // optional int64 entityDBID = 3;
+  if (has_entitydbid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(3, this->entitydbid(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:base_dbmgr.RemoveEntity)
+  return target;
+}
+
+int RemoveEntity::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional uint64 componentID = 1;
+    if (has_componentid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->componentid());
+    }
+
+    // optional int32 entityID = 2;
+    if (has_entityid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->entityid());
+    }
+
+    // optional int64 entityDBID = 3;
+    if (has_entitydbid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int64Size(
+          this->entitydbid());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void RemoveEntity::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const RemoveEntity* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const RemoveEntity*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void RemoveEntity::MergeFrom(const RemoveEntity& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_componentid()) {
+      set_componentid(from.componentid());
+    }
+    if (from.has_entityid()) {
+      set_entityid(from.entityid());
+    }
+    if (from.has_entitydbid()) {
+      set_entitydbid(from.entitydbid());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void RemoveEntity::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RemoveEntity::CopyFrom(const RemoveEntity& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RemoveEntity::IsInitialized() const {
+
+  return true;
+}
+
+void RemoveEntity::Swap(RemoveEntity* other) {
+  if (other != this) {
+    std::swap(componentid_, other->componentid_);
+    std::swap(entityid_, other->entityid_);
+    std::swap(entitydbid_, other->entitydbid_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata RemoveEntity::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = RemoveEntity_descriptor_;
+  metadata.reflection = RemoveEntity_reflection_;
   return metadata;
 }
 

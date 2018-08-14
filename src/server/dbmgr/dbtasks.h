@@ -200,6 +200,26 @@ protected:
 	uint64 deadline_;
 };
 
+/**
+从数据库中删除entity
+*/
+class DBTaskRemoveEntity : public EntityDBTask
+{
+public:
+	DBTaskRemoveEntity(const Network::Address& addr, COMPONENT_ID componentID,
+		ENTITY_ID eid, DBID entityDBID/*, MemoryStream& datas*/);
+
+	virtual ~DBTaskRemoveEntity();
+	virtual bool db_thread_process();
+	virtual thread::TPTask::TPTaskState presentMainThread();
+
+protected:
+	COMPONENT_ID componentID_;
+	ENTITY_ID eid_;
+	DBID entityDBID_;
+};
+
+
 }
 
 #endif // KBE_DBTASKS_H

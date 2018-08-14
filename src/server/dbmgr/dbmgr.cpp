@@ -339,4 +339,18 @@ void DBMgrApp::QueryAccount(Network::Channel* pChannel, MemoryStream& s)
 }
 
 
+//-------------------------------------------------------------------------------------
+void DBMgrApp::removeEntity(Network::Channel* pChannel, KBEngine::MemoryStream& s)
+{
+	base_dbmgr::RemoveEntity removeCmd;
+	PARSEBUNDLE(s, removeCmd);
+	COMPONENT_ID componentID = removeCmd.componentid();
+	ENTITY_ID entityID = removeCmd.entityid();
+	DBID entityDBID = removeCmd.entitydbid();
+
+	bufferedDBTasks_.addTask(new DBTaskRemoveEntity(pChannel->addr(),
+		componentID, entityID, entityDBID));
+}
+
+
 }

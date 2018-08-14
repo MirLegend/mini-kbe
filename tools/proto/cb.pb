@@ -1,5 +1,5 @@
 
-‰
+Ü
 cb.protoclient_baseserver"+
 Hello
 version (
@@ -7,4 +7,9 @@
 HelloCB
 result (
 version (
-	extraData (	
+	extraData (	"*
+Login
+account (	
+password (	"%
+LoginBaseappFailed
+retCode (

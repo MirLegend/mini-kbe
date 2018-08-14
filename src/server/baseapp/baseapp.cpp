@@ -121,6 +121,60 @@ bool BaseApp::canShutdown()
 	return true;
 }
 
+//-------------------------------------------------------------------------------------
+void BaseApp::onChannelDeregister(Network::Channel * pChannel)
+{
+	ENTITY_ID pid = pChannel->proxyID();
+
+	// 如果是cellapp死亡了
+	if (pChannel->isInternal())
+	{
+		Components::ComponentInfos* cinfo = Components::getSingleton().findComponent(pChannel);
+		if (cinfo)
+		{
+			if (cinfo->componentType == CELLAPP_TYPE)
+			{
+				//onCellAppDeath(pChannel);
+			}
+		}
+	}
+
+	ServerApp::onChannelDeregister(pChannel);
+
+	// 有关联entity的客户端退出则需要设置entity的client
+	if (pid > 0)
+	{
+		/*Proxy* proxy = static_cast<Proxy*>(this->findEntity(pid));
+		if (proxy)
+		{
+			proxy->onClientDeath();
+		}*/
+
+		Components::COMPONENTS& cts = Components::getSingleton().getComponents(DBMGR_TYPE);
+		Components::ComponentInfos* dbmgrinfos = NULL;
+
+		if (cts.size() > 0)
+			dbmgrinfos = &(*cts.begin());
+
+		if (dbmgrinfos == NULL || dbmgrinfos->pChannel == NULL || dbmgrinfos->cid == 0)
+		{
+			ERROR_MSG(fmt::format("onDestroyEntity({}): writeToDB not found dbmgr!\n", pid));
+			return;
+		}
+		Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
+		(*pBundle).newMessage(DbmgrInterface::removeEntity);
+
+		base_dbmgr::RemoveEntity removeCmd;
+		removeCmd.set_componentid(g_componentID);
+		removeCmd.set_entityid(pid);
+		removeCmd.set_entitydbid(pid);
+
+		ADDTOBUNDLE((*pBundle), removeCmd)
+			dbmgrinfos->pChannel->send(pBundle);
+	}
+}
+
+
 ////-------------------------------------------------------------------------------------
 //void BaseApp::handleCheckStatusTick()
 //{
@@ -187,11 +241,6 @@ void BaseApp::onDbmgrInitCompleted(Network::Channel* pChannel, MemoryStream& s)
 	idClient_.onAddRange(dicCmd.startentityid(), dicCmd.endentityid());
 	g_kbetime = dicCmd.g_kbetime();
 
-	//PyObject* pyResult = PyObject_CallMethod(getEntryScript().get(),
-	//	const_cast<char*>("onInit"),
-	//	const_cast<char*>("i"),
-	//	0);
-
 	pInitProgressHandler_ = new InitProgressHandler(this->networkInterface());
 }
 
@@ -224,16 +273,9 @@ void BaseApp::onGetEntityAppFromDbmgr(Network::Channel* pChannel, MemoryStream& 
 				COMPONENT_NAME_EX((COMPONENT_TYPE)geafCmd.componenttype()),
 				geafCmd.componentid()
 				 ));
-
-			/*Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
-			(*pBundle).newMessage(DbmgrInterface::reqKillServer);
-			(*pBundle) << g_componentID << g_componentType << KBEngine::getUsername() << KBEngine::getUserUID() << "Duplicate app-id.";
-			pChannel->send(pBundle);*/
 		}
 	}
 
-	//ServerApp::onRegisterNewApp(pChannel, uid, username, componentType, componentID, globalorderID, grouporderID,
-	//	intaddr, intport, extaddr, extport, extaddrEx);
 	Components::getSingleton().connectComponent((COMPONENT_TYPE)geafCmd.componenttype(),
 		geafCmd.componentid(), geafCmd.intaddr(), geafCmd.intport());
 
@@ -306,24 +348,6 @@ void BaseApp::loginBaseapp(Network::Channel* pChannel, MemoryStream& s)
 		loginBaseappFailed(pChannel, accountName, SERVER_ERR_PASSWORD);
 		return;
 	}
-
-	/*if ((ptinfos->flags & ACCOUNT_FLAG_LOCK) > 0)
-	{
-		loginBaseappFailed(pChannel, accountName, SERVER_ERR_ACCOUNT_LOCK);
-		return;
-	}
-
-	if ((ptinfos->flags & ACCOUNT_FLAG_NOT_ACTIVATED) > 0)
-	{
-		loginBaseappFailed(pChannel, accountName, SERVER_ERR_ACCOUNT_NOT_ACTIVATED);
-		return;
-	}
-
-	if (ptinfos->deadline > 0 && ::time(NULL) - ptinfos->deadline <= 0)
-	{
-		loginBaseappFailed(pChannel, accountName, SERVER_ERR_ACCOUNT_DEADLINE);
-		return;
-	}*/
 
 	if (idClient_.size() == 0)
 	{
@@ -401,10 +425,6 @@ void BaseApp::loginBaseapp(Network::Channel* pChannel, MemoryStream& s)
 	{
 		ENTITY_ID entityID = idClient_.alloc();
 		KBE_ASSERT(entityID > 0);
-		//Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
-		//(*pBundle).newMessage(DbmgrInterface::queryAccount);
-		//DbmgrInterface::queryAccountArgs7::staticAddToBundle((*pBundle), accountName, password, g_componentID,
-		//	entityID, ptinfos->entityDBID, pChannel->addr().ip, pChannel->addr().port);
 
 		Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
 		(*pBundle).newMessage(DbmgrInterface::QueryAccount);
@@ -450,12 +470,7 @@ void BaseApp::loginBaseappFailed(Network::Channel* pChannel, std::string& accoun
 
 	Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
 
-	//if (relogin)
-	//	(*pBundle).newMessage(ClientInterface::onReLoginBaseappFailed);
-	//else
-	//	(*pBundle).newMessage(ClientInterface::onLoginBaseappFailed);
-
-	pBundle->newMessage(90, 4);
+	pBundle->newMessage(91, 4);
 
 	client_baseserver::LoginBaseappFailed loginfailedCmd;
 	loginfailedCmd.set_retcode(failedcode);
@@ -466,8 +481,56 @@ void BaseApp::loginBaseappFailed(Network::Channel* pChannel, std::string& accoun
 
 void BaseApp::onQueryPlayerCBFromDbmgr(Network::Channel* pChannel, MemoryStream& s)
 {
+	base_dbmgr::QueryPlayerCBFromDbmgr queryCmd;
+	PARSEBUNDLE(s, queryCmd);
 
+	if (pChannel->isExternal())
+		return;
+
+	std::string accountName = queryCmd.account();
+	std::string password = queryCmd.password();
+	bool success = queryCmd.success() > 0;
+	DBID dbid = queryCmd.entitydbid();
+	ENTITY_ID entityID = queryCmd.entityid();
+
+	PendingLoginMgr::PLInfos* ptinfos = pendingLoginMgr_.remove(accountName);
+	if (ptinfos == NULL)
+	{
+		ERROR_MSG(fmt::format("Baseapp::onQueryAccountCBFromDbmgr: PendingLoginMgr not found({})\n",
+			accountName.c_str()));
+		return;
+	}
+	
+
+	Network::Channel* pClientChannel = this->networkInterface().findChannel(ptinfos->addr);
+
+
+	if (!success)
+	{
+		const std::string& error = queryCmd.datas();
+		ERROR_MSG(fmt::format("Baseapp::onQueryAccountCBFromDbmgr: query {} is failed! error({})\n",
+			accountName.c_str(), error));
+
+		loginBaseappFailed(pClientChannel, accountName, SERVER_ERR_SRV_NO_READY);
+		SAFE_RELEASE(ptinfos);
+		return;
+	}
+
+	pClientChannel->proxyID(entityID);
+	MemoryStream playerData;
+	playerData.append(queryCmd.datas());
+	int64 exp;
+	int32 setnametime;
+	int32 serverid;
+	int32 level;
+	playerData >> exp >> setnametime >> serverid >> level;
+	
+	INFO_MSG(fmt::format("Baseapp::onQueryAccountCBFromDbmgr: user={}, dbid={}, entityID={}. level={}, exp={}\n",
+		accountName, dbid, entityID, level, exp));
+
+	SAFE_RELEASE(ptinfos);
 }
+
 
 //-------------------------------------------------------------------------------------
 }

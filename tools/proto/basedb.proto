@@ -39,3 +39,10 @@ message QueryPlayerCBFromDbmgr {
 	optional int32 entityID = 5;
 	optional bytes datas = 6;
 }
+
+//base -> dbmgr 6 - 5 //base向db 删除实体
+message RemoveEntity {
+	optional uint64 componentID = 1;
+	optional int32 entityID = 2;
+	optional int64 entityDBID = 3;
+}

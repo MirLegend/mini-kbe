@@ -118,13 +118,10 @@ bool LoginApp::canShutdown()
 //-------------------------------------------------------------------------------------
 void LoginApp::onClientHello(Network::Channel* pChannel, MemoryStream& s)
 {
-	//printf("onClientHello memstr length:%d \n", s.length());
-
 	client_loginserver::Hello helloCmd;
 	PARSEBUNDLE(s, helloCmd)
 	uint32 clientVersion = helloCmd.version();
 	const std::string& extradata = helloCmd.extradata();
-	printf("LoginApp::onClientHello ........... clientVersion:%d,  extradata:%s \n", clientVersion, extradata.c_str());
 	
 	Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
 	pBundle->newMessage(90, 2);

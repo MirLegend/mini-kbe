@@ -83,6 +83,8 @@ public:
 	*/
 	void loginBaseappFailed(Network::Channel* pChannel, std::string& accountName,
 		SERVER_ERROR_CODE failedcode, bool relogin = false);
+
+	virtual void onChannelDeregister(Network::Channel * pChannel);
 protected:
 	TimerHandle												loopCheckTimerHandle_;
 	// 记录登录到服务器但还未处理完毕的账号
