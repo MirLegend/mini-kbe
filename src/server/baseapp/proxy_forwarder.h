@@ -2,7 +2,7 @@
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
-Copyright (c) 2008-2016 KBEngine.
+Copyright (c) 2008-2017 KBEngine.
 
 KBEngine is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -18,45 +18,29 @@ You should have received a copy of the GNU Lesser General Public License
 along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef KBE_PROXY_FORWARDER_H
+#define KBE_PROXY_FORWARDER_H
 
-namespace KBEngine { 
-namespace Network
+#include "helper/debug_helper.h"
+#include "common/common.h"
+
+namespace KBEngine{
+
+class ProxyForwarder : public TimerHandler
 {
+public:
+	ProxyForwarder(Proxy * pProxy);
+	virtual ~ProxyForwarder();
 
-INLINE const Address & Channel::addr() const
-{
-	return pEndPoint_->addr();
-}
+protected:
+	virtual void handleTimeout(TimerHandle, void * arg);
+	virtual void onRelease(TimerHandle handle, void  * pUser) {}
 
-INLINE EndPoint * Channel::pEndPoint() const
-{
-	return pEndPoint_;
-}
-
-INLINE PacketReader* Channel::pPacketReader() const
-{
-	return pPacketReader_;
-}
-
-INLINE PacketReceiver* Channel::pPacketReceiver() const
-{
-	return pPacketReceiver_;
-}
-
-INLINE PacketSender* Channel::pPacketSender() const
-{
-	return pPacketSender_;
-}
-
-void Channel::pPacketSender(PacketSender* pPacketSender)
-{
-	pPacketSender_ = pPacketSender;
-}
-
-INLINE void Channel::pushBundle(Bundle* pBundle)
-{
-	bundles_.push_back(pBundle);
-}
+protected:
+	Proxy * pProxy_;
+	TimerHandle timerHandle_;
+};
 
 }
-}
+
+#endif // KBE_PROXY_FORWARDER_H

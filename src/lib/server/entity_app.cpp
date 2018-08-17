@@ -2,7 +2,7 @@
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
-Copyright (c) 2008-2016 KBEngine.
+Copyright (c) 2008-2017 KBEngine.
 
 KBEngine is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -19,44 +19,11 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-namespace KBEngine { 
-namespace Network
-{
+#include "entity_app.h"
 
-INLINE const Address & Channel::addr() const
-{
-	return pEndPoint_->addr();
-}
+namespace KBEngine{
 
-INLINE EndPoint * Channel::pEndPoint() const
-{
-	return pEndPoint_;
-}
 
-INLINE PacketReader* Channel::pPacketReader() const
-{
-	return pPacketReader_;
-}
 
-INLINE PacketReceiver* Channel::pPacketReceiver() const
-{
-	return pPacketReceiver_;
-}
-
-INLINE PacketSender* Channel::pPacketSender() const
-{
-	return pPacketSender_;
-}
-
-void Channel::pPacketSender(PacketSender* pPacketSender)
-{
-	pPacketSender_ = pPacketSender;
-}
-
-INLINE void Channel::pushBundle(Bundle* pBundle)
-{
-	bundles_.push_back(pBundle);
-}
-
-}
+//-------------------------------------------------------------------------------------		
 }

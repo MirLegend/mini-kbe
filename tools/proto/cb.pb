@@ -1,5 +1,5 @@
 
-Ü
+€
 cb.protoclient_baseserver"+
 Hello
 version (
@@ -12,4 +12,6 @@
 account (	
 password (	"%
 LoginBaseappFailed
-retCode (
+retCode (""
+CreatedProxies
+entityID (

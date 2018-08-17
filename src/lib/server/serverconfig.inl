@@ -45,6 +45,12 @@ INLINE ENGINE_COMPONENT_INFO& ServerConfig::getLoginApp(void)
 	return _loginAppInfo;
 }
 
+//-------------------------------------------------------------------------------------	
+INLINE ENGINE_COMPONENT_INFO& ServerConfig::getConfig()
+{
+	return getComponent(g_componentType);
+}
+
 //-------------------------------------------------------------------------------------
 INLINE ENGINE_COMPONENT_INFO& ServerConfig::getCellAppMgr(void)
 {

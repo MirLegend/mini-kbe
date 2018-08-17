@@ -410,51 +410,51 @@ bool KBEAccountTableMysql::logAccount(DBInterface * dbi, ACCOUNT_INFOS& info)
 }
 
 
-KBEPlayerTableMysql::KBEPlayerTableMysql(){}
+//KBEPlayerTableMysql::KBEPlayerTableMysql(){}
 
-const stTableItem s_tableItems[] = {
-	//{ "user_id", "INT64",0, PRI_KEY_FLAG, "", "" },
-	//{ "server_id", "INT32", 0/*UNIQUE_KEY_FLAG*/, 0, "INDEX", "" },
-	//{ "nickname", "UNICODE", 32, 0, "UNIQUE", "" },
-	//{ "last_set_name_time", "INT32", 0, 0, "" , "" },
-	//{ "avatar", "INT32", 0, 0, "", "" },
-	//{ "level", "INT32", 0 , 0, "", "" },
-	//{ "exp", "INT64", 0 , 0, "" , "" },
-	//{ "money", "INT64", 0 , 0, "", "" },
-	//{ "gem", "INT64", 0 , 0, "" , "" },
-	//{ "arena_point", "INT32", 0 , 0, "", "" },
-	//{ "crusade_point", "INT32", 0 , 0, "" , "" },
-	//{ "guild_point", "INT32", 0 , 0, "", "" },
-	//{ "last_midas_time", "INT32", 0 , 0, "" , "" },
-	//{ "today_midas_times", "INT32", 0 , 0, "", "" },
-	//{ "total_online_time", "INT32", 0 , 0, "" , "" },
-	//{ "tutorialstep", "INT16", 0 , 0, "", "" },
-	//{ "rechargegem", "INT64", 0, 0, "" , "" },
-	{1, "facebook_follow", "INT8", 0 , 0, "" , "" },
-};
-bool KBEPlayerTableMysql::initialize(std::string name, const DBTABLEITEMS& tableItems)
-{
-	// 获取表名
-	//tableName(name);
-	tableName("ziyu_dota_players");
-	
-	for (int i = 0; i < (sizeof(s_tableItems) / sizeof(s_tableItems[0])); i++)
-	{
-		EntityTableItem* pETItem = this->createItem(s_tableItems[i].tblItemType, &s_tableItems[i]);
-		//ERROR_MSG(fmt::format("EntityTableItem::{} {} \n", s_tableItems[i].tblItemName, s_tableItems[i].length));
-		pETItem->flags(pETItem->flags() | s_tableItems[i].flag);
-		pETItem->pParentTable(this);
-		pETItem->utype(i+1);
-		pETItem->tableName(this->tableName());
-		pETItem->itemName(s_tableItems[i].tblItemName);
-		tableItems_[pETItem->utype()].reset(pETItem);
-		tableFixedOrderItems_.push_back(pETItem);
-	}
-	//ERROR_MSG(fmt::format("KBEPlayerTableMysql::initialize \n"));
-	prikeyIndex = 1;
-	init_db_item_name();
-	return true;
-}
+//const stTableItem s_tableItems[] = {
+//	//{ "user_id", "INT64",0, PRI_KEY_FLAG, "", "" },
+//	//{ "server_id", "INT32", 0/*UNIQUE_KEY_FLAG*/, 0, "INDEX", "" },
+//	//{ "nickname", "UNICODE", 32, 0, "UNIQUE", "" },
+//	//{ "last_set_name_time", "INT32", 0, 0, "" , "" },
+//	//{ "avatar", "INT32", 0, 0, "", "" },
+//	//{ "level", "INT32", 0 , 0, "", "" },
+//	//{ "exp", "INT64", 0 , 0, "" , "" },
+//	//{ "money", "INT64", 0 , 0, "", "" },
+//	//{ "gem", "INT64", 0 , 0, "" , "" },
+//	//{ "arena_point", "INT32", 0 , 0, "", "" },
+//	//{ "crusade_point", "INT32", 0 , 0, "" , "" },
+//	//{ "guild_point", "INT32", 0 , 0, "", "" },
+//	//{ "last_midas_time", "INT32", 0 , 0, "" , "" },
+//	//{ "today_midas_times", "INT32", 0 , 0, "", "" },
+//	//{ "total_online_time", "INT32", 0 , 0, "" , "" },
+//	//{ "tutorialstep", "INT16", 0 , 0, "", "" },
+//	//{ "rechargegem", "INT64", 0, 0, "" , "" },
+//	{1, "facebook_follow", "INT8", 0 , 0, "" , "" },
+//};
+//bool KBEPlayerTableMysql::initialize(std::string name, const DBTABLEITEMS& tableItems)
+//{
+//	// 获取表名
+//	//tableName(name);
+//	tableName("ziyu_dota_players");
+//	
+//	for (int i = 0; i < (sizeof(s_tableItems) / sizeof(s_tableItems[0])); i++)
+//	{
+//		EntityTableItem* pETItem = this->createItem(s_tableItems[i].tblItemType, &s_tableItems[i]);
+//		//ERROR_MSG(fmt::format("EntityTableItem::{} {} \n", s_tableItems[i].tblItemName, s_tableItems[i].length));
+//		pETItem->flags(pETItem->flags() | s_tableItems[i].flag);
+//		pETItem->pParentTable(this);
+//		pETItem->utype(i+1);
+//		pETItem->tableName(this->tableName());
+//		pETItem->itemName(s_tableItems[i].tblItemName);
+//		tableItems_[pETItem->utype()].reset(pETItem);
+//		tableFixedOrderItems_.push_back(pETItem);
+//	}
+//	//ERROR_MSG(fmt::format("KBEPlayerTableMysql::initialize \n"));
+//	prikeyIndex = 1;
+//	init_db_item_name();
+//	return true;
+//}
 
 /**
 同步表到数据库中

@@ -694,19 +694,30 @@ bool EntityTableMysql::queryTable(DBInterface* dbi, DBID dbid, MemoryStream* s)
 	context.isEmpty = false;
 	context.readresultIdx = 0;
 
-	std::vector<EntityTableItem*>::iterator iter = tableFixedOrderItems_.begin();
+	/*std::vector<EntityTableItem*>::iterator iter = tableFixedOrderItems_.begin();
 	for (; iter != tableFixedOrderItems_.end(); ++iter)
 	{
 		static_cast<EntityTableItemMysqlBase*>((*iter))->getReadSqlItem(context);
+	}*/
+	//¸ÄÓÃ utype µÄ Ë³Ðò
+	TABLEITEM_MAP::iterator iter = tableItems_.begin();
+	for (; iter != tableItems_.end(); ++iter)
+	{
+		static_cast<EntityTableItemMysqlBase*>(iter->second.get())->getReadSqlItem(context);
 	}
 
 	if (!ReadEntityHelper::queryDB(dbi, context))
 		return false;
 
-	iter = tableFixedOrderItems_.begin();
+	/*iter = tableFixedOrderItems_.begin();
 	for (; iter != tableFixedOrderItems_.end(); ++iter)
 	{
 		static_cast<EntityTableItemMysqlBase*>((*iter))->addToStream(s, context, dbid);
+	}*/
+	iter = tableItems_.begin();
+	for (; iter != tableItems_.end(); ++iter)
+	{
+		static_cast<EntityTableItemMysqlBase*>(iter->second.get())->addToStream(s, context, dbid);
 	}
 
 	return  context.dbid == dbid;
@@ -1073,7 +1084,7 @@ void EntityTableItemMysql_UNICODE::addToStream(MemoryStream* s,
 	{
 		return;
 	}
-	ERROR_MSG(fmt::format("addToStream: name:[{}], type[{}], value[{}]\n", pTableItemDescription_->tblItemName, pTableItemDescription_->tblItemType, context.results[context.readresultIdx].c_str()));
+	ERROR_MSG(fmt::format("addToStream: name:[{}], type[{}], value[{}]\n", pTableItemDescription_->tblItemName, pTableItemDescription_->tblItemType, context.results[context.readresultIdx]));
 	s->appendBlob(context.results[context.readresultIdx++]);
 }
 

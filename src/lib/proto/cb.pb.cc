@@ -32,6 +32,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* LoginBaseappFailed_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   LoginBaseappFailed_reflection_ = NULL;
+const ::google::protobuf::Descriptor* CreatedProxies_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  CreatedProxies_reflection_ = NULL;
 
 }  // namespace
 
@@ -106,6 +109,21 @@ void protobuf_AssignDesc_cb_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LoginBaseappFailed));
+  CreatedProxies_descriptor_ = file->message_type(4);
+  static const int CreatedProxies_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CreatedProxies, entityid_),
+  };
+  CreatedProxies_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      CreatedProxies_descriptor_,
+      CreatedProxies::default_instance_,
+      CreatedProxies_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CreatedProxies, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CreatedProxies, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(CreatedProxies));
 }
 
 namespace {
@@ -126,6 +144,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     Login_descriptor_, &Login::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     LoginBaseappFailed_descriptor_, &LoginBaseappFailed::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    CreatedProxies_descriptor_, &CreatedProxies::default_instance());
 }
 
 }  // namespace
@@ -139,6 +159,8 @@ void protobuf_ShutdownFile_cb_2eproto() {
   delete Login_reflection_;
   delete LoginBaseappFailed::default_instance_;
   delete LoginBaseappFailed_reflection_;
+  delete CreatedProxies::default_instance_;
+  delete CreatedProxies_reflection_;
 }
 
 void protobuf_AddDesc_cb_2eproto() {
@@ -153,17 +175,20 @@ void protobuf_AddDesc_cb_2eproto() {
     "lloCB\022\016\n\006result\030\001 \001(\r\022\017\n\007version\030\002 \001(\r\022\021"
     "\n\textraData\030\003 \001(\t\"*\n\005Login\022\017\n\007account\030\001 "
     "\001(\t\022\020\n\010password\030\002 \001(\t\"%\n\022LoginBaseappFai"
-    "led\022\017\n\007retCode\030\001 \001(\r", 220);
+    "led\022\017\n\007retCode\030\001 \001(\r\"\"\n\016CreatedProxies\022\020"
+    "\n\010entityID\030\001 \001(\005", 256);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "cb.proto", &protobuf_RegisterTypes);
   Hello::default_instance_ = new Hello();
   HelloCB::default_instance_ = new HelloCB();
   Login::default_instance_ = new Login();
   LoginBaseappFailed::default_instance_ = new LoginBaseappFailed();
+  CreatedProxies::default_instance_ = new CreatedProxies();
   Hello::default_instance_->InitAsDefaultInstance();
   HelloCB::default_instance_->InitAsDefaultInstance();
   Login::default_instance_->InitAsDefaultInstance();
   LoginBaseappFailed::default_instance_->InitAsDefaultInstance();
+  CreatedProxies::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_cb_2eproto);
 }
 
@@ -1316,6 +1341,228 @@ void LoginBaseappFailed::Swap(LoginBaseappFailed* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = LoginBaseappFailed_descriptor_;
   metadata.reflection = LoginBaseappFailed_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int CreatedProxies::kEntityIDFieldNumber;
+#endif  // !_MSC_VER
+
+CreatedProxies::CreatedProxies()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:client_baseserver.CreatedProxies)
+}
+
+void CreatedProxies::InitAsDefaultInstance() {
+}
+
+CreatedProxies::CreatedProxies(const CreatedProxies& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:client_baseserver.CreatedProxies)
+}
+
+void CreatedProxies::SharedCtor() {
+  _cached_size_ = 0;
+  entityid_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+CreatedProxies::~CreatedProxies() {
+  // @@protoc_insertion_point(destructor:client_baseserver.CreatedProxies)
+  SharedDtor();
+}
+
+void CreatedProxies::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void CreatedProxies::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* CreatedProxies::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return CreatedProxies_descriptor_;
+}
+
+const CreatedProxies& CreatedProxies::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_cb_2eproto();
+  return *default_instance_;
+}
+
+CreatedProxies* CreatedProxies::default_instance_ = NULL;
+
+CreatedProxies* CreatedProxies::New() const {
+  return new CreatedProxies;
+}
+
+void CreatedProxies::Clear() {
+  entityid_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool CreatedProxies::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:client_baseserver.CreatedProxies)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional int32 entityID = 1;
+      case 1: {
+        if (tag == 8) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &entityid_)));
+          set_has_entityid();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:client_baseserver.CreatedProxies)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:client_baseserver.CreatedProxies)
+  return false;
+#undef DO_
+}
+
+void CreatedProxies::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:client_baseserver.CreatedProxies)
+  // optional int32 entityID = 1;
+  if (has_entityid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->entityid(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:client_baseserver.CreatedProxies)
+}
+
+::google::protobuf::uint8* CreatedProxies::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:client_baseserver.CreatedProxies)
+  // optional int32 entityID = 1;
+  if (has_entityid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->entityid(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:client_baseserver.CreatedProxies)
+  return target;
+}
+
+int CreatedProxies::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional int32 entityID = 1;
+    if (has_entityid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->entityid());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void CreatedProxies::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const CreatedProxies* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const CreatedProxies*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void CreatedProxies::MergeFrom(const CreatedProxies& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_entityid()) {
+      set_entityid(from.entityid());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void CreatedProxies::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void CreatedProxies::CopyFrom(const CreatedProxies& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CreatedProxies::IsInitialized() const {
+
+  return true;
+}
+
+void CreatedProxies::Swap(CreatedProxies* other) {
+  if (other != this) {
+    std::swap(entityid_, other->entityid_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata CreatedProxies::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = CreatedProxies_descriptor_;
+  metadata.reflection = CreatedProxies_reflection_;
   return metadata;
 }
 

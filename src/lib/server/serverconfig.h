@@ -156,6 +156,8 @@ public:
 
 	INLINE ENGINE_COMPONENT_INFO& getComponent(COMPONENT_TYPE componentType);
 
+	INLINE ENGINE_COMPONENT_INFO& getConfig();
+
  	void updateInfos(bool isPrint, COMPONENT_TYPE componentType, COMPONENT_ID componentID, 
  				const Network::Address& internalAddr, const Network::Address& externalAddr);
 

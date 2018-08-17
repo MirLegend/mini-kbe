@@ -1,6 +1,6 @@
 
-#ifndef KBE_BASE_H
-#define KBE_BASE_H
+#ifndef KBE_BASEAPP_H
+#define KBE_BASEAPP_H
 	
 // common include	
 #include "server/kbemain.h"
@@ -13,6 +13,9 @@
 #include "network/udp_packet_receiver.h"
 #include "network/common.h"
 #include "network/address.h"
+#include "server/entity_app.h"
+#include "base.h"
+#include "proxy.h"
 //#include "logwatcher.h"
 
 //#define NDEBUG
@@ -26,7 +29,7 @@
 namespace KBEngine{
 
 class InitProgressHandler;
-class BaseApp:	public ServerApp, 
+class BaseApp: public EntityApp<Base>,
 	public Singleton<BaseApp>
 {
 public:
@@ -57,6 +60,14 @@ public:
 
 	virtual bool canShutdown();
 
+	virtual Base* onCreateEntity(const char* entityType, ENTITY_ID eid);
+	
+
+	/**
+	通知客户端创建一个proxy对应的实体
+	*/
+	bool createClientProxies(Proxy* base, bool reload = false);
+
 	EntityIDClient& idClient() { return idClient_; }
 	void registerPendingLogin(Network::Channel* pChannel, MemoryStream& s);
 
@@ -85,6 +96,26 @@ public:
 		SERVER_ERROR_CODE failedcode, bool relogin = false);
 
 	virtual void onChannelDeregister(Network::Channel * pChannel);
+
+	/**
+	增加proxices计数
+	*/
+	void incProxicesCount() { ++numProxices_; }
+
+	/**
+	减少proxices计数
+	*/
+	void decProxicesCount() { --numProxices_; }
+
+	/**
+	获得proxices计数
+	*/
+	int32 numProxices() const { return numProxices_; }
+
+	/**
+	获得numClients计数
+	*/
+	int32 numClients() { return this->networkInterface().numExtChannels(); }
 protected:
 	TimerHandle												loopCheckTimerHandle_;
 	// 记录登录到服务器但还未处理完毕的账号
@@ -92,8 +123,9 @@ protected:
 	EntityIDClient											idClient_;
 
 	InitProgressHandler*									pInitProgressHandler_;
+	int32													numProxices_;
 };
 
 }
 
-#endif // KBE_BASE_H
+#endif // KBE_BASEAPP_H

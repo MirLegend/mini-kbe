@@ -119,7 +119,7 @@ public:
 	int32 bundlesLength();
 
 	const Bundles & bundles() const;
-
+	INLINE void pushBundle(Bundle* pBundle);
 	void clearBundle();
 
 	bool sending() const { return (flags_ & FLAG_SENDING) > 0;}

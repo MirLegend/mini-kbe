@@ -65,6 +65,18 @@ size_t Bundle::getPoolObjectBytes()
 }
 
 //-------------------------------------------------------------------------------------
+void Bundle::reclaimPoolObject(Bundle* obj)
+{
+	_g_objPool.reclaimObject(obj);
+}
+
+//-------------------------------------------------------------------------------------
+Bundle* Bundle::createPoolObject()
+{
+	return _g_objPool.createObject();
+}
+
+//-------------------------------------------------------------------------------------
 Bundle::SmartPoolObjectPtr Bundle::createSmartPoolObj()
 {
 	return SmartPoolObjectPtr(new SmartPoolObject<Bundle>(ObjPool().createObject(), _g_objPool));

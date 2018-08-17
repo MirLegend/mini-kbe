@@ -37,6 +37,7 @@ class Hello;
 class HelloCB;
 class Login;
 class LoginBaseappFailed;
+class CreatedProxies;
 
 // ===================================================================
 
@@ -413,6 +414,85 @@ class LoginBaseappFailed : public ::google::protobuf::Message {
 
   void InitAsDefaultInstance();
   static LoginBaseappFailed* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class CreatedProxies : public ::google::protobuf::Message {
+ public:
+  CreatedProxies();
+  virtual ~CreatedProxies();
+
+  CreatedProxies(const CreatedProxies& from);
+
+  inline CreatedProxies& operator=(const CreatedProxies& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const CreatedProxies& default_instance();
+
+  void Swap(CreatedProxies* other);
+
+  // implements Message ----------------------------------------------
+
+  CreatedProxies* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const CreatedProxies& from);
+  void MergeFrom(const CreatedProxies& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int32 entityID = 1;
+  inline bool has_entityid() const;
+  inline void clear_entityid();
+  static const int kEntityIDFieldNumber = 1;
+  inline ::google::protobuf::int32 entityid() const;
+  inline void set_entityid(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:client_baseserver.CreatedProxies)
+ private:
+  inline void set_has_entityid();
+  inline void clear_has_entityid();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::int32 entityid_;
+  friend void  protobuf_AddDesc_cb_2eproto();
+  friend void protobuf_AssignDesc_cb_2eproto();
+  friend void protobuf_ShutdownFile_cb_2eproto();
+
+  void InitAsDefaultInstance();
+  static CreatedProxies* default_instance_;
 };
 // ===================================================================
 
@@ -831,6 +911,34 @@ inline void LoginBaseappFailed::set_retcode(::google::protobuf::uint32 value) {
   set_has_retcode();
   retcode_ = value;
   // @@protoc_insertion_point(field_set:client_baseserver.LoginBaseappFailed.retCode)
+}
+
+// -------------------------------------------------------------------
+
+// CreatedProxies
+
+// optional int32 entityID = 1;
+inline bool CreatedProxies::has_entityid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void CreatedProxies::set_has_entityid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void CreatedProxies::clear_has_entityid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void CreatedProxies::clear_entityid() {
+  entityid_ = 0;
+  clear_has_entityid();
+}
+inline ::google::protobuf::int32 CreatedProxies::entityid() const {
+  // @@protoc_insertion_point(field_get:client_baseserver.CreatedProxies.entityID)
+  return entityid_;
+}
+inline void CreatedProxies::set_entityid(::google::protobuf::int32 value) {
+  set_has_entityid();
+  entityid_ = value;
+  // @@protoc_insertion_point(field_set:client_baseserver.CreatedProxies.entityID)
 }
 
 

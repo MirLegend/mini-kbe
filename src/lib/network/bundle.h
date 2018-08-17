@@ -91,6 +91,8 @@ public:
 	typedef KBEShared_ptr< SmartPoolObject< Bundle > > SmartPoolObjectPtr;
 	static SmartPoolObjectPtr createSmartPoolObj();
 	static ObjectPool<Bundle>& ObjPool();
+	static void reclaimPoolObject(Bundle* obj);
+	static Bundle* createPoolObject();
 	static void destroyObjPool();
 	virtual void onReclaimObject();
 	virtual size_t getPoolObjectBytes();
@@ -127,6 +129,9 @@ public:
 	INLINE Packets& packets();
 	INLINE Packet* pCurrPacket() const;
 	INLINE void pCurrPacket(Packet* p);
+
+	INLINE void pChannel(Channel* p);
+	INLINE Channel* pChannel();
 
 	INLINE void finiCurrPacket();
 

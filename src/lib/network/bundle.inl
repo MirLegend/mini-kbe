@@ -67,6 +67,16 @@ INLINE void Bundle::pCurrPacket(Packet* p)
 	pCurrPacket_ = p; 
 }
 
+INLINE void Bundle::pChannel(Channel* p)
+{
+	pChannel_ = p;
+}
+
+INLINE Channel* Bundle::pChannel()
+{
+	return pChannel_;
+}
+
 INLINE MessageID Bundle::messageID() const 
 { 
 	return currMsgID_; 

@@ -23,3 +23,8 @@ message Login {
 message LoginBaseappFailed {
 	optional uint32 retCode = 1;
 }
+
+//s-c 服务器 -> 客户端 91 - 5 //登陆成功， 创建proxy
+message CreatedProxies {
+	optional int32 entityID = 1;
+}

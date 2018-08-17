@@ -45,9 +45,24 @@
     <ClCompile Include="..\..\lib\proto\cb.pb.cc">
       <Filter>pb</Filter>
     </ClCompile>
+    <ClCompile Include="base.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="base_messages_forward_handler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="proxy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="proxy_forwarder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="proxy.inl">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="baseapp.h">
@@ -64,6 +79,15 @@
     </ClInclude>
     <ClInclude Include="..\..\lib\proto\cb.pb.h">
       <Filter>pb</Filter>
+    </ClInclude>
+    <ClInclude Include="base.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="base_messages_forward_handler.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="proxy.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

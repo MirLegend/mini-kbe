@@ -27,11 +27,12 @@ BaseApp::BaseApp(Network::EventDispatcher& dispatcher,
 				 Network::NetworkInterface& ninterface, 
 				 COMPONENT_TYPE componentType,
 				 COMPONENT_ID componentID):
-	ServerApp(dispatcher, ninterface, componentType, componentID),
+	EntityApp<Base>(dispatcher, ninterface, componentType, componentID),
 	loopCheckTimerHandle_(),
 	pendingLoginMgr_(),
 	idClient_(),
-	pInitProgressHandler_(NULL)
+	pInitProgressHandler_(NULL),
+	numProxices_(0)
 {
 	idClient_.pApp(this);
 }
@@ -139,38 +140,16 @@ void BaseApp::onChannelDeregister(Network::Channel * pChannel)
 		}
 	}
 
-	ServerApp::onChannelDeregister(pChannel);
+	EntityApp<Base>::onChannelDeregister(pChannel);
 
 	// 有关联entity的客户端退出则需要设置entity的client
 	if (pid > 0)
 	{
-		/*Proxy* proxy = static_cast<Proxy*>(this->findEntity(pid));
+		Proxy* proxy = static_cast<Proxy*>(this->findEntity(pid));
 		if (proxy)
 		{
 			proxy->onClientDeath();
-		}*/
-
-		Components::COMPONENTS& cts = Components::getSingleton().getComponents(DBMGR_TYPE);
-		Components::ComponentInfos* dbmgrinfos = NULL;
-
-		if (cts.size() > 0)
-			dbmgrinfos = &(*cts.begin());
-
-		if (dbmgrinfos == NULL || dbmgrinfos->pChannel == NULL || dbmgrinfos->cid == 0)
-		{
-			ERROR_MSG(fmt::format("onDestroyEntity({}): writeToDB not found dbmgr!\n", pid));
-			return;
 		}
-		Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
-		(*pBundle).newMessage(DbmgrInterface::removeEntity);
-
-		base_dbmgr::RemoveEntity removeCmd;
-		removeCmd.set_componentid(g_componentID);
-		removeCmd.set_entityid(pid);
-		removeCmd.set_entitydbid(pid);
-
-		ADDTOBUNDLE((*pBundle), removeCmd)
-			dbmgrinfos->pChannel->send(pBundle);
 	}
 }
 
@@ -481,11 +460,11 @@ void BaseApp::loginBaseappFailed(Network::Channel* pChannel, std::string& accoun
 
 void BaseApp::onQueryPlayerCBFromDbmgr(Network::Channel* pChannel, MemoryStream& s)
 {
-	base_dbmgr::QueryPlayerCBFromDbmgr queryCmd;
-	PARSEBUNDLE(s, queryCmd);
-
 	if (pChannel->isExternal())
 		return;
+
+	base_dbmgr::QueryPlayerCBFromDbmgr queryCmd;
+	PARSEBUNDLE(s, queryCmd);
 
 	std::string accountName = queryCmd.account();
 	std::string password = queryCmd.password();
@@ -500,10 +479,8 @@ void BaseApp::onQueryPlayerCBFromDbmgr(Network::Channel* pChannel, MemoryStream&
 			accountName.c_str()));
 		return;
 	}
-	
 
 	Network::Channel* pClientChannel = this->networkInterface().findChannel(ptinfos->addr);
-
 
 	if (!success)
 	{
@@ -516,19 +493,86 @@ void BaseApp::onQueryPlayerCBFromDbmgr(Network::Channel* pChannel, MemoryStream&
 		return;
 	}
 
-	pClientChannel->proxyID(entityID);
-	MemoryStream playerData;
-	playerData.append(queryCmd.datas());
-	int64 exp;
-	int32 setnametime;
-	int32 serverid;
-	int32 level;
-	playerData >> exp >> setnametime >> serverid >> level;
-	
-	INFO_MSG(fmt::format("Baseapp::onQueryAccountCBFromDbmgr: user={}, dbid={}, entityID={}. level={}, exp={}\n",
-		accountName, dbid, entityID, level, exp));
+	Proxy* base = static_cast<Proxy*>(createEntity("Proxy", entityID));
+
+	if (!base)
+	{
+		ERROR_MSG(fmt::format("Baseapp::onQueryAccountCBFromDbmgr: create {} is failed! error(base == NULL)\n",
+			accountName.c_str()));
+
+		loginBaseappFailed(pClientChannel, accountName, SERVER_ERR_SRV_NO_READY);
+		SAFE_RELEASE(ptinfos);
+		return;
+	}
+
+	KBE_ASSERT(base != NULL);
+	base->accountName(accountName);
+	base->password(password);
+	base->hasDB(true);
+	base->dbid(dbid);
+	base->setClientType(ptinfos->ctype);
+	base->setLoginDatas(ptinfos->datas);
+	base->InitDatas(queryCmd.datas());
+
+	if (pClientChannel != NULL)
+	{
+		base->addr(pClientChannel->addr());
+
+		createClientProxies(base);
+	}
 
 	SAFE_RELEASE(ptinfos);
+}
+
+//-------------------------------------------------------------------------------------
+Base* BaseApp::onCreateEntity(const char* entityType, ENTITY_ID eid)
+{
+	if (kbe_strnicmp(entityType, "Proxy", 5) == 0)
+	{
+		INFO_MSG(fmt::format("EntityApp::createEntity: new Proxy {}\n", eid));
+		return new Proxy(eid);
+	}
+
+	ERROR_MSG(fmt::format("BaseApp::onCreateEntity: error entitType: {}\n", entityType));
+	return NULL;
+}
+
+//-------------------------------------------------------------------------------------
+bool BaseApp::createClientProxies(Proxy* base, bool reload)
+{
+	// 将通道代理的关系与该entity绑定， 在后面通信中可提供身份合法性识别
+	Network::Channel* pChannel = base->pChannel();
+	pChannel->proxyID(base->id());
+	base->addr(pChannel->addr());
+
+	// 重新生成一个ID
+	if (reload)
+		base->rndUUID(genUUID64());
+
+	// 一些数据必须在实体创建后立即访问
+	//base->initClientBasePropertys();
+
+	// 让客户端知道已经创建了proxices, 并初始化一部分属性
+	//Network::Bundle* pBundle = Network::Bundle::createPoolObject();
+	//(*pBundle).newMessage(ClientInterface::onCreatedProxies);
+	//(*pBundle) << base->rndUUID();
+	//(*pBundle) << base->id();
+	//(*pBundle) << base->ob_type->tp_name;
+	//base->sendToClient(ClientInterface::onCreatedProxies, pBundle);
+	Network::Bundle* pBundle = Network::Bundle::createPoolObject();
+	pBundle->newMessage(91, 5);
+
+	client_baseserver::CreatedProxies proxyCmd;
+	proxyCmd.set_entityid(base->id());
+
+	ADDTOBUNDLE((*pBundle), proxyCmd)
+		base->sendToClient(pBundle);
+
+
+	// 本应该由客户端告知已经创建好entity后调用这个接口。
+	//if(!reload)
+	base->onEntitiesEnabled();
+	return true;
 }
 
 
